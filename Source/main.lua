@@ -3,24 +3,19 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "player"
-import "platform"
 
 local gfx <const> = playdate.graphics
 
-local a = RigidBody2D("Images/playerImage.png", 200,50);
-local b = Platform;
-
 local function init()
-	b:init(200, 200)
 
-	local backgroundImage = gfx.image.new( "Images/playerImage.png" )
-	assert( backgroundImage )
+	-- local backgroundImage = gfx.image.new( "" )
+	-- assert( backgroundImage )
 
-	gfx.sprite.setBackgroundDrawingCallback(
-		function( x, y, width, height )
-			backgroundImage:draw( 0, 0 )
-		end
-	)
+	-- gfx.sprite.setBackgroundDrawingCallback(
+	-- 	function( x, y, width, height )
+	-- 		backgroundImage:draw( 0, 0 )
+	-- 	end
+	-- )
 end
 
 init()
