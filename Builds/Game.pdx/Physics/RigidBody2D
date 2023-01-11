@@ -1,0 +1,32 @@
+import "CoreLibs/object"
+import "CoreLibs/graphics"
+import "CoreLibs/sprites"
+import "CoreLibs/timer"
+
+local gfx <const> = playdate.graphics
+
+class('RigidBody2D').extends(gfx.sprite)
+
+function RigidBody2D:init(spriteString, x, y)
+	local playerImage = gfx.image.new(spriteString)
+	assert( playerImage )
+	
+	self:setImage(gfx.sprite.new( playerImage ))
+	self:moveTo( x, y )
+	self:add()
+	self:setCollideRect( 0, 0, self.sprite:getSize() )
+
+	self.velocity = Vector2D(0,0)
+
+	print("ran")
+end
+
+function RigidBody2D:move(x, y)
+	self.sprite:moveWithCollisions(self.sprite.x + x, self.sprite.y + y)
+end
+
+function RigidBody2D:collisionResponse(other)
+    local response = gfx.sprite.kCollisionTypeOverlap
+    
+    return response
+end
