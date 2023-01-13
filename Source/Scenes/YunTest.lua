@@ -12,13 +12,19 @@ local gfx <const> = pd.graphics
 class('YunTest').extends(Scene)
 
 function YunTest:init()
+    YunTest.super.init(self)
+
 	local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
 
     self.sceneObjects = {
         Player(100, 100),
         Platform(100, 200, platformSprite)
     }
+end
 
+function YunTest:load()
+    YunTest.super.load(self)
+    
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
 	assert( backgroundImage )
 

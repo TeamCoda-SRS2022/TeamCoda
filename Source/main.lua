@@ -9,10 +9,10 @@ local gfx <const> = playdate.graphics
 -- Global Variables
 gravity = 0.5
 
-local scene = YunTest()
+local curScene = ""
 
 local function init()
-	scene:load()
+	
 end
 
 init()

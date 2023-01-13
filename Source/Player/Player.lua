@@ -17,7 +17,6 @@ function Player:init(x, y)
 	self.curAnim = gfx.animation.loop.new(250, idle, true)
 	Player.super.init(self, x, y, self.curAnim:image())
 
-	print(gravity)
 	self.jumpVelocity = math.sqrt(2 * gravity * jumpHeight)
 	self.isFacingLeft = playdate.graphics.kImageUnflipped
 	self.grounded = false

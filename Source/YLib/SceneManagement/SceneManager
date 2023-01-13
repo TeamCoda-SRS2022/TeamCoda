@@ -1,0 +1,17 @@
+import "CoreLibs/object"
+import "CoreLibs/graphics"
+import "CoreLibs/sprites"
+import "CoreLibs/timer"
+
+class('SceneManager').extends(Object)
+
+-- Global Variables
+scenes = {}
+
+function SceneManager:init(sceneName)
+    -- self.curScene = sceneName
+end
+
+function SceneManager:loadScene(sceneName)
+    
+end

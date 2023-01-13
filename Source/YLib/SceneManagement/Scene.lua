@@ -6,7 +6,8 @@ import "CoreLibs/timer"
 class('Scene').extends(Object)
 
 function Scene:init()
-    
+    scenes[self.className] = self
+    print(self.className)
 end
 
 function Scene:load()
