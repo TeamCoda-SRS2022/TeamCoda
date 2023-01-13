@@ -9,15 +9,15 @@ local geo <const> = pd.geometry
 
 class('RigidBody2D').extends(gfx.sprite)
 
-function RigidBody2D:init(spriteString, x, y)
+function RigidBody2D:init(x, y, sprite, isAnimation)
     RigidBody2D.super.init(self)
-
-	local playerImage = gfx.image.new(spriteString)
-	assert( playerImage )
 	
-	self:setImage(playerImage)
+	if not isAnimation then
+		self:setImage(sprite)
+	end
+	
+	self:setCollideRect( 0, 0, sprite:getSize() )
 	self:moveTo( x, y )
-	self:setCollideRect( 0, 0, self:getSize() )
 
 	self.velocity = geo.vector2D.new(0, 0)
 	self.static = false

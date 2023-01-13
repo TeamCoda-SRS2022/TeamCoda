@@ -8,7 +8,7 @@ local gfx <const> = pd.graphics
 
 class('Platform').extends(RigidBody2D)
 
-function Platform:init(spriteString, x, y)
-    Platform.super.init(self, spriteString, x, y)
+function Platform:init(x, y, image)
+    Platform.super.init(self, x, y, image, false)
     self.static = true
 end
