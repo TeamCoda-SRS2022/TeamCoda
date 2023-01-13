@@ -2,20 +2,16 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "player"
+import "Scenes/YunTest"
 
 local gfx <const> = playdate.graphics
+local scene = YunTest()
+
+-- Global Variables
+gravity = 0.2
 
 local function init()
-
-	-- local backgroundImage = gfx.image.new( "" )
-	-- assert( backgroundImage )
-
-	-- gfx.sprite.setBackgroundDrawingCallback(
-	-- 	function( x, y, width, height )
-	-- 		backgroundImage:draw( 0, 0 )
-	-- 	end
-	-- )
+	scene:load()
 end
 
 init()

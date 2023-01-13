@@ -18,24 +18,16 @@ function RigidBody2D:init(spriteString, x, y)
 	self:setImage(playerImage)
 	self:moveTo( x, y )
 	self:setCollideRect( 0, 0, self:getSize() )
-	self:add()
 
 	self.velocity = geo.vector2D.new(0, 0)
+	self.static = false
 end
 
 function RigidBody2D:update()
-	if pd.buttonIsPressed( pd.kButtonUp ) then
-		self.velocity.y = -2
+	if not self.static then
+		self.velocity.y += gravity
+		self:move(0, self.velocity.y)
 	end
-	if pd.buttonIsPressed( pd.kButtonRight ) then
-		self:move( 2, 0 )
-	end
-	if pd.buttonIsPressed( pd.kButtonLeft ) then
-		self:move( -2, 0 )
-	end
-	
-	self.velocity.y += 0.1
-	self:move(0, self.velocity.y)
 end
 
 function RigidBody2D:move(x, y)
