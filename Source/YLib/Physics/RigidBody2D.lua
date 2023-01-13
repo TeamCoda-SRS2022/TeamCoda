@@ -9,13 +9,10 @@ local geo <const> = pd.geometry
 
 class('RigidBody2D').extends(gfx.sprite)
 
-function RigidBody2D:init(x, y, sprite, isAnimation)
+function RigidBody2D:init(x, y, sprite)
     RigidBody2D.super.init(self)
 	
-	if not isAnimation then
-		self:setImage(sprite)
-	end
-	
+	self:setImage(sprite)
 	self:setCollideRect( 0, 0, sprite:getSize() )
 	self:moveTo( x, y )
 
@@ -35,4 +32,5 @@ function RigidBody2D:move(x, y)
 	if collisions[1] ~= nil and collisions[1].normal.y == -1 then
 		self.velocity.y = 0
 	end
+	return actualX, actualY, collisions, length
 end

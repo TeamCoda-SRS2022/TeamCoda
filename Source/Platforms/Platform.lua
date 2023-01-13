@@ -9,6 +9,6 @@ local gfx <const> = pd.graphics
 class('Platform').extends(RigidBody2D)
 
 function Platform:init(x, y, image)
-    Platform.super.init(self, x, y, image, false)
+    Platform.super.init(self, x, y, image)
     self.static = true
 end

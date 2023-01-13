@@ -5,10 +5,11 @@ import "CoreLibs/timer"
 import "Scenes/YunTest"
 
 local gfx <const> = playdate.graphics
-local scene = YunTest()
 
 -- Global Variables
-gravity = 0.2
+gravity = 0.5
+
+local scene = YunTest()
 
 local function init()
 	scene:load()
