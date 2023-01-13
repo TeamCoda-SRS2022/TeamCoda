@@ -6,8 +6,7 @@ import "CoreLibs/timer"
 class('Scene').extends(Object)
 
 function Scene:init()
-    scenes[self.className] = self
-    print(self.className)
+    
 end
 
 function Scene:load()
@@ -20,6 +19,6 @@ end
 function Scene:unload()
     for i=1, #self.sceneObjects,1
     do
-        self.sceneObjects[i]:add()
+        self.sceneObjects[i]:remove()
     end
 end

@@ -13,7 +13,7 @@ class('Player').extends(RigidBody2D)
 local jumpHeight = 32
 
 function Player:init(x, y)
-	local idle = gfx.imagetable.new("Player/Animations/PlayerIdle")
+	local idle = gfx.imagetable.new("Player/Animations/Idle/PlayerIdle")
 	self.curAnim = gfx.animation.loop.new(250, idle, true)
 	Player.super.init(self, x, y, self.curAnim:image())
 
@@ -29,7 +29,7 @@ function Player:update()
 	self:setImage(self.curAnim:image())
 	self:setImageFlip(self.isFacingLeft)
 
-	if pd.buttonIsPressed( pd.kButtonUp ) and self.grounded then
+	if pd.buttonIsPressed( pd.kButtonA ) and self.grounded then
 		self.velocity.y = -self.jumpVelocity
 		self.grounded = false
 	end
@@ -40,6 +40,9 @@ function Player:update()
 	if pd.buttonIsPressed( pd.kButtonLeft ) then
 		self:move( -2, 0 )
 		self.isFacingLeft = playdate.graphics.kImageFlippedX
+	end
+	if pd.buttonIsPressed( pd.kButtonUp ) then
+		loadScene(YunTest())
 	end
 end
 
