@@ -14,9 +14,10 @@ local jumpHeight = 32
 
 function Player:init(x, y)
 	local idle = gfx.imagetable.new("Player/Animations/Idle/PlayerIdle")
-	self.curAnim = gfx.animation.loop.new(250, idle, true)
+	self.curAnim = gfx.animation.loop.new(125, idle, true)
 	Player.super.init(self, x, y, self.curAnim:image())
 
+	self.speed = 1
 	self.jumpVelocity = math.sqrt(2 * gravity * jumpHeight)
 	self.isFacingLeft = playdate.graphics.kImageUnflipped
 	self.grounded = false
@@ -29,20 +30,22 @@ function Player:update()
 	self:setImage(self.curAnim:image())
 	self:setImageFlip(self.isFacingLeft)
 
+	if pd.buttonIsPressed( pd.kButtonRight ) or pd.buttonIsPressed( pd.kButtonLeft ) then 
+		self.curAnim:setImageTable(gfx.imagetable.new("Player/Animations/Walk/PlayerWalk"))
+	else
+		self.curAnim:setImageTable(gfx.imagetable.new("Player/Animations/Idle/PlayerIdle"))
+	end
 	if pd.buttonIsPressed( pd.kButtonA ) and self.grounded then
 		self.velocity.y = -self.jumpVelocity
 		self.grounded = false
 	end
 	if pd.buttonIsPressed( pd.kButtonRight ) then
-		self:move( 2, 0 )
+		self:move( self.speed, 0 )
 		self.isFacingLeft = playdate.graphics.kImageUnflipped
 	end
 	if pd.buttonIsPressed( pd.kButtonLeft ) then
-		self:move( -2, 0 )
+		self:move( -self.speed, 0 )
 		self.isFacingLeft = playdate.graphics.kImageFlippedX
-	end
-	if pd.buttonIsPressed( pd.kButtonUp ) then
-		loadScene(YunTest())
 	end
 end
 
