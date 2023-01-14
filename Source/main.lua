@@ -2,20 +2,17 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "player"
+import "Scenes/YunTest"
 
 local gfx <const> = playdate.graphics
 
+-- Global Variables
+gravity = 0.5
+
+local curScene = YunTest()
+
 local function init()
-
-	-- local backgroundImage = gfx.image.new( "" )
-	-- assert( backgroundImage )
-
-	-- gfx.sprite.setBackgroundDrawingCallback(
-	-- 	function( x, y, width, height )
-	-- 		backgroundImage:draw( 0, 0 )
-	-- 	end
-	-- )
+	curScene:load()
 end
 
 init()
@@ -23,4 +20,10 @@ init()
 function playdate.update()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
+end
+
+function loadScene(sceneObj)
+	curScene:unload()
+	curScene = sceneObj
+	curScene:load()
 end
