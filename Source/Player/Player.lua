@@ -35,7 +35,7 @@ function Player:update()
 	else
 		self.curAnim:setImageTable(gfx.imagetable.new("Player/Animations/Idle/PlayerIdle"))
 	end
-	if pd.buttonIsPressed( pd.kButtonUp ) and self.grounded then
+	if pd.buttonIsPressed( pd.kButtonA ) and self.grounded then
 		self.velocity.y = -self.jumpVelocity
 		self.grounded = false
 	end
