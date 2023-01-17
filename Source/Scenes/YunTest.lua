@@ -16,8 +16,10 @@ function YunTest:init()
 
 	local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
 
+    self.player = Player(100, 100)
+
     self.sceneObjects = {
-        Player(100, 100),
+        self.player,
         Platform(100, 200, platformSprite)
     }
 end
@@ -33,4 +35,6 @@ function YunTest:load()
 			backgroundImage:draw( 0, 0 )
 		end
 	)
+
+    YunTest.super.add(self, Player(100,100))
 end

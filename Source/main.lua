@@ -4,6 +4,7 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Scenes/YunTest"
 
+local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 -- Global Variables
@@ -18,6 +19,11 @@ end
 init()
 
 function playdate.update()
+
+	if pd.buttonIsPressed( pd.kButtonUp ) then
+		loadScene(YunTest())
+	end
+
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
 end

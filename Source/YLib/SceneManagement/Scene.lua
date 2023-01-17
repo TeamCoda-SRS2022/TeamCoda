@@ -16,9 +16,21 @@ function Scene:load()
     end
 end
 
+function Scene:add(obj)
+    print(self.sceneObjects)
+    table.insert(self.sceneObjects, obj)
+    obj:add()
+end
+
+function Scene:remove(obj)
+    obj:remove()
+    -- May need to implement a filter function to maintain sceneObjects size
+end
+
 function Scene:unload()
     for i=1, #self.sceneObjects,1
     do
         self.sceneObjects[i]:remove()
     end
 end
+
