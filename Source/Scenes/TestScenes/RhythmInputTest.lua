@@ -12,20 +12,31 @@ local gfx <const> = pd.graphics
 class('RhythmInputTest').extends(Scene)
 
 
+function RhythmInputTest:userPassed()
+    local passed = true
+    for _, validNote in ipairs(self.notePressed) do
+        if not validNote then
+            passed = false
+        end
+    end
+    return passed and self.isValid
+end
 
 
 function RhythmInputTest:processButtonPressA()
     self.isValid = false
-    self.prevButtonPress = self.timer._currentTime
-    for _, noteTime in ipairs(self.noteTimes) do
+    for i, noteTime in ipairs(self.noteTimes) do
         if math.abs(noteTime - self.timer._currentTime) <= self.delay then
             self.isValid = true
+            self.notePressed[i] = true
         end
     end
     -- check for buttons pressed in previous measure 
     if self.noteTimes[1] + (self.measureLength - self.prevButtonPress) <= self.delay then
         self.isValid = true
+        self.notePressed[1] = true
     end
+    self.prevButtonPress = self.timer._currentTime
 end
 
 -- measureLength: length of measure in ms
@@ -38,9 +49,16 @@ function RhythmInputTest:init(measureLength, noteTimes, delay)
     self.noteTimes = noteTimes
     self.delay = delay
     self.isValid = true  -- whether measure is valid, resets every measure
-    self.prevButtonPress = measureLength + delay + 1  -- last button press of previous measure (for beat 1)
+    self.prevButtonPress = -delay  -- last button press of previous measure (for beat 1)
+    self.notePressed = {}  -- list of correct note presses
+    for i=1, #noteTimes do
+        self.notePressed[i] = false
+    end
     local function newMeasure()
-        print(self.isValid)
+        print(self:userPassed())
+        for i=1, #self.notePressed do
+            self.notePressed[i] = false
+        end
         self.isValid = true
     end
     self.timer = playdate.timer.keyRepeatTimerWithDelay(measureLength, measureLength, newMeasure)
