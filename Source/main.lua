@@ -2,7 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/YunTest"
+import "Scenes/TestScenes/RhythmInputTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -10,7 +10,7 @@ local gfx <const> = playdate.graphics
 -- Global Variables
 gravity = 0.5
 
-local curScene = YunTest()
+local curScene = RhythmInputTest()
 
 local function init()
 	curScene:load()
@@ -19,11 +19,6 @@ end
 init()
 
 function playdate.update()
-
-	if pd.buttonIsPressed( pd.kButtonUp ) then
-		loadScene(YunTest())
-	end
-
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
 end

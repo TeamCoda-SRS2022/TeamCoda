@@ -35,6 +35,4 @@ function YunTest:load()
 			backgroundImage:draw( 0, 0 )
 		end
 	)
-
-    YunTest.super.add(self, Player(100,100))
 end
