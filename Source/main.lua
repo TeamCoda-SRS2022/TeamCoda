@@ -9,8 +9,7 @@ local gfx <const> = playdate.graphics
 
 -- Global Variables
 gravity = 0.5
-
-local curScene = RhythmInputTest()
+local curScene = RhythmInputTest(4000, {0, 1000, 2000, 3000}, 100)
 
 local function init()
 	curScene:load()
