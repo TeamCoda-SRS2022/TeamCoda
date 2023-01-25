@@ -2,9 +2,6 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "YLib/SceneManagement/Scene"
-import "Player/Player"
-import "Platforms/Platform"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -21,55 +18,96 @@ function RhythmInput:userPassed()
     return passed and self.isValid
 end
 
-function RhythmInput:processButtonPress()
-    self.isValid = false
-    for i, note in ipairs(self.notes) do
-        if math.abs(note.MSTime - self.timer._currentTime) <= self.delay then
-            -- self.isValid = true
-            -- self.notePressed[i] = true
-            print("test")
-        end
+function RhythmInput:processButtonPress(button)
+    if not self.active or self.curNote > #self.notes then
+        return
+    end
+
+    if math.abs(self.notes[self.curNote].MSTime - self.timer._currentTime) <= timeWindowLength and button == self.notes[self.curNote].Button then
+        print(self.curNote)
+        self.curNote = self.curNote + 1
+    else
+        self.success = false
     end
 end
 
 -- measureLength: length of measure in quarter notes
 -- noteTimes: array of note times for the measure, in quarter ntoes
 -- tempo: time per beat in ms
-function RhythmInput:init(measureLength, notes, tempo)
+function RhythmInput:init(soundPath, measureLength, notes, tempo)
     RhythmInput.super.init(self)
+
+    self.active = false
     
-    self.measureLength = measureLength
     self.tempo = tempo
-    self.beatLength = 60 / tempo 
+    self.beatLength = 60.0 * 1000.0 / tempo 
+    self.measureLength = measureLength
     self.measureLengthMS = measureLength * self.beatLength
 
     self.notes = {}
-    for i=1, #notes do
-        print(notes[i])
-        self.notes[i] = {
-            -- button = notes[i].button,
-            MSTime = notes[i] * self.beatLength
+
+    for k, v in string.gmatch(notes, "(%w+)=(%w+)") do
+        self.notes[#self.notes+1] = {
+            MSTime = (tonumber(k) - 0.5) * self.beatLength,
+            Button = v
         }
     end
+
+    self.audio = pd.sound.fileplayer.new(soundPath)
     
     self.success = false
     self.curNote = 1
+    self.complete = {}
+    function self.complete:push(callbackF)
+        table.insert(self, callbackF)
+    end
+    function self.complete:pop()
+        table.remove(self)
+    end
 
     local function newMeasure()
-        if self.success == true and self.curNote > #notes then
-            self.timer:remove()
-            print("win")
+        if self.success == true and self.curNote > #self.notes then
+            self:stop()
+            for _, i in ipairs(self.complete) do i() end
         end
+        self.success = true
         self.curNote = 1
     end
     
-    self.timer = playdate.timer.keyRepeatTimerWithDelay(self.measureLengthMS, self.measureLengthMS, newMeasure)
+    self.timer = playdate.timer.keyRepeatTimerWithDelay(self.measureLengthMS - 0.5 * self.beatLength, self.measureLengthMS, newMeasure)
 
     local myInputHandlers = {
         AButtonDown = function () 
-            print(self.timer._currentTime)
-            self:processButtonPress()
+            self:processButtonPress("A")
+        end,
+        downButtonDown = function ()
+            self:processButtonPress("D")
+        end,
+        upButtonDown = function ()
+            self:processButtonPress("U")
+        end,
+        leftButtonDown = function ()
+            self:processButtonPress("L")
+        end,
+        rightButtonDown = function ()
+            self:processButtonPress("R")
         end
     }
     playdate.inputHandlers.push(myInputHandlers)
+
+    self.timer:pause()
+end
+
+function RhythmInput:start()
+    self.active = true
+    self.timer:reset()
+    self.timer:start()
+    self.audio:play(0)
+    
+end
+
+function RhythmInput:stop()
+    self.active = false
+    self.timer:pause()
+    self.audio:stop()
 end

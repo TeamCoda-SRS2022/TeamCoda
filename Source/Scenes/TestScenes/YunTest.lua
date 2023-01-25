@@ -4,6 +4,7 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
 import "Player/Player"
+import "Platforms/Platform"
 import "Player/RhythmInput"
 
 local pd <const> = playdate
@@ -27,7 +28,9 @@ end
 function YunTest:load()
     YunTest.super.load(self)
 
-    RhythmInput(4, {1, 2, 3, 4}, 120)
+    local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, "1=U, 2=D, 3=L, 4=R", 120)
+    puzzle.complete:push(function() print("Woo") end)
+    puzzle:start()
     
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
 	assert( backgroundImage )
