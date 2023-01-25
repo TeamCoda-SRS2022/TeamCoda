@@ -2,14 +2,16 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/TestScenes/RhythmInputTest"
+import "Scenes/TestScenes/YunTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 -- Global Variables
 gravity = 0.5
-local curScene = RhythmInputTest(4000, {0, 1000, 2000, 3000}, 100)
+timeWindowLength = 100
+
+local curScene = YunTest()
 
 local function init()
 	curScene:load()
