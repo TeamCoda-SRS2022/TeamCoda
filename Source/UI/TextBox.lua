@@ -12,5 +12,5 @@ function TextBox:init()
 end
 
 function TextBox:update()
-    RigidBody2D.super.update(seqlf)
+    RigidBody2D.super.update(self)
 end
