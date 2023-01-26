@@ -58,14 +58,23 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     self.success = false
     self.curNote = 1
     self.complete = {}
+    self.measureEndCallbacks = {}
     function self.complete:push(callbackF)
         table.insert(self, callbackF)
     end
     function self.complete:pop()
         table.remove(self)
     end
+    function self.measureEndCallbacks:push(callbackF)
+        table.insert(self, callbackF)
+    end
+    function self.measureEndCallbacks:pop()
+        table.remove(self)
+    end
 
     local function newMeasure()
+        for _, i in ipairs(self.measureEndCallbacks) do i() end
+
         if self.success == true and self.curNote > #self.notes then
             self:stop()
             for _, i in ipairs(self.complete) do i() end

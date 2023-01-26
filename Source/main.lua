@@ -2,18 +2,19 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/TestScenes/YunTest"
+import "Scenes/TestScenes/EricTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 -- Global Variables
 gravity = 0.5
-timeWindowLength = 100
+timeWindowLength = 150
 
-local curScene = YunTest()
+local curScene = EricTest()
 
 local function init()
+	math.randomseed(playdate.getSecondsSinceEpoch())
 	curScene:load()
 end
 
