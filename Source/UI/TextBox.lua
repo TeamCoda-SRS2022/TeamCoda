@@ -5,12 +5,12 @@ import "CoreLibs/timer"
 
 local pd <const> = playdate
 
-class('RigidBody2D').extends(Object)
+class('TextBox').extends(Object)
 
 function TextBox:init()
-    RigidBody2D.super.init(self)
+    TextBox.super.init(self)
 end
 
 function TextBox:update()
-    RigidBody2D.super.update(self)
+    TextBox.super.update(self)
 end
