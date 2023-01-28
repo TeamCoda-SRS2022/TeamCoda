@@ -3,6 +3,8 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Scenes/TestScenes/HarryTest"
+import "Scenes/TestScenes/YunTest"
+import "Scenes/TestScenes/ChargingTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
