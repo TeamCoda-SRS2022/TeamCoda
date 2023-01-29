@@ -7,9 +7,9 @@ import "CoreLibs/animation"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-class ('Charging').extends(gfx.sprite)
+class ('ChargeBar').extends(gfx.sprite)
 
-function Charging:init(maxCharge, depletionRate)
+function ChargeBar:init(maxCharge, depletionRate)
     self.maxChargeLevel = maxCharge
     self.depletionRate = depletionRate
     self.curCharge = 0
@@ -22,14 +22,14 @@ function Charging:init(maxCharge, depletionRate)
 
     self.chargeBarTable = gfx.imagetable.new("UI/Animations/ChargeBar/ChargeBar")
 
-    Charging.super.init(self)
+    ChargeBar.super.init(self)
     self:moveTo(100, 100)
     self:updateChargeBarLevel()
     self.createChargeTimer(self)
 
 end
 
-function Charging:processCrankTurn(change)
+function ChargeBar:processCrankTurn(change)
     if change < 0 then
         return
     end
@@ -46,7 +46,7 @@ function Charging:processCrankTurn(change)
 end
 
 -- TODO: Optimize the logic
-function Charging:updateChargeBarLevel()
+function ChargeBar:updateChargeBarLevel()
     local frac = self.curCharge / self.maxChargeLevel
     if frac > 7/8 then
         self:setImage(self.chargeBarTable[9])
@@ -69,7 +69,7 @@ function Charging:updateChargeBarLevel()
     end
 end
 
-function Charging:decrementCharge()
+function ChargeBar:decrementCharge()
     if self.curCharge > 0 then
         self.curCharge -= 1
     end
@@ -77,7 +77,7 @@ function Charging:decrementCharge()
     print("Decremented: ".. self.curCharge)
 end
 
-function Charging:createChargeTimer()
+function ChargeBar:createChargeTimer()
     playdate.timer.performAfterDelay(self.depletionRate, function()
         self.createChargeTimer(self)
         self.decrementCharge(self)
