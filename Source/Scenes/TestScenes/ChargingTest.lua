@@ -4,7 +4,7 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
 import "Player/Player"
-import "Player/Charging"
+import "UI/ChargeBar"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -19,7 +19,7 @@ class('ChargingTest').extends(Scene)
 function ChargingTest:init()
     ChargingTest.super.init(self)
 
-    self.chargeBar = Charging(MAX_CHARGE, DEPLETE_RATE)
+    self.chargeBar = ChargeBar(MAX_CHARGE, DEPLETE_RATE)
 
     self.sceneObjects = {
         self.chargeBar
