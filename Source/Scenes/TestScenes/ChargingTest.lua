@@ -6,18 +6,23 @@ import "YLib/SceneManagement/Scene"
 import "Player/Player"
 import "Player/Charging"
 
+local pd <const> = playdate
+local gfx <const> = pd.graphics
+
 class('ChargingTest').extends(Scene)
 
 function ChargingTest:init()
     ChargingTest.super.init(self)
 
-    self.sceneObjects = {
+    self.chargeBar = Charging(144)
 
+    self.sceneObjects = {
+        self.chargeBar
     }
+    print("Scene Init")
 end
 
 function ChargingTest:load()
     ChargingTest.super.load(self)
-    local charging = Charging(144)
-    createChargeDisplay();    
+    print("loaded")
 end
