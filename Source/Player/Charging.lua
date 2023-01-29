@@ -7,79 +7,79 @@ import "CoreLibs/animation"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-local chargeSprite
-local charge = 0
-
 class ('Charging').extends(gfx.sprite)
 
-function Charging:init(maxCharge)
-    
+function Charging:init(maxCharge, depletionRate)
     self.maxChargeLevel = maxCharge
+    self.depletionRate = depletionRate
+    self.curCharge = 0
     local myInputHandlers = {
         cranked = function (change)
             self:processCrankTurn(change)
         end
     }
     playdate.inputHandlers.push(myInputHandlers)
-    -- createChargeTimer()
 
-    local chargeBarTable = gfx.imagetable.new("UI/Animations/ChargeBar/ChargeBar")
+    self.chargeBarTable = gfx.imagetable.new("UI/Animations/ChargeBar/ChargeBar")
 
     Charging.super.init(self)
-    self:setImage(chargeBarTable[1])
+    self:moveTo(100, 100)
+    self:updateChargeBarLevel()
+    self.createChargeTimer(self)
 
-    print("initialized")
 end
 
 function Charging:processCrankTurn(change)
     if change < 0 then
         return
     end
+
+    -- keep charge variable as a relatively small integer
     change = math.floor(change / 10)
-    print(change)
-    if charge + change > self.maxChargeLevel then
-        charge = self.maxChargeLevel
+
+    if self.curCharge + change > self.maxChargeLevel then
+        self.curCharge = self.maxChargeLevel
     else
-        charge += change    
+        self.curCharge += change    
     end
-    print(charge)
+    self.updateChargeBarLevel(self)
 end
 
---Placeholder until final UI element design in finished
--- function createChargeDisplay()
---     chargeSprite = gfx.sprite.new()
---     updateChargeDisplay()
---     chargeSprite:setCenter(0, 0)
---     chargeSprite:add()
--- end
-
--- function updateChargeDisplay()
---     local chargeInfo = "Charge: " .. charge
---     local textWidth, textHeight = gfx.getTextSize(chargeInfo)
---     local chargeImage = gfx.image.new(textWidth, textHeight)
---     gfx.pushContext(chargeImage)
---         gfx.drawText(chargeInfo, 0, 0)
---     gfx.popContext()
---     chargeSprite:setImage(chargeImage)
--- end
-
-function updateChargeDisplay()
-    if charge > 0 then
-        self:setImage(chargeBarTable[5])
+-- TODO: Optimize the logic
+function Charging:updateChargeBarLevel()
+    local frac = self.curCharge / self.maxChargeLevel
+    if frac > 7/8 then
+        self:setImage(self.chargeBarTable[9])
+    elseif frac > 6/8 then
+        self:setImage(self.chargeBarTable[8])
+    elseif frac > 5/8 then
+        self:setImage(self.chargeBarTable[7])
+    elseif frac > 4/8 then
+        self:setImage(self.chargeBarTable[6])
+    elseif frac > 3/8 then
+        self:setImage(self.chargeBarTable[5])
+    elseif frac > 2/8 then
+        self:setImage(self.chargeBarTable[4])
+    elseif frac > 1/8 then
+        self:setImage(self.chargeBarTable[3])
+    elseif frac > 0 then
+        self:setImage(self.chargeBarTable[2])
+    else
+        self:setImage(self.chargeBarTable[1])
     end
 end
 
--- function decrementCharge()
---     if charge > 0 then
---         charge -= 1
---     end
---     updateChargeDisplay()
---     print("decremented")
--- end
+function Charging:decrementCharge()
+    if self.curCharge > 0 then
+        self.curCharge -= 1
+    end
+    self.updateChargeBarLevel(self)
+    print("Decremented: ".. self.curCharge)
+end
 
--- function createChargeTimer()
---     playdate.timer.performAfterDelay(1000, function()
---         createChargeTimer()
---         decrementCharge()
---     end)
--- end
+function Charging:createChargeTimer()
+    playdate.timer.performAfterDelay(self.depletionRate, function()
+        self.createChargeTimer(self)
+        self.decrementCharge(self)
+    end)
+end
