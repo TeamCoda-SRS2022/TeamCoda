@@ -18,6 +18,6 @@ end
 
 function ChargingTest:load()
     ChargingTest.super.load(self)
-    local charging = Charging(1440, 1)
+    local charging = Charging(144)
     createChargeDisplay();    
 end
