@@ -11,29 +11,27 @@ local charge = 0
 
 class ('Charging').extends(Object)
 
-function Charging:init(maxCharge, chargeRate)
+function Charging:init(maxCharge)
     Charging.super.init(self)
-    self.curChargeLevel = maxCharge / 2
     self.maxChargeLevel = maxCharge
-    self.chargeRate = chargeRate
     local myInputHandlers = {
         cranked = function (change)
             self:processCrankTurn(change)
         end
     }
     playdate.inputHandlers.push(myInputHandlers)
+    createChargeTimer()
 end
 
 function Charging:processCrankTurn(change)
-    -- if self.curChargeLevel + change > self.maxChargeLevel then
-    --     self.curChargeLevel = self.maxChargeLevel
-    -- else
-    --     self.curChargeLevel += change
-    -- end
+    change = math.floor(change / 10)
     print(change)
-
-    charge += change
+    if charge + change > self.maxChargeLevel then
+        charge = self.maxChargeLevel
+    else
+        charge += change    
     updateChargeDisplay()
+    end
 end
 
 --Placeholder until final UI element design in finished
@@ -52,4 +50,19 @@ function updateChargeDisplay()
         gfx.drawText(chargeInfo, 0, 0)
     gfx.popContext()
     chargeSprite:setImage(chargeImage)
+end
+
+function decrementCharge()
+    if charge > 0 then
+        charge -= 1
+    end
+    updateChargeDisplay()
+    print("decremented")
+end
+
+function createChargeTimer()
+    playdate.timer.performAfterDelay(1000, function()
+        createChargeTimer()
+        decrementCharge()
+    end)
 end
