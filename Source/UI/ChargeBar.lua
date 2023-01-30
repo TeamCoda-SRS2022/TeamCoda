@@ -9,9 +9,8 @@ local gfx <const> = pd.graphics
 
 class ('ChargeBar').extends(gfx.sprite)
 
-function ChargeBar:init(maxCharge, depletionRate)
+function ChargeBar:init(maxCharge)
     self.maxChargeLevel = maxCharge
-    self.depletionRate = depletionRate
     self.curCharge = 0
     local myInputHandlers = {
         cranked = function (change)
@@ -69,12 +68,18 @@ function ChargeBar:updateChargeBarLevel()
     end
 end
 
-function ChargeBar:decrementCharge()
-    if self.curCharge > 0 then
-        self.curCharge -= 1
+function ChargeBar:setCharge(newAmount)
+    if newAmount > self.maxChargeLevel then
+        self.curCharge = self.maxChargeLevel
+    elseif newAmount < 0 then
+        self.curCharge = 0
+    else
+        self.curCharge = newAmount
     end
-    self.updateChargeBarLevel(self)
-    print("Decremented: ".. self.curCharge)
+end
+
+function ChargeBar:getCharge()
+    return self.curCharge
 end
 
 function ChargeBar:createChargeTimer()

@@ -12,14 +12,12 @@ local gfx <const> = pd.graphics
 -- Based on current UI element, we want something divisible by 8
 local MAX_CHARGE <const> = 144 
 
-local DEPLETE_RATE <const> = 100
-
 class('ChargingTest').extends(Scene)
 
 function ChargingTest:init()
     ChargingTest.super.init(self)
 
-    self.chargeBar = ChargeBar(MAX_CHARGE, DEPLETE_RATE)
+    self.chargeBar = ChargeBar(MAX_CHARGE)
 
     self.sceneObjects = {
         self.chargeBar
