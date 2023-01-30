@@ -24,7 +24,6 @@ function ChargeBar:init(maxCharge)
     ChargeBar.super.init(self)
     self:moveTo(100, 100)
     self:updateChargeBarLevel()
-    self.createChargeTimer(self)
 
 end
 
@@ -80,11 +79,4 @@ end
 
 function ChargeBar:getCharge()
     return self.curCharge
-end
-
-function ChargeBar:createChargeTimer()
-    playdate.timer.performAfterDelay(self.depletionRate, function()
-        self.createChargeTimer(self)
-        self.decrementCharge(self)
-    end)
 end
