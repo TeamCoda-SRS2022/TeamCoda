@@ -3,6 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
+import "YLib/Interactable/InteractableBody"
 import "Player/Player"
 import "Platforms/Platform"
 import "YLib/RhythmInput/RhythmInput"
@@ -19,9 +20,16 @@ function YunTest:init()
 
     self.player = Player(100, 100)
 
+    self.interactable = InteractableBody(250, 50, platformSprite, "B", self.player, 50)
+    self.interactable.callbacks:push(function() print("Woo") end)
+
     self.sceneObjects = {
         self.player,
-        Platform(100, 200, platformSprite)
+        self.interactable,
+        Platform(100, 200, platformSprite),
+        Platform(150, 200, platformSprite),
+        Platform(200, 200, platformSprite),
+        Platform(250, 200, platformSprite),
     }
 end
 
