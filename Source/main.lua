@@ -4,7 +4,9 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Scenes/TestScenes/HarryTest"
 import "Scenes/TestScenes/YunTest"
+import "Scenes/TestScenes/BattleTest"
 import "Scenes/TestScenes/ChargingTest"
+import "UI/RhythmInputUI"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -26,6 +28,7 @@ function playdate.update()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
 	playdate.frameTimer.updateTimers()
+	Scene.update()
 end
 
 function loadScene(sceneObj)

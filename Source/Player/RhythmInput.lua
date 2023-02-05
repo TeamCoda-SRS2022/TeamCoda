@@ -94,18 +94,44 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     local myInputHandlers = {
         AButtonDown = function () 
             self:processButtonPress("A")
+            self.UI.up:add()
+            self.UI.down:add()
+            self.UI.left:add()
+            self.UI.right:add()
+        end,
+        AButtonUp = function () 
+            self.UI.up:remove()
+            self.UI.down:remove()
+            self.UI.left:remove()
+            self.UI.right:remove()
         end,
         downButtonDown = function ()
             self:processButtonPress("D")
+            self.UI.down:add()
+        end,
+        downButtonUp = function ()
+            self.UI.down:remove()
         end,
         upButtonDown = function ()
             self:processButtonPress("U")
+            self.UI.up:add()
+        end,
+        upButtonUp = function ()
+            self.UI.up:remove()
         end,
         leftButtonDown = function ()
             self:processButtonPress("L")
+            self.UI.left:add()
+        end,
+        leftButtonUp = function ()
+            self.UI.left:remove()
         end,
         rightButtonDown = function ()
             self:processButtonPress("R")
+            self.UI.right:add()
+        end,
+        rightButtonUp = function ()
+            self.UI.right:remove()
         end
     }
     playdate.inputHandlers.push(myInputHandlers)
