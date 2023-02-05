@@ -2,6 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
+import "CoreLibs/frameTimer"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -15,16 +16,26 @@ function RhythmInputUI:init(beatLength)
     self.tempoI:setImageDrawMode(gfx.kDrawModeNXOR)
     self.tempoI:setCenter(0, 0)
     
+    self.beatLength = beatLength
     local function flash()
         self.tempoI:add()
         pd.timer.new(100, function() self.tempoI:remove() end)
     end
-    self.timer = pd.timer.new(beatLength, beatLength, flash);
-    self.timer:stop()
+    self.tempoTimer = pd.frameTimer.new(beatLength, flash)
+    self.tempoTimer.repeats = true
+    self.tempoTimer:pause()
 end
 
 function RhythmInputUI:start()
-    
+    self.tempoTimer:reset()
+    self.tempoTimer:start()
+    self.tempoI:add()
+    pd.timer.new(100, function() self.tempoI:remove() end)
+end
+
+function RhythmInputUI:stop()
+    self.tempoTimer:remove()
+    self.tempoI:remove()
 end
 
 function RhythmInputUI:update()

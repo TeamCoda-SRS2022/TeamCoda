@@ -10,7 +10,8 @@ local gfx <const> = playdate.graphics
 
 -- Global Variables
 gravity = 0.5
-timeWindowLength = 100
+timeWindowLength = 2
+offset = -4
 
 local curScene = YunTest()
 
@@ -23,6 +24,7 @@ init()
 function playdate.update()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
+	playdate.frameTimer.updateTimers()
 end
 
 function loadScene(sceneObj)
