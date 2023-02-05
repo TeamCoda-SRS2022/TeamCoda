@@ -12,8 +12,7 @@ local gfx <const> = playdate.graphics
 gravity = 0.5
 timeWindowLength = 100
 
--- local curScene = YunTest()
-local curScene = ChargingTest()
+local curScene = YunTest()
 
 local function init()
 	curScene:load()
