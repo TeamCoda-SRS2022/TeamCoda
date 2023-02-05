@@ -117,6 +117,16 @@ function RhythmInput:start()
     self.active = true
     self.timer:reset()
     self.timer:start()
+    self.success = true
+        self.curNote = 1
+        pd.timer.new(
+            0.5 * self.beatLength,
+            function()
+                self.audio:stop()
+                self.audio:play()
+                self.UI:start()
+            end
+        )
 end
 
 function RhythmInput:stop()
