@@ -1,7 +1,7 @@
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
-import "CoreLibs/timer"
+import "CoreLibs/frameTimer"
 import "UI/RhythmInputUI"
 
 local pd <const> = playdate
@@ -24,11 +24,12 @@ function RhythmInput:processButtonPress(button)
         return
     end
 
-    if math.abs(self.notes[self.curNote].MSTime - self.timer._currentTime) <= timeWindowLength and button == self.notes[self.curNote].Button then
+    if math.abs(self.notes[self.curNote].FrameTime - self.timer.frame) <= timeWindowLength and button == self.notes[self.curNote].Button then
         print(self.curNote)
         self.curNote = self.curNote + 1
     else
         self.success = false
+        print(self.notes[self.curNote].FrameTime - self.timer.frame)
     end
 end
 
@@ -39,18 +40,18 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     RhythmInput.super.init(self)
 
     self.active = false
-    self.UI = RhythmInputUI()
     
     self.tempo = tempo
-    self.beatLength = 60.0 * 1000.0 / tempo 
+    -- These values are in frames
+    self.beatLength = 60.0 * 30.0 / tempo
     self.measureLength = measureLength
-    self.measureLengthMS = measureLength * self.beatLength
+    self.measureLengthFrames = measureLength * self.beatLength
 
     self.notes = {}
 
     for k, v in string.gmatch(notes, "(%w+)=(%w+)") do
         self.notes[#self.notes+1] = {
-            MSTime = (tonumber(k) - 0.5) * self.beatLength,
+            FrameTime = (tonumber(k) - 0.5) * self.beatLength + offset,
             Button = v
         }
     end
@@ -80,12 +81,15 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
             function()
                 self.audio:stop()
                 self.audio:play()
-                self.UI:flash()
+                self.UI:start()
             end
         )
     end
     
-    self.timer = playdate.timer.keyRepeatTimerWithDelay(self.measureLengthMS, self.measureLengthMS, newMeasure)
+    self.timer = playdate.frameTimer.new(self.measureLengthFrames, newMeasure)
+    self.timer.repeats = true
+    
+    self.UI = RhythmInputUI(self.beatLength)
 
     local myInputHandlers = {
         AButtonDown = function () 
@@ -119,4 +123,5 @@ function RhythmInput:stop()
     self.active = false
     self.timer:pause()
     self.audio:stop()
+    self.UI:stop()
 end
