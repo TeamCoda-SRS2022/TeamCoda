@@ -2,6 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
+import "UI/RhythmInputUI"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -38,6 +39,7 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     RhythmInput.super.init(self)
 
     self.active = false
+    self.UI = RhythmInputUI()
     
     self.tempo = tempo
     self.beatLength = 60.0 * 1000.0 / tempo 
@@ -69,12 +71,21 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
         if self.success == true and self.curNote > #self.notes then
             self:stop()
             for _, i in ipairs(self.complete) do i() end
+            return
         end
         self.success = true
         self.curNote = 1
+        pd.timer.new(
+            0.5 * self.beatLength,
+            function()
+                self.audio:stop()
+                self.audio:play()
+                self.UI:flash()
+            end
+        )
     end
     
-    self.timer = playdate.timer.keyRepeatTimerWithDelay(self.measureLengthMS - 0.5 * self.beatLength, self.measureLengthMS, newMeasure)
+    self.timer = playdate.timer.keyRepeatTimerWithDelay(self.measureLengthMS, self.measureLengthMS, newMeasure)
 
     local myInputHandlers = {
         AButtonDown = function () 
@@ -102,8 +113,6 @@ function RhythmInput:start()
     self.active = true
     self.timer:reset()
     self.timer:start()
-    self.audio:play(0)
-    
 end
 
 function RhythmInput:stop()
