@@ -3,6 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Scenes/TestScenes/YunTest"
+import "Scenes/TestScenes/ChargingTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -11,7 +12,8 @@ local gfx <const> = playdate.graphics
 gravity = 0.5
 timeWindowLength = 100
 
-local curScene = YunTest()
+-- local curScene = YunTest()
+local curScene = ChargingTest()
 
 local function init()
 	curScene:load()
