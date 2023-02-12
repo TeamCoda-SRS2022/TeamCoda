@@ -5,7 +5,7 @@ import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
 import "Player/Player"
 import "Platforms/Platform"
-import "Player/RhythmInput"
+import "YLib/RhythmInput/RhythmInput"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics

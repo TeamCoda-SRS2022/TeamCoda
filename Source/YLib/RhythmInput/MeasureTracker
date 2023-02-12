@@ -2,14 +2,14 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/frameTimer"
-import "UI/RhythmInputUI"
+import "YLib/RhythmInput/RhythmInputUI"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
 class('RhythmInput').extends(Object)
 
-function RhythmInput:userPassed()
+function MeasureTracker:userPassed()
     local passed = true
     for _, validNote in ipairs(self.notePressed) do
         if not validNote then
@@ -19,7 +19,7 @@ function RhythmInput:userPassed()
     return passed and self.isValid
 end
 
-function RhythmInput:processButtonPress(button)
+function MeasureTracker:processButtonPress(button)
     if not self.active or self.curNote > #self.notes then
         return
     end
@@ -36,8 +36,8 @@ end
 -- measureLength: length of measure in quarter notes
 -- noteTimes: array of note times for the measure, in quarter ntoes
 -- tempo: time per beat in ms
-function RhythmInput:init(soundPath, measureLength, notes, tempo)
-    RhythmInput.super.init(self)
+function MeasureTracker:init(soundPath, measureLength, notes, tempo)
+    MeasureTracker.super.init(self)
 
     self.active = false
     
@@ -139,7 +139,7 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     self.timer:pause()
 end
 
-function RhythmInput:start()
+function MeasureTracker:start()
     self.active = true
     self.timer:reset()
     self.timer:start()
@@ -155,7 +155,7 @@ function RhythmInput:start()
         )
 end
 
-function RhythmInput:stop()
+function MeasureTracker:stop()
     self.active = false
     self.timer:pause()
     self.audio:stop()
