@@ -3,7 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
-import "Player/RhythmInput"
+import "YLib/RhythmInput/RhythmInput"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics

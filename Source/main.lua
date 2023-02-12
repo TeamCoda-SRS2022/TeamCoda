@@ -4,7 +4,6 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Scenes/TestScenes/BattleTest"
 import "Scenes/TestScenes/ChargingTest"
-import "UI/RhythmInputUI"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -12,7 +11,7 @@ local gfx <const> = playdate.graphics
 -- Global Variables
 gravity = 0.5
 timeWindowLength = 2
-offset = -4
+offset = 0
 
 local curScene = BattleTest()
 
