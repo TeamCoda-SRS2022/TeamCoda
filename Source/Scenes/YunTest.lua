@@ -38,3 +38,4 @@ function YunTest:load()
 
     YunTest.super.add(self, Player(100,100))
 end
+
