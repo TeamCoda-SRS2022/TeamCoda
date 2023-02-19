@@ -15,6 +15,8 @@ class('MichTest').extends(Scene)
 function MichTest:init()
     MichTest.super.init(self)
     
+    local imageA = gfx.image.new("Buttons/AButton.png")
+    local imageB = gfx.image.new("Buttons/BButton.png")
     local pictopleft = gfx.image.new("Frame/frame1.png")
     local picbottomleft = gfx.image.new("Frame/frame2.png")
     local pictopright = gfx.image.new("Frame/frame3.png")
@@ -25,6 +27,7 @@ function MichTest:init()
     self.sceneObjects = { -- set pieces of picture frame in different areas of the house
         self.player,
         Frame(20, 100, pictopleft), 
+
         Frame(300, 200, picbottomleft),
         Frame(350, 50, pictopright),
         Frame(100, 30, picbottomright)
@@ -43,14 +46,13 @@ function MichTest:load()
 			backgroundImage:draw( 0, 0 )
 		end
 	)
-    print(self.player:isCollision())
-
     if self.player:isCollision() == true then -- how to get the rhythm puzzle to work when coda touches a frame
         print(self.player:isCollision())
         Frame:RhythmPuzzle("Sound/100BPM", 4, "1=L, 2=R, 3=A", 100)
     end
 
   
+
     
 
 
