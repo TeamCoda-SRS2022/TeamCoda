@@ -8,7 +8,7 @@ local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 -- Global Variables
-gravity = 0.5
+gravity = 0
 
 local curScene = MichTest()
 

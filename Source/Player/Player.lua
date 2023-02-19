@@ -21,6 +21,9 @@ function Player:init(x, y)
 	self.jumpVelocity = math.sqrt(2 * gravity * jumpHeight)
 	self.isFacingLeft = playdate.graphics.kImageUnflipped
 	self.grounded = false
+	self.collision = false
+	self:setCollideRect(0, 0, self:getSize())
+
 	
 end
 
@@ -47,11 +50,23 @@ function Player:update()
 		self:move( -self.speed, 0 )
 		self.isFacingLeft = playdate.graphics.kImageFlippedX
 	end
+	if pd.buttonIsPressed( pd.kButtonDown ) then
+		self:move( 0, self.speed )
+	end
+	self.collisionResponse = function(other)
+		return gfx.sprite.kCollisionTypeOverlap
+	end
 end
 
 function Player:move(x, y)
 	local actualX, actualY, collisions, length = Player.super.move(self, x, y)
 	if collisions[1] ~= nil and collisions[1].normal.y == -1 then
 		self.grounded = true
+		self.collision = true
 	end
+end
+
+function Player:isCollision()
+	print(self.collision)
+	return self.collision
 end
