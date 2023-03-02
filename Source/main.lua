@@ -12,7 +12,7 @@ local gfx <const> = playdate.graphics
 
 -- Global Variables
 gravity = 0.5
-timeWindowLength = 2
+timeWindowLength = 0.5
 offset = 0
 
 local curScene = HarryTest()
@@ -28,6 +28,7 @@ function playdate.update()
 	playdate.timer.updateTimers()
 	playdate.frameTimer.updateTimers()
 	Scene.update()
+    pd.drawFPS(200,200)
 end
 
 function loadScene(sceneObj)

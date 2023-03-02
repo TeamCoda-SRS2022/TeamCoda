@@ -37,7 +37,7 @@ function RhythmInputUI:init(beatLength)
         self.tempoI:add()
         pd.timer.new(100, function() self.tempoI:remove() end)
     end
-    self.tempoTimer = pd.frameTimer.new(beatLength, flash)
+    self.tempoTimer = pd.timer.new(beatLength * 1000, flash)
     self.tempoTimer.repeats = true
     self.tempoTimer:pause()
 
@@ -54,7 +54,7 @@ function RhythmInputUI:start()
 end
 
 function RhythmInputUI:stop()
-    self.tempoTimer:remove()
+    self.tempoTimer:pause()
     self.tempoI:remove()
 
     self.active = false

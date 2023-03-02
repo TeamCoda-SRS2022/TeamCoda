@@ -7,7 +7,7 @@ import "YLib/RhythmInput/RhythmInputUI"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-class('RhythmInput').extends(Object)
+class('MeasureTracker').extends(Object)
 
 function MeasureTracker:userPassed()
     local passed = true
@@ -24,40 +24,37 @@ function MeasureTracker:processButtonPress(button)
         return
     end
 
-    if math.abs(self.notes[self.curNote].FrameTime - self.timer.frame) <= timeWindowLength and button == self.notes[self.curNote].Button then
+    if math.abs(self.notes[self.curNote].Time - self.audio:getOffset()) <= timeWindowLength and button == self.notes[self.curNote].Button then
         print(self.curNote)
         self.curNote = self.curNote + 1
     else
         self.success = false
-        print(self.notes[self.curNote].FrameTime - self.timer.frame)
+        print(self.curNote)
+        print(self.notes[self.curNote].Time)
+        print(self.notes[self.curNote].Time - self.audio:getOffset())
     end
 end
 
 -- measureLength: length of measure in quarter notes
 -- noteTimes: array of note times for the measure, in quarter ntoes
--- tempo: time per beat in ms
+-- tempo: BPM
 function MeasureTracker:init(soundPath, measureLength, notes, tempo)
     MeasureTracker.super.init(self)
 
     self.active = false
     
     self.tempo = tempo
-    -- These values are in frames
-    self.beatLength = 60.0 * 30.0 / tempo
+    -- These values are in seconds
+    self.beatLength = 60.0 / tempo
     self.measureLength = measureLength
-    self.measureLengthFrames = measureLength * self.beatLength
+    self.measureLengthSeconds = measureLength * self.beatLength
 
-    self.notes = {}
-
-    for k, v in string.gmatch(notes, "(%w+)=(%w+)") do
-        self.notes[#self.notes+1] = {
-            FrameTime = (tonumber(k) - 0.5) * self.beatLength + offset,
-            Button = v
-        }
+    self.notes = notes
+    for _, note in ipairs(self.notes) do
+        note.Time = (note.BeatNum - 1) * self.beatLength
     end
-
-    self.audio = pd.sound.fileplayer.new(soundPath)
     
+    self.completed = false
     self.success = false
     self.curNote = 1
     self.complete = {}
@@ -69,29 +66,19 @@ function MeasureTracker:init(soundPath, measureLength, notes, tempo)
     end
 
     local function newMeasure()
+        self:stop()
         if self.success == true and self.curNote > #self.notes then
-            self:stop()
-            for _, i in ipairs(self.complete) do i() end
-            return
+            self.completed = true
         end
-        self.success = true
-        self.curNote = 1
-        pd.timer.new(
-            0.5 * self.beatLength,
-            function()
-                self.audio:stop()
-                self.audio:play()
-                self.UI:start()
-            end
-        )
+        for _, i in ipairs(self.complete) do i() end
     end
-    
-    self.timer = playdate.frameTimer.new(self.measureLengthFrames, newMeasure)
-    self.timer.repeats = true
+
+    self.audio = pd.sound.fileplayer.new(soundPath)
+    self.audio:setFinishCallback(newMeasure)
     
     self.UI = RhythmInputUI(self.beatLength)
 
-    local myInputHandlers = {
+    self.myInputHandlers = {
         AButtonDown = function () 
             self:processButtonPress("A")
             self.UI.up:add()
@@ -134,30 +121,20 @@ function MeasureTracker:init(soundPath, measureLength, notes, tempo)
             self.UI.right:remove()
         end
     }
-    playdate.inputHandlers.push(myInputHandlers)
-
-    self.timer:pause()
 end
 
 function MeasureTracker:start()
     self.active = true
-    self.timer:reset()
-    self.timer:start()
     self.success = true
-        self.curNote = 1
-        pd.timer.new(
-            0.5 * self.beatLength,
-            function()
-                self.audio:stop()
-                self.audio:play()
-                self.UI:start()
-            end
-        )
+    self.curNote = 1
+    self.audio:play()
+    self.UI:start()
+    playdate.inputHandlers.push(self.myInputHandlers)
 end
 
 function MeasureTracker:stop()
     self.active = false
-    self.timer:pause()
     self.audio:stop()
     self.UI:stop()
+    playdate.inputHandlers.pop()
 end
