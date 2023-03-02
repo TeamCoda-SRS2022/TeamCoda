@@ -19,8 +19,13 @@ end
 
 function BattleTest:load()
     BattleTest.super.load(self)
-
-    local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 8, "5=U, 6=D, 7=L, 8=R", 120)
+    local puzzle = RhythmInput({"Test/TunePocket-Metronome-120-Bpm-Loop-Preview", "Test/TunePocket-Metronome-120-Bpm-Loop-Preview"}, 4, 
+        "1=U, 2=D, 3=L, 5=R", 120)
+    puzzle.measureStarted:push(
+        function (measure)
+            print(measure)
+        end
+    )
     puzzle:start()
     
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )

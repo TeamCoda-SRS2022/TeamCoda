@@ -3,6 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/frameTimer"
 import "YLib/RhythmInput/RhythmInputUI"
+import "YLib/RhythmInput/MeasureTracker"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -21,23 +22,19 @@ end
 
 -- measureLength: length of measure in quarter notes
 -- noteTimes: array of note times for the measure, in quarter ntoes
--- tempo: time per beat in ms
-function RhythmInput:init(soundFolderPath, measureLength, notes, tempo)
+-- tempo: BPM
+function RhythmInput:init(soundFilePaths, measureLength, notes, tempo)
     RhythmInput.super.init(self)
 
     self.active = false
 
-    local notes = {}
+    self.notes = {}
+    self.measures = {}
 
-    for k, v in string.gmatch(notes, "(%w+)=(%w+)") do
-        self.notes[#self.notes+1] = {
-            BeatNum = (tonumber(k)),
-            Button = v
-        }
-    end
-    
     self.success = false
     self.curMeasure = 1
+
+    -- Callbacks
     self.complete = {}
     function self.complete:push(callbackF)
         table.insert(self, callbackF)
@@ -45,27 +42,70 @@ function RhythmInput:init(soundFolderPath, measureLength, notes, tempo)
     function self.complete:pop()
         table.remove(self)
     end
+    self.measureStarted = {}
+    function self.measureStarted:push(callbackF)
+        table.insert(self, callbackF)
+    end
+    function self.measureStarted:pop()
+        table.remove(self)
+    end
+
+    -- Parse Notes
+    for k, v in string.gmatch(notes, "(%w+)=(%w+)") do
+        self.notes[#self.notes+1] = {
+            BeatNum = (tonumber(k)),
+            Button = v
+        }
+    end
+
+    -- Generate Measures
+    local genMeasure = 0
+    local genMeasureNotes = {}
+    for _, note in ipairs(self.notes) do
+        while (note.BeatNum - 1) // measureLength ~= genMeasure do
+            self.measures[#self.measures+1] = MeasureTracker(soundFilePaths[genMeasure+1], measureLength, genMeasureNotes, tempo)
+            self.measures[#self.measures].complete:push(function ()
+                self.curMeasure += 1
+                self.measures[self.curMeasure]:start()
+                for _, i in ipairs(self.measureStarted) do i(self.curMeasure) end
+            end)
+            genMeasure += 1
+            genMeasureNotes = {}
+        end
+        note.BeatNum -= genMeasure * measureLength
+        genMeasureNotes[#genMeasureNotes+1] = note
+    end
+    self.measures[#self.measures+1] = MeasureTracker(soundFilePaths[genMeasure+1], measureLength, genMeasureNotes, tempo)
+
+    -- Repeat music at end
+    local function repeatMusic()
+        self.success = true
+        for _, measure in ipairs(self.measures) do
+            if measure.completed == false then
+                self.success = false
+            end
+        end
+
+        if self.success then
+            for _, i in ipairs(self.complete) do i() end
+            self:stop()
+            return
+        else
+            for _, measure in ipairs(self.measures) do measure.completed = false end
+            self:start()
+        end
+    end
+    self.measures[#self.measures].complete:push(repeatMusic)
 end
 
 function RhythmInput:start()
     self.active = true
-    self.timer:reset()
-    self.timer:start()
-    self.success = true
-        self.curNote = 1
-        pd.timer.new(
-            0.5 * self.beatLength,
-            function()
-                self.audio:stop()
-                self.audio:play()
-                self.UI:start()
-            end
-        )
+    self.curMeasure = 1
+    self.measures[self.curMeasure]:start()
+    for _, i in ipairs(self.measureStarted) do i(self.curMeasure) end
 end
 
 function RhythmInput:stop()
     self.active = false
-    self.timer:pause()
-    self.audio:stop()
-    self.UI:stop()
+    self.measures[self.curMeasure]:stop()
 end
