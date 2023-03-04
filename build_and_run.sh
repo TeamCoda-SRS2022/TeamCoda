@@ -20,6 +20,7 @@ if [[ $OSTYPE == 'msys'* ]]; then
         echo $pid
         taskkill -IM $pid
     done 
-    start %PLAYDATE_SDK_PATH%/bin/PlaydateSimulator.exe ../Builds/Game.pdx | echo
+
+    start "" "C:/Users/Harry Huang/Documents/PlaydateSDK/bin/PlaydateSimulator.exe" ../Builds/Game.pdx | echo
 fi
 cd ..
