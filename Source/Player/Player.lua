@@ -53,7 +53,10 @@ function Player:update()
 	if pd.buttonIsPressed( pd.kButtonDown ) then
 		self:move( 0, self.speed )
 	end
-	self.collisionResponse = function(other)
+	if pd.buttonIsPressed( pd.kButtonUp ) then
+		self:move( 0, -self.speed )
+	end
+	self.collisionResponse = function(self, other) 
 		return gfx.sprite.kCollisionTypeOverlap
 	end
 end
@@ -62,11 +65,6 @@ function Player:move(x, y)
 	local actualX, actualY, collisions, length = Player.super.move(self, x, y)
 	if collisions[1] ~= nil and collisions[1].normal.y == -1 then
 		self.grounded = true
-		self.collision = true
-	end
-end
 
-function Player:isCollision()
-	print(self.collision)
-	return self.collision
+	end
 end

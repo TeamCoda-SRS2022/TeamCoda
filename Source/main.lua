@@ -20,9 +20,9 @@ init()
 
 function playdate.update()
 
-	if pd.buttonIsPressed( pd.kButtonUp ) then
-		loadScene(MichTest())
-	end
+--	if pd.buttonIsPressed( pd.kButtonUp )  then
+--		loadScene(MichTest())
+--	end
 
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
