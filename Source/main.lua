@@ -5,6 +5,7 @@ import "CoreLibs/timer"
 import "Scenes/TestScenes/BattleTest"
 import "Scenes/TestScenes/ChargingTest"
 import "Scenes/Town"
+import "Scenes/TestScenes/YunTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics

@@ -14,6 +14,10 @@ function InteractableBody:init(x, y, sprite, player, threshold_distance)
 
 	self:setImage(sprite)
 	self:moveTo(x, y)
+	
+	self:setCollideRect( 0, 0, sprite:getSize() )
+
+	self:setGroups(2) -- interactable group
 
 	self.player = player
 	self.threshold_distance = threshold_distance
@@ -37,7 +41,6 @@ end
 function InteractableBody:update()
 	--InteractableBody.super.update(self)
 end
-
 
 function InteractableBody:handleInput()
 	if (pd.geometry.distanceToPoint(self.x, self.y, self.player.x, self.player.y) < self.threshold_distance) then
