@@ -26,7 +26,6 @@ function Town:init()
         self.player,
         CavernEntrance,
         Platform(100, 200, platformSprite)
-
     }
 end
 

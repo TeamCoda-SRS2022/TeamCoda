@@ -12,6 +12,19 @@ class('SceneTransition').extends(InteractableBody)
 function SceneTransition:init(x, y, sprite, player, destinationScene)
     
     SceneTransition.super.init(self, x, y, sprite, player, 50)
+    self.locked = true
+    self.callbacks:push(
+        function() 
+            if not self.locked then 
+                loadScene(destinationScene)
+            end 
+        end)
+end
 
-    self.callbacks:push(function() loadScene(destinationScene) end)
+function SceneTransitions:toggleLock()
+    self.locked = not self.locked
+end
+
+function SceneTransitions:updateSprite(sprite)
+    self:setImage(sprite)
 end
