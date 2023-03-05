@@ -14,6 +14,9 @@ function InteractableBody:init(x, y, sprite, button, player, threshold_distance)
 
 	self:setImage(sprite)
 	self:moveTo(x, y)
+	self:setCollideRect( 0, 0, sprite:getSize() )
+
+	self:setGroups(2) -- interactable group
 
 	self.player = player
 	self.threshold_distance = threshold_distance
@@ -77,6 +80,7 @@ end
 function InteractableBody:update()
 	--InteractableBody.super.update(self)
 end
+
 
 
 function InteractableBody:handleInput()
