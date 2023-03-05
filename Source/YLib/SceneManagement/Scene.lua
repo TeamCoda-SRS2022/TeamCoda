@@ -34,3 +34,6 @@ function Scene:unload()
     end
 end
 
+function Scene:update()
+
+end
