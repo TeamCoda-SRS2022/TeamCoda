@@ -3,6 +3,8 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
+import "Player/Player"
+import "Platforms/Platform"
 import "YLib/RhythmInput/RhythmInput"
 
 local pd <const> = playdate
@@ -13,20 +15,21 @@ class('BattleTest').extends(Scene)
 function BattleTest:init()
     BattleTest.super.init(self)
 
+	local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
+
     self.sceneObjects = {
+        Platform(32, 240-8, platformSprite),
+        Platform(32+64, 240-8, platformSprite),
+        Platform(32+64*2, 240-8, platformSprite),
+        Platform(32+64*3, 240-8, platformSprite),
+        Platform(32+64*4, 240-8, platformSprite),
+        Platform(32+64*5, 240-8, platformSprite),
+        Platform(32+64*6, 240-8, platformSprite),
     }
 end
 
 function BattleTest:load()
     BattleTest.super.load(self)
-    local puzzle = RhythmInput({"Test/TunePocket-Metronome-120-Bpm-Loop-Preview", "Test/TunePocket-Metronome-120-Bpm-Loop-Preview"}, 4, 
-        "1=U, 2=D, 3=L, 5=R", 120)
-    puzzle.measureStarted:push(
-        function (measure)
-            print(measure)
-        end
-    )
-    puzzle:start()
     
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
 	assert( backgroundImage )

@@ -27,10 +27,6 @@ end
 
 function YunTest:load()
     YunTest.super.load(self)
-
-    local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, "1=U, 2=D, 3=L, 4=R", 120)
-    puzzle.complete:push(function() print("Woo") end)
-    puzzle:start()
     
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
 	assert( backgroundImage )

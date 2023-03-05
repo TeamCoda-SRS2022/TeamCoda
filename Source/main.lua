@@ -3,7 +3,6 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Scenes/TestScenes/BattleTest"
-import "Scenes/TestScenes/ChargingTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -26,7 +25,6 @@ function playdate.update()
 	playdate.timer.updateTimers()
 	playdate.frameTimer.updateTimers()
 	Scene.update()
-    pd.drawFPS(200,200)
 end
 
 function loadScene(sceneObj)
