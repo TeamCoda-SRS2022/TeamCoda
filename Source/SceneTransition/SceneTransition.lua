@@ -9,10 +9,9 @@ local gfx <const> = pd.graphics
 
 class('SceneTransition').extends(InteractableBody)
 
-function SceneTransition:init(x, y, sprite, player, destinationScene)
-    
+function SceneTransition:init(x, y, sprite, player, destinationScene, isLocked)
     SceneTransition.super.init(self, x, y, sprite, player, 50)
-    self.locked = true
+    self.locked = isLocked
     self.callbacks:push(
         function() 
             if not self.locked then 
@@ -21,10 +20,10 @@ function SceneTransition:init(x, y, sprite, player, destinationScene)
         end)
 end
 
-function SceneTransitions:toggleLock()
+function SceneTransition:toggleLock()
     self.locked = not self.locked
 end
 
-function SceneTransitions:updateSprite(sprite)
+function SceneTransition:updateSprite(sprite)
     self:setImage(sprite)
 end
