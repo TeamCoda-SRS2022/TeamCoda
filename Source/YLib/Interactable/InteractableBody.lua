@@ -2,16 +2,18 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "YLib/Physics/RigidBody2D"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 local geo <const> = pd.geometry
 
-class('InteractableBody').extends(RigidBody2D)
+class('InteractableBody').extends(gfx.sprite)
 
 function InteractableBody:init(x, y, sprite, button, player, threshold_distance)
-	InteractableBody.super.init(self, x, y, sprite)
+	InteractableBody.super.init(self)
+
+	self:setImage(sprite)
+	self:moveTo(x, y)
 
 	self.player = player
 	self.threshold_distance = threshold_distance
@@ -73,7 +75,7 @@ function InteractableBody:init(x, y, sprite, button, player, threshold_distance)
 end
 
 function InteractableBody:update()
-	InteractableBody.super.update(self)
+	--InteractableBody.super.update(self)
 end
 
 
