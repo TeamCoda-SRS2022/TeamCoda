@@ -19,12 +19,12 @@ function Town:init()
 
     self.player = Player(100, 100)
 
-    local CavernEntrance = SceneTransition(250, 50, platformSprite, self.player, Cavern())
+    local CavernEntrance = SceneTransition(150, 175, platformSprite, self.player, Cavern())
 
 
     self.sceneObjects = {
         self.player,
-        -- CavernEntrance,
+        CavernEntrance,
         Platform(100, 200, platformSprite)
 
     }

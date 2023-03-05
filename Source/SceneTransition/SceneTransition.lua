@@ -11,6 +11,7 @@ class('SceneTransition').extends(InteractableBody)
 
 function SceneTransition:init(x, y, sprite, player, destinationScene)
     
-    SceneTransition.super.init(x, y, sprite, "B", player, 50)
+    SceneTransition.super.init(self, x, y, sprite, player, 50)
 
+    self.callbacks:push(function() loadScene(destinationScene) end)
 end

@@ -9,7 +9,7 @@ local geo <const> = pd.geometry
 
 class('InteractableBody').extends(gfx.sprite)
 
-function InteractableBody:init(x, y, sprite, button, player, threshold_distance)
+function InteractableBody:init(x, y, sprite, player, threshold_distance)
 	InteractableBody.super.init(self)
 
 	self:setImage(sprite)
@@ -26,52 +26,12 @@ function InteractableBody:init(x, y, sprite, button, player, threshold_distance)
 		table.remove(self)
 	end
 
-
-
-	if (button == "B") then
-		local myInputHandlers = {
-			BButtonDown = function () 
-				self:handleInput()
-			end
-		}
-		pd.inputHandlers.push(myInputHandlers)
-	end
-
-	if (button == "A") then
-		local myInputHandlers = {
-			AButtonDown = function () 
-				self:handleInput()
-			end
-		}
-		pd.inputHandlers.push(myInputHandlers)
-	end
-
-	if (button == "U") then
-		local myInputHandlers = {
-			upButtonDown = function () 
-				self:handleInput()
-			end
-		}
-		pd.inputHandlers.push(myInputHandlers)
-	end
-
-	if (button == "L") then
-		local myInputHandlers = {
-			leftButtonDown = function () 
-				self:handleInput()
-			end
-		}
-		pd.inputHandlers.push(myInputHandlers)
-	end
-
-	if (button == "R") then
-		local myInputHandlers = {
-			leftButtonDown = function () 
-				self:handleInput()
-			end
-		}
-		pd.inputHandlers.push(myInputHandlers)
-	end
+	local myInputHandlers = {
+		upButtonDown = function () 
+			self:handleInput()
+		end
+	}
+	pd.inputHandlers.push(myInputHandlers)
 end
 
 function InteractableBody:update()
