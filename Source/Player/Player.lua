@@ -87,14 +87,14 @@ end
 function Player:move(x, y)
 	self.showInteractableIcon = false
 	local actualX, actualY, collisions, length = Player.super.move(self, x, y)
-	if collisions[1] ~= nil then 
-		if collisions[1].other:isa(InteractableBody) then
+	for i, collision in ipairs(collisions) do
+		if collision.other:isa(InteractableBody) then
 			-- display icon
 			self.showInteractableIcon = true
-		elseif collisions[1].normal.y == -1 then
+		elseif collision.normal.y == -1 then
 			self.grounded = true
 		end
-
 	end
+
 	
 end

@@ -21,12 +21,12 @@ function YunTest:init()
 
     self.player = Player(100, 100)
 
-    self.test = InteractableBody(50, 150, platformSprite, "U", self.player, 50)
+    self.test = InteractableBody(50, 125, platformSprite, "U", self.player, 50)
 
     self.sceneObjects = {
         self.player,
         self.test,
-        Platform(100, 200, platformSprite)
+        Platform(100, 150, platformSprite)
     }
 end
 
