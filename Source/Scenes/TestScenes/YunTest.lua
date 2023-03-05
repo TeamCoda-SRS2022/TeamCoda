@@ -40,11 +40,4 @@ function YunTest:load()
 			backgroundImage:draw( 0, 0 )
 		end
 	)
-<<<<<<< HEAD:Source/Scenes/YunTest.lua
-
-    YunTest.super.add(self, Player(100,100))
 end
-
-=======
-end
->>>>>>> cda7c30cb75bc37ff72cda799b5dcfaca1163854:Source/Scenes/TestScenes/YunTest.lua

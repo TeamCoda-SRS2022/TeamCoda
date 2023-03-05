@@ -50,15 +50,6 @@ function Player:update()
 		self:move( -self.speed, 0 )
 		self.isFacingLeft = playdate.graphics.kImageFlippedX
 	end
-	if pd.buttonIsPressed( pd.kButtonDown ) then
-		self:move( 0, self.speed )
-	end
-	if pd.buttonIsPressed( pd.kButtonUp ) then
-		self:move( 0, -self.speed )
-	end
-	self.collisionResponse = function(self, other) 
-		return gfx.sprite.kCollisionTypeOverlap
-	end
 end
 
 function Player:move(x, y)
