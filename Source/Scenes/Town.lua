@@ -3,7 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
-import "Scenes/Cavern"
+import "Scenes/FactoryElevator"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
 
@@ -21,11 +21,11 @@ function Town:init()
 
     self.player = Player(100, 100)
 
-    local CavernEntrance = SceneTransition(190, 140, FancyDoorSprite, self.player, Cavern(), false, 80)
+    local FactoryElevatorEntrance = SceneTransition(190, 140, FancyDoorSprite, self.player, FactoryElevator(), false, 80)
 
     self.sceneObjects = {
         self.player,
-        CavernEntrance,
+        FactoryElevatorEntrance,
         Platform(100, 200, platformSprite)
     }
 end
