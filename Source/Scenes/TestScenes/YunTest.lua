@@ -3,7 +3,6 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
-
 import "Player/Player"
 import "Platforms/Platform"
 import "YLib/RhythmInput/RhythmInput"
@@ -22,6 +21,7 @@ function YunTest:init()
 
     self.sceneObjects = {
         self.player,
+        Platform(100, 200, platformSprite)
     }
 end
 
