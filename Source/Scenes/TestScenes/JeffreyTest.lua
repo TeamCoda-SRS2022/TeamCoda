@@ -119,7 +119,7 @@ function JeffreyTest:init()
       self.crank2,
       self.crank3,
       self.crank4,
-      self.player,
+      
       Platform(32, 240, platformSprite),
       Platform(96, 240, platformSprite),
       Platform(160, 240, platformSprite),
@@ -127,7 +127,8 @@ function JeffreyTest:init()
       Platform(288, 240, platformSprite),
       Platform(352, 240, platformSprite),
       
-      self.conveyorButton
+      self.conveyorButton,
+      self.player,
   }
 end
 
