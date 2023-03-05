@@ -12,7 +12,7 @@ class('MovingPlatform').extends(gfx.sprite)  --not a RigidBody2D
 
 function MovingPlatform:init(x, y)
     MovingPlatform.super.init(self)
-    local platformSprite = gfx.image.new("Platforms/PlatedPlatform.png" )
+    local platformSprite = gfx.image.new("HarryPuzzle/connector.png" )
     self:setImage(platformSprite)
     self:moveTo(x, y)
     self:add()
@@ -20,7 +20,7 @@ end
 
 function MovingPlatform:update() --this is extending the sprites update function
     MovingPlatform.super.update(self)
-    xPosition = 200 + cos(rad(pd.getCrankPosition()))*100
-    yPosition = 120 + sin(rad(pd.getCrankPosition()))*100
+    xPosition = 270 + cos(rad(pd.getCrankPosition()))*62
+    yPosition = 114 + sin(rad(pd.getCrankPosition()))*62
     self:moveTo(xPosition, yPosition)
 end
