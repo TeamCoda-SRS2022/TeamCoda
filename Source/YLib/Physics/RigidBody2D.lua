@@ -14,6 +14,8 @@ function RigidBody2D:init(x, y, sprite)
 	
 	self:setImage(sprite)
 	self:setCollideRect( 0, 0, sprite:getSize() )
+	self:setGroups(1) -- rigid body group 
+	self:setCollidesWithGroups(1) -- only collide with rigid bodies
 	self:moveTo( x, y )
 
 	self.velocity = geo.vector2D.new(0, 0)
@@ -29,7 +31,7 @@ end
 
 function RigidBody2D:move(x, y)
 	local actualX, actualY, collisions, length = self:moveWithCollisions(self.x + x, self.y + y)
-	if collisions[1] ~= nil and collisions[1].normal.y == -1 then
+	if collisions[1] ~= nil and collisions[1].normal.y == -1 and not collisions[1].other:isa(InteractableBody) then
 		self.velocity.y = 0
 	end
 	return actualX, actualY, collisions, length
