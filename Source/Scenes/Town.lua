@@ -17,9 +17,11 @@ function Town:init()
 
     local platformSprite = gfx.image.new("Platforms/PlatedPlatform.png")
 
+    local FancyDoorSprite = gfx.image.new("SceneTransition/FancyDoor.png")
+
     self.player = Player(100, 100)
 
-    local CavernEntrance = SceneTransition(150, 175, platformSprite, self.player, Cavern(), false)
+    local CavernEntrance = SceneTransition(190, 140, FancyDoorSprite, self.player, Cavern(), false, 80)
 
     self.sceneObjects = {
         self.player,

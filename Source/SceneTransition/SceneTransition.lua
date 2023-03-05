@@ -9,8 +9,8 @@ local gfx <const> = pd.graphics
 
 class('SceneTransition').extends(InteractableBody)
 
-function SceneTransition:init(x, y, sprite, player, destinationScene, isLocked)
-    SceneTransition.super.init(self, x, y, sprite, player, 50)
+function SceneTransition:init(x, y, sprite, player, destinationScene, isLocked, thresholdDistance)
+    SceneTransition.super.init(self, x, y, sprite, player, thresholdDistance)
     self.locked = isLocked
     self.callbacks:push(
         function() 
