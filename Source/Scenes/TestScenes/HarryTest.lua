@@ -22,21 +22,15 @@ function HarryTest:init()
 
     self.player = Player(100, 100)
     self.MovingPlatform = MovingPlatform(200, 120)
-    self.sparks = {}
 
-    --self.spawnTimer = playdate.timer.performAfterDelay(5000, self.spawnSpark)
-    --self.spawnTimer.repeats = true
-    -- self.sparks = {CircuitSpark(100, 150, 'right'), CircuitSpark(100, 90, 'right'),
-    --                 CircuitSpark(300, 150, 'left'), CircuitSpark(300, 90, 'left'),
-    --                 CircuitSpark(200, 40, 'up'), CircuitSpark(200, 200, 'down')}
-
+    self.spawnTimer = playdate.timer.performAfterDelay(5000, function() self:spawnSpark() end)
+    self.spawnTimer.repeats = true
 
     self.sceneObjects = {
         self.player,
         Platform(100, 200, platformSprite),
         Platform(150, 200, platformSprite),
         self.MovingPlatform,
-        --self.sparks
     }
 end
 
@@ -58,14 +52,19 @@ end
 
 function HarryTest:spawnSpark()
     direction = math.random(4)
+    
     if direction == 1 then
-        table.insert(self.sparks, CircuitSpark(100, 150, 'right'))
+        CircuitSpark(100, 150, 'right'):add()
+        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'right', self.sceneObjects))
     elseif direction == 2 then
-        table.insert(self.sparks, CircuitSpark(100, 150, 'left'))
+        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'left', self.sceneObjects))
+        CircuitSpark(100, 150, 'left'):add()
     elseif direction == 3 then
-        table.insert(self.sparks, CircuitSpark(100, 150, 'up'))
+        CircuitSpark(100, 150, 'up'):add()
+        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'up', self.sceneObjects))
     elseif direction == 4 then
-        table.insert(self.sparks, CircuitSpark(100, 150, 'down'))
+        CircuitSpark(100, 150, 'down'):add()
+        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'down', self.sceneObjects))
     end
 end
 
