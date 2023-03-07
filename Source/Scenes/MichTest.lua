@@ -7,8 +7,6 @@ import "Player/Player"
 import "Frame/Button"
 import "Frame/Frequency"
 import "CoreLibs/Crank"
-
-
 import "Player/RhythmInput"
 import "LP/LP"
 
@@ -24,15 +22,15 @@ function MichTest:init()
     
 
     local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
-    self.freqy = Frequency(30, 30, 90)
+    self.freq1 = Frequency(30, 100, 90)
+
       
     self.player = Player(10, 200)
     self.freq = {30, 70, 40, 50}
 
     self.sceneObjects = { -- set pieces of picture frame in different areas of the house
-        self.player,
-        Button(200, 300, button),
-        self.freqy
+        self.player, 
+        self.freq1
     }
 
 end
@@ -40,7 +38,7 @@ end
 function MichTest:load()
     MichTest.super.load(self)
 
-    local backgroundImage = gfx.image.new("Scenes/Backgrounds/grey.png")
+    local backgroundImage = gfx.image.new("Scenes/Backgrounds/black.png")
     assert( backgroundImage )
     gfx.sprite.setBackgroundDrawingCallback(
 		function( x, y, width, height )
@@ -48,25 +46,12 @@ function MichTest:load()
 		end
 	)
   local counter = 0
-  for i in self.freq do
-    print("hey", i)
-    if self.freq[i] == self.freqy:getFreq() then 
-      print ("ooga booga")
-      counter += 1
-    end
-  end
-  
 
 
-
-  
-
-    
 end 
 
 
 
-  
   
 
 
