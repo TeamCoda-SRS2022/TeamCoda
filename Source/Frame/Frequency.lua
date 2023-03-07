@@ -5,9 +5,6 @@ import "CoreLibs/Crank"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Player/Player"
-import "Player/RhythmInput"
-import "LP/LP"
-
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -23,27 +20,26 @@ function Frequency:init(x, y, freq) -- each part of the picture frame is its own
    self.sta = false
    self:add()
    self.counter = 0
-   self.turnOnCrank = false
    self.x = x
    self.y = y
+   self.progress = 0
    
 end
 
-function Frequency:update(bool)
+function Frequency:update()
     Frequency.super.update(self)
-    self.turnOnCrank = bool
-    if self.turnOnCrank == false then
-        self:onCrank()
+    self.turnOnCrank = true
+    if self.turnOnCrank == true then
+      self:onCrank()
+    end
+    if self.freq == 60 then
+      --print("hey")
     end
     
 
 end
 
-function Frequency:getFreq()
-    return self.freq
-end
-
-function Frequency:onCrank(bool)
+function Frequency:onCrank()
     local change, acceleratedChange = playdate.getCrankChange()
     local cranky = playdate.getCrankPosition()
     self.freq = cranky
@@ -76,15 +72,19 @@ function Frequency:onCrank(bool)
 --gfx.popContext()
   --  self:setImage(healthbarImage)
 
-    self.progress = (self.freq+1)/4
-    print (self.progress)
+  self.progress = (self.freq+1)/4
+   --print (self.progress)
 	local bar_image = gfx.image.new(maxWidth, height, gfx.kColorWhite)
 	local progressWidth = self.progress
 	gfx.pushContext(bar_image)
 	gfx.fillRect(0, 0, maxWidth, self.progress)
 	gfx.popContext()
 	self:setImage(bar_image)
+   -- print(self.freq)
+end
 
+function Frequency:getFreq()
+  return self.freq
 end
 
 

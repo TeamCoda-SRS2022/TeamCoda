@@ -4,6 +4,8 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/animation"
 import "YLib/Physics/RigidBody2D"
+import "YLib/Interactable/InteractableBody"
+
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics

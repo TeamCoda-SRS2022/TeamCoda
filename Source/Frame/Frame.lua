@@ -29,19 +29,15 @@ end
 
 function Frame:update()
     Frame.super.update(self)
-    self:moveWithCollisions(self.x,self.y)
     actualX, actualY, collisions, length = self:moveWithCollisions(self.x, self.y)
     --print (self.x, self.y)
-    if collisions[1] ~= nil then 
-      self.freqs:update(true)
+   -- print(collisions[1])
+   -- if collisions[1] ~= nil then 
       
-    end
+  --  end
 end
 
 
-function Frame:collisionResponse(self, other)
-    print ("collision ", self.response)
-    return self.response
-end
+
 
 

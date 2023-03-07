@@ -17,40 +17,42 @@ class('MichTest').extends(Scene)
 
 function MichTest:init()
     MichTest.super.init(self)
-    local button = gfx.image.new("Frame/Off.png")
-
     
 
+    
+    
+    self.valid = true
     local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
-   -- self.freq1 = Frequency(30, 100, 90)
-   -- self.freq2 = Frequency(100, 100, 90)
-   -- self.freq3 = Frequency(170, 100, 90)
-   -- self.freq4 = Frequency(240, 100, 90)
-   local framed = gfx.image.new("Frame/frame2.png")
+    self.freq1 = Frequency(30, 100, 90)
+    self.freq2 = Frequency(100, 100, 90)
+    self.freq3 = Frequency(170, 100, 90)
+    self.freq4 = Frequency(240, 100, 90)
+ 
 
-
+  
       
     self.player = Player(10, 200)
     self.freq = {30, 70, 40, 50}
+    valid = true
+    counter = 0
+
+    
 
     self.sceneObjects = { -- set pieces of picture frame in different areas of the house
-        self.player, 
-      --  self.freq1,
-     --   self.freq2,
-      --  self.freq3,
-      --  self.freq4
-        Frame(50, 200, framed), 
-        Frame(140, 200, framed), 
-        Frame(230, 200, framed), 
-        Frame(320, 200, framed)
+        self.freq1, 
+        self.freq2, 
+        self.freq3, 
+        self.freq4, 
+        self.player
     }
+    
 
 end
 
 function MichTest:load()
     MichTest.super.load(self)
 
-    local backgroundImage = gfx.image.new("Scenes/Backgrounds/grey.png")
+    local backgroundImage = gfx.image.new("Scenes/Backgrounds/black.png")
     assert( backgroundImage )
     gfx.sprite.setBackgroundDrawingCallback(
 		function( x, y, width, height )
@@ -58,30 +60,46 @@ function MichTest:load()
 		end
 	)
   local counter = 0
+  print (self.freq1:getFreq())
 
 
 end 
 
 function MichTest:update()
-    MichTest.super.update(self)
-    local i = 0
-    local counter = 0
-    for i in self.freq do 
-      if self.freq[i] == self.freq1:getFreq() then
-        counter = 1
-      end
-    end
+  MichTest.super.update(self)
+    local customSynth1 = playdate.sound.synth.new(playdate.sound.kWaveSine)
+    local chordInstrument = playdate.sound.instrument.new()
+    chordInstrument:addVoice(customSynth1)
     
+  local sfreq = {30, 70, 60, 50}
+  chordInstrument:playMIDINote(48) 
+  for i=1, 4 do 
+    print(sfreq[i])
+    if (sfreq[i] == self.sceneObjects[i]:getFreq()) then 
+      self:remove(self.sceneObjects[i])
+      chordInstrument:noteOff(48)
+  end
+
+  if #self.sceneObjects == 3 then
+    print("Puzzle complete")
+  end
+end
+
 end
 
 function MichTest:add(obj)
   table.insert(self.sceneObjects, obj)
   obj:add()
+  self.valid = false
 end
 
 function MichTest:remove(obj)
   obj:remove()
 end
+  
+
+
+
   
   
 

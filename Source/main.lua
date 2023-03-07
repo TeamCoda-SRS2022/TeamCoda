@@ -24,10 +24,9 @@ function playdate.update()
 --		loadScene(MichTest())
 --	end
 
-	gfx.sprite.update()
-	Scene.update(self)
+gfx.sprite.update()
 
-
+curScene:update()
 
 end
 
