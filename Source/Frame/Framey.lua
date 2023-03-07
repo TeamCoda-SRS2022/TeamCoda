@@ -39,9 +39,9 @@ function Frequency:update()
         self.freq = 359
     end
     if change < 0 then -- if going ccw
-        self.freq -= 1
+        self.freq = self.freq - 1
     else -- going cw
-        self.freq += 1
+        self.freq = self.freq+1
     end
     
     local maxWidth = 10
