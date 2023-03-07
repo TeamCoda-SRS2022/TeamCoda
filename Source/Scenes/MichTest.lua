@@ -78,7 +78,7 @@ function MichTest:update()
     if (sfreq[self.i] == self.sceneObjects[self.i]:getFreq()) then 
       self:remove(self.sceneObjects[self.i])
       chordInstrument:noteOff(48)
-      self.i += 1
+      self.i = self.i + 1
   end
 end
 
