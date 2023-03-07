@@ -34,17 +34,18 @@ function JeffreyTest:init()
   local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
   local buttonSprite = gfx.image.new( "Assets/button.png" )
   local puzzleSprite = gfx.image.new( "Assets/growingRobot.png" )
+  local conveyorBeltSprite = gfx.image.new( "Assets/conveyorbelt.png")
+
+  self.conveyorBelt = gfx.sprite.new(conveyorBeltSprite)
+  self.conveyorBelt:moveTo(320, 145)
 
   self.player = Player(100, 100)
 
-  self.crank1 = gfx.sprite.new(puzzleSprite)
-  self.crank1:moveTo(225, 231)
-  self.crank2 = gfx.sprite.new(puzzleSprite)
-  self.crank2:moveTo(275, 231)
-  self.crank3 = gfx.sprite.new(puzzleSprite)
-  self.crank3:moveTo(325, 231)
-  self.crank4 = gfx.sprite.new(puzzleSprite)
-  self.crank4:moveTo(375, 231)
+  self.crank1 = InteractableBody(225, 231, puzzleSprite, "", self.player, 0)
+  self.crank2 = InteractableBody(275, 231, puzzleSprite, "", self.player, 0)
+  self.crank3 = InteractableBody(325, 231, puzzleSprite, "", self.player, 0)
+  self.crank4 = InteractableBody(375, 231, puzzleSprite, "", self.player, 0)
+
 
 
   self.conveyorButton = InteractableBody(150, 200, buttonSprite, "U", self.player, 50)
@@ -64,7 +65,6 @@ function JeffreyTest:init()
   self.noteTrack:setInstrument(self.synth)
 
   self.noteTrack:setNotes(self.notes)
-  print(dump(self.noteTrack:getNotes()))
 
   self.solutionNotes = {64, 65, 66, 67}
   self.solved = false
@@ -73,8 +73,6 @@ function JeffreyTest:init()
   self.sequence:setTempo(4)  -- steps per second
   self.sequence:addTrack(self.noteTrack)
   self.sequence:setLoops(1, 8, 1)
-
-  print(playdate.getCrankChange())
 
 
 
@@ -107,7 +105,6 @@ function JeffreyTest:init()
           self.notes[i]["note"] = self.lowestMIDI + math.floor(self.scales[i])
           self.noteTrack:setNotes(self.notes)
           crank:moveTo(crank.x, upperBound_y - (upperBound_y-lowerBound_y)*(self.scales[i])/(10))
-          print(crank.x, crank.y)
         end
       end
     end,
@@ -119,6 +116,10 @@ function JeffreyTest:init()
       self.crank2,
       self.crank3,
       self.crank4,
+
+      self.conveyorButton,
+
+      self.conveyorBelt,
       
       Platform(32, 240, platformSprite),
       Platform(96, 240, platformSprite),
@@ -127,7 +128,7 @@ function JeffreyTest:init()
       Platform(288, 240, platformSprite),
       Platform(352, 240, platformSprite),
       
-      self.conveyorButton,
+      
       self.player,
   }
 end
