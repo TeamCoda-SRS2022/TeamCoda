@@ -27,6 +27,7 @@ function MichTest:init()
     self.freq2 = Frequency(100, 100, 90)
     self.freq3 = Frequency(170, 100, 90)
     self.freq4 = Frequency(240, 100, 90)
+    self.i = 1
  
 
   
@@ -70,20 +71,21 @@ function MichTest:update()
     local customSynth1 = playdate.sound.synth.new(playdate.sound.kWaveSine)
     local chordInstrument = playdate.sound.instrument.new()
     chordInstrument:addVoice(customSynth1)
-    
+    print (self.i)
   local sfreq = {30, 70, 60, 50}
   chordInstrument:playMIDINote(48) 
-  for i=1, 4 do 
-    print(sfreq[i])
-    if (sfreq[i] == self.sceneObjects[i]:getFreq()) then 
-      self:remove(self.sceneObjects[i])
+  if self.i < 5 then 
+    if (sfreq[self.i] == self.sceneObjects[self.i]:getFreq()) then 
+      self:remove(self.sceneObjects[self.i])
       chordInstrument:noteOff(48)
-  end
-
-  if #self.sceneObjects == 3 then
-    print("Puzzle complete")
+      self.i += 1
   end
 end
+
+  if self.i == 5 then
+    print("Puzzle complete")
+
+  end
 
 end
 
