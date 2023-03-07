@@ -4,7 +4,7 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "Player/Player"
 import "Player/RhythmInput"
-import "LP/LP"
+import "Frame/Frequency"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -19,7 +19,8 @@ function Frame:init(x, y, image) -- each part of the picture frame is its own ob
    self:setCollideRect(0, 0, self:getSize())
    self.colliding = false
    self.x = x
-   self.response = gfx.sprite.kCollisionTypeFreeze
+   self.response = gfx.sprite.kCollisionTypeOverlap
+   self.freqs = Frequency(x, y - 150, 90)
    
 end
   
@@ -32,9 +33,8 @@ function Frame:update()
     actualX, actualY, collisions, length = self:moveWithCollisions(self.x, self.y)
     --print (self.x, self.y)
     if collisions[1] ~= nil then 
-      self.isColliding = true;
-      print("iscolliging" , self.isColliding)
-      self.response = gfx.sprite.kCollisionTypeOverlap
+      self.freqs:update(true)
+      
     end
 end
 

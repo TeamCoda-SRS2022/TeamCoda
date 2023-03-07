@@ -24,13 +24,16 @@ function Frequency:init(x, y, freq) -- each part of the picture frame is its own
    self:add()
    self.counter = 0
    self.turnOnCrank = false
+   self.x = x
+   self.y = y
    
 end
 
-function Frequency:update()
+function Frequency:update(bool)
     Frequency.super.update(self)
+    self.turnOnCrank = bool
     if self.turnOnCrank == false then
-        Frequency:onCrank()
+        self:onCrank()
     end
     
 
@@ -40,33 +43,48 @@ function Frequency:getFreq()
     return self.freq
 end
 
-function Frequency:onCrank()
+function Frequency:onCrank(bool)
     local change, acceleratedChange = playdate.getCrankChange()
     local cranky = playdate.getCrankPosition()
     self.freq = cranky
     --print(change, acceleratedChange, cranky)
     if self.freq < 0 and change then 
-        self.freq = 1
+        self.freq = 359
     end 
     if self.freq > 359 and change then 
-        self.freq = 359
+        self.freq = 1
     end
-    if change < 0 then -- if going ccw
-        self.freq = self.freq - 1
-    else -- going cw
-        self.freq = self.freq + 1
-    end
+    --if change < 0 then -- if going ccw
+       -- self.freq -= 1
+    --else -- going cw
+       -- self.freq += 1
+    --end
+
     
     local maxWidth = 10
     local height = 90 -- max height
     
-    local healthbarHeight = self.freq + 1
-    print (healthbarHeight, self.freq, cranky)
-    local healthbarImage = gfx.image.new(maxWidth, (self.freq/4)+1)
-    gfx.pushContext(healthbarImage)
-        gfx.fillRect(0, 0, maxWidth, healthbarHeight)
-    gfx.popContext()
-    self:setImage(healthbarImage)
+
+    --local healthbarHeight = (self.freq/4)+1
+   -- print (healthbarHeight, self.freq, cranky)
+   -- local healthbarImage = playdate.graphics.image.new(maxWidth, healthbarHeight)
+    --local healthbarImage = playdate.graphics.image.new(30, 20)
+  --  gfx.pushContext(healthbarImage)
+  --  gfx.setLineWidth(2)
+  --  gfx.drawRect(0,0, maxWidth, height)
+  --      gfx.fillRect(0, 0, 20, healthbarHeight)
+--gfx.popContext()
+  --  self:setImage(healthbarImage)
+
+    self.progress = (self.freq+1)/4
+    print (self.progress)
+	local bar_image = gfx.image.new(maxWidth, height, gfx.kColorWhite)
+	local progressWidth = self.progress
+	gfx.pushContext(bar_image)
+	gfx.fillRect(0, 0, maxWidth, self.progress)
+	gfx.popContext()
+	self:setImage(bar_image)
+
 end
 
 

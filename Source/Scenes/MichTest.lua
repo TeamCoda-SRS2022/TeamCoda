@@ -22,10 +22,12 @@ function MichTest:init()
     
 
     local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
-    self.freq1 = Frequency(30, 100, 90)
-    self.freq2 = Frequency(100, 100, 90)
-    self.freq3 = Frequency(170, 100, 90)
-    self.freq4 = Frequency(240, 100, 90)
+   -- self.freq1 = Frequency(30, 100, 90)
+   -- self.freq2 = Frequency(100, 100, 90)
+   -- self.freq3 = Frequency(170, 100, 90)
+   -- self.freq4 = Frequency(240, 100, 90)
+   local framed = gfx.image.new("Frame/frame2.png")
+
 
       
     self.player = Player(10, 200)
@@ -33,7 +35,14 @@ function MichTest:init()
 
     self.sceneObjects = { -- set pieces of picture frame in different areas of the house
         self.player, 
-        self.freq1
+      --  self.freq1,
+     --   self.freq2,
+      --  self.freq3,
+      --  self.freq4
+        Frame(50, 200, framed), 
+        Frame(140, 200, framed), 
+        Frame(230, 200, framed), 
+        Frame(320, 200, framed)
     }
 
 end
@@ -41,7 +50,7 @@ end
 function MichTest:load()
     MichTest.super.load(self)
 
-    local backgroundImage = gfx.image.new("Scenes/Backgrounds/black.png")
+    local backgroundImage = gfx.image.new("Scenes/Backgrounds/grey.png")
     assert( backgroundImage )
     gfx.sprite.setBackgroundDrawingCallback(
 		function( x, y, width, height )
