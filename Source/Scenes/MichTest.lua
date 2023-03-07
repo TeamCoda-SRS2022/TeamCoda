@@ -23,6 +23,9 @@ function MichTest:init()
 
     local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
     self.freq1 = Frequency(30, 100, 90)
+    self.freq2 = Frequency(100, 100, 90)
+    self.freq3 = Frequency(170, 100, 90)
+    self.freq4 = Frequency(240, 100, 90)
 
       
     self.player = Player(10, 200)
@@ -50,8 +53,27 @@ function MichTest:load()
 
 end 
 
+function MichTest:update()
+    MichTest.super.update(self)
+    local i = 0
+    local counter = 0
+    for i in self.freq do 
+      if self.freq[i] == self.freq1:getFreq() then
+        counter = 1
+      end
+    end
+    
+end
 
+function MichTest:add(obj)
+  table.insert(self.sceneObjects, obj)
+  obj:add()
+end
 
+function MichTest:remove(obj)
+  obj:remove()
+end
+  
   
 
 
