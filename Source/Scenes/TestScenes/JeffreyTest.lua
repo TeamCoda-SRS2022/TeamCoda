@@ -51,7 +51,7 @@ function JeffreyTest:init()
   self.conveyorButton = InteractableBody(150, 200, buttonSprite, "U", self.player, 50)
   
   self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
-  self.lowestMIDI = 64
+  self.lowestMIDI = 63
   self.notes = {
     {["step"] = 1, ["note"] = self.lowestMIDI, ["length"] = 1, ["velocity"] = 1},
     {["step"] = 3, ["note"] = self.lowestMIDI, ["length"] = 1, ["velocity"] = 1},
@@ -66,7 +66,7 @@ function JeffreyTest:init()
 
   self.noteTrack:setNotes(self.notes)
 
-  self.solutionNotes = {64, 65, 66, 67}
+  self.solutionNotes = {67, 67, 67, 63}
   self.solved = false
 	
   self.sequence = playdate.sound.sequence.new()
