@@ -41,14 +41,14 @@ function JeffreyTest:init()
 
   self.player = Player(100, 100)
 
-  self.crank1 = InteractableBody(225, 231, puzzleSprite, "", self.player, 0)
-  self.crank2 = InteractableBody(275, 231, puzzleSprite, "", self.player, 0)
-  self.crank3 = InteractableBody(325, 231, puzzleSprite, "", self.player, 0)
-  self.crank4 = InteractableBody(375, 231, puzzleSprite, "", self.player, 0)
+  self.crank1 = InteractableBody(225, 231, puzzleSprite, self.player, 0)
+  self.crank2 = InteractableBody(275, 231, puzzleSprite, self.player, 0)
+  self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
+  self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
 
 
 
-  self.conveyorButton = InteractableBody(150, 200, buttonSprite, "U", self.player, 50)
+  self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
   
   self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
   self.lowestMIDI = 63
