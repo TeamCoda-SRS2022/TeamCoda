@@ -2,7 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/MichTest"
+import "Scenes/TestScenes/MichTest"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics

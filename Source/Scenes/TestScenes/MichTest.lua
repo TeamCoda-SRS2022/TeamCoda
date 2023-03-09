@@ -4,11 +4,9 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
 import "Player/Player"
-import "Frame/Button"
-import "Frame/Frequency"
+import "Scenes/HouseOne/Frequency"
 import "CoreLibs/Crank"
 import "Player/RhythmInput"
-import "LP/LP"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -16,72 +14,55 @@ local gfx <const> = pd.graphics
 class('MichTest').extends(Scene)
 
 function MichTest:init()
-    MichTest.super.init(self)
+  MichTest.super.init(self)
+  
+  self.valid = true
+  
+  self.sfreq = {164.81, 196.00, 261.63, 130.81}
+  
+  self.freqs = {Frequency(30, 100, self.sfreq[1]), Frequency(100, 100, self.sfreq[2]), Frequency(170, 100, self.sfreq[3]), Frequency(240, 100, self.sfreq[4])}
+  self.freqNum = 1
     
-    self.valid = true
-    
-    self.sfreq = {30, 70, 60, 50}
-    self.freq1 = Frequency(30, 100, 90)
-    self.freq2 = Frequency(100, 100, 90)
-    self.freq3 = Frequency(170, 100, 90)
-    self.freq4 = Frequency(240, 100, 90)
-    self.i = 1
+  self.player = Player(10, 200)
 
-    self.synth = playdate.sound.synth.new(playdate.sound.kWaveSine)
-    self.chordInstrument = playdate.sound.instrument.new()
-    self.chordInstrument:addVoice(self.synth)
-    chordInstrument:playMIDINote(48) 
-      
-    self.player = Player(10, 200)
-    self.freq = {30, 70, 40, 50}
-    valid = true
-    counter = 0
-
-    
-
-    self.sceneObjects = { -- set pieces of picture frame in different areas of the house
-        self.freq1, 
-        self.freq2, 
-        self.freq3, 
-        self.freq4, 
-        self.player
-    }
-    
-
+  self.sceneObjects = {
+    self.freqs[1],
+    self.freqs[2],
+    self.freqs[3],
+    self.freqs[4],
+    self.player
+  } 
 end
 
 function MichTest:load()
-    MichTest.super.load(self)
+  MichTest.super.load(self)
 
-    print (self.i)
+  self.freqs[self.freqNum]:start()
 
-    local backgroundImage = gfx.image.new("Scenes/Backgrounds/black.png")
-    assert( backgroundImage )
-    gfx.sprite.setBackgroundDrawingCallback(
-		function( x, y, width, height )
-			backgroundImage:draw( 0, 0 )
-		end
+  local backgroundImage = gfx.image.new("Scenes/Backgrounds/black.png")
+  assert( backgroundImage )
+  gfx.sprite.setBackgroundDrawingCallback(
+    function( x, y, width, height )
+      backgroundImage:draw( 0, 0 )
+    end
 	)
-  local counter = 0
-  print (self.freq1:getFreq())
 end 
 
 function MichTest:update()
   MichTest.super.update(self)
 
+  if self.freqNum < 5 then
+    if self.freqs[self.freqNum].completed then 
+      self.freqNum = self.freqNum + 1
+      if(self.freqNum == 5) then
+        print("completed")
+        return
+      end
+      self.freqs[self.freqNum]:start()
+    end
+  end
+
   
-  -- if self.i < 5 then 
-  --   if (sfreq[self.i] == self.sceneObjects[self.i]:getFreq()) then 
-  --     self:remove(self.sceneObjects[self.i])
-  --     chordInstrument:noteOff(48)
-  --     self.i = self.i + 1
-  --   end
-  -- end
-
-  -- if self.i == 5 then
-  --   print("Puzzle complete")
-
-  -- end
 
 end
 
