@@ -9,7 +9,7 @@ import "YLib/RhythmInput/RhythmInput"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
-
+    
 class('BattleTest').extends(Scene)
 
 function BattleTest:init()
