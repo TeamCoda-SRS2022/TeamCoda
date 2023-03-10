@@ -6,6 +6,7 @@ import "YLib/SceneManagement/Scene"
 import "Scenes/FactoryElevator"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
+import "Player/Player"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics

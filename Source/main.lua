@@ -2,15 +2,21 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/HouseOne/HouseOne"
+import "CoreLibs/frameTimer"
+import "Scenes/Town"
+import "Scenes/FloorOne/FloorOne"
+import "Scenes/HouseTwo/HouseTwo"
+
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 -- Global Variables
-gravity = 0
+gravity = 0.5
+timeWindowLength = 0.5
+offset = 0
 
-local curScene = HouseOne()
+local curScene = Town()
 
 local function init()
 	curScene:load()
@@ -19,15 +25,11 @@ end
 init()
 
 function playdate.update()
-
---	if pd.buttonIsPressed( pd.kButtonUp )  then
---		loadScene(MichTest())
---	end
-
-gfx.sprite.update()
-
-curScene:update()
-
+	gfx.sprite.update()
+	playdate.timer.updateTimers()
+	playdate.frameTimer.updateTimers()
+	curScene:update()
+    -- pd.drawFPS(200,200)
 end
 
 function loadScene(sceneObj)
