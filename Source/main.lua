@@ -5,7 +5,7 @@ import "CoreLibs/timer"
 import "Scenes/TestScenes/BattleTest"
 import "Scenes/TestScenes/ChargingTest"
 import "Scenes/Town"
-import "Scenes/TestScenes/YunTest"
+import "Scenes/HouseOne/HouseOne"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -15,7 +15,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = Town()
+local curScene = HouseOne()
 
 local function init()
 	curScene:load()
