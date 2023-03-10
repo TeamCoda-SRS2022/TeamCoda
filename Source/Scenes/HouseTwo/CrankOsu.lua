@@ -27,8 +27,6 @@ function CrankOsu:init(tempo, winScore)
     self.sparks = {}
 end
 
-
-
 function CrankOsu:spawnSpark()
     direction = math.random(4)
     

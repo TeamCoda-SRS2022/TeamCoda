@@ -29,8 +29,8 @@ function playdate.update()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
 	playdate.frameTimer.updateTimers()
-	Scene.update()
-    pd.drawFPS(200,200)
+	curScene:update()
+    -- pd.drawFPS(200,200)
 end
 
 function loadScene(sceneObj)

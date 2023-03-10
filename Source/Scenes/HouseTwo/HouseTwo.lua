@@ -10,7 +10,6 @@ import "Scenes/Town"
 import "Scenes/FactoryElevator"
 import "Scenes/HouseTwo/MovingPlatform"
 import "Scenes/HouseTwo/CircuitSpark"
-import "Scenes/HouseTwo/CrankOsu"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -27,19 +26,33 @@ function HouseTwo:init()
     self.player = Player(100, 100)
     self.player:setZIndex(2)
 
-    --self.puzzle = CrankOsu(3000, 3)
-
-    self.MovingPlatform = MovingPlatform(200, 120)
-
-    self.spawnTimer = pd.timer.performAfterDelay(2000, function() self:spawnSpark() end)
-    self.spawnTimer.repeats = true
-    self.updateTimer = pd.timer.new(1, function() self:update() end)
-    self.updateTimer.repeats = true
+    self.MovingPlatform = MovingPlatform(270, 114)
 
     self.complete = false
-    self.winScore = 3;
+    self.winScore = 8
     self.score = 0
     self.sparks = {}
+
+    self.sparkPattern = {-1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 1, 1, 0, 1, 0, 0, -1, -1}
+    self.curSpark = #self.sparkPattern
+
+    self.audio = pd.sound.fileplayer.new("Scenes/HouseTwo/HouseTwo")
+
+    self.bpm = 80
+    self.spawnTimer = pd.timer.performAfterDelay(60 * 1000 / self.bpm, function() 
+        self.curSpark += 1
+        if self.curSpark > #self.sparkPattern then
+            self.audio:play()
+            self.score = 0
+            self.curSpark = 1
+        end
+        print(self.curSpark)
+
+        if self.sparkPattern[self.curSpark] > -1 then
+            self:spawnSpark(self.sparkPattern[self.curSpark])
+        end
+    end)
+    self.spawnTimer.repeats = true
 
     self.TownEntrance = SceneTransition(81, 175, DoorSprite, self.player, Town(), false, 30)
     self.TownEntrance:setZIndex(-10)
@@ -69,7 +82,7 @@ function HouseTwo:load()
     self.receiverSprite = receiverSprite
     receiverSprite:moveTo( 270, 114 )
     receiverSprite:setZIndex(1)
-    receiverSprite:add()
+    self:add(receiverSprite)
 
     local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOff.png" )
 	assert( backgroundImage )
@@ -82,43 +95,15 @@ function HouseTwo:load()
 end
 
 
-function HouseTwo:spawnSpark()
-    direction = math.random(4)
-    
-    if direction == 1 then
-        pos = math.random(2)
-        if pos == 1 then
-            spark = CircuitSpark(40, 88, 'right')
-            spark:add()
-            self.sparks[#self.sparks+1] = spark
-        else
-            spark = CircuitSpark(40, 139, 'right')
-            spark:add()
-            self.sparks[#self.sparks+1] = spark
-        end
-        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'right', self.sceneObjects))
-    elseif direction == 2 then
-        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'left', self.sceneObjects))
-        pos = math.random(2)
-        if pos == 1 then
-            spark = CircuitSpark(360, 88, 'left')
-            spark:add()
-            self.sparks[#self.sparks+1] = spark
-        else
-            spark = CircuitSpark(360, 139, 'left')
-            spark:add()
-            self.sparks[#self.sparks+1] = spark
-        end
-    elseif direction == 3 then
-        spark = CircuitSpark(270, 40, 'up')
-        spark:add()
+function HouseTwo:spawnSpark(pos)
+    if pos == 1 then
+        spark = CircuitSpark(40, 88, 'right')
+        self:add(spark)
         self.sparks[#self.sparks+1] = spark
-        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'up', self.sceneObjects))
-    elseif direction == 4 then
-        spark = CircuitSpark(270, 200, 'down')
-        spark:add()
+    else
+        spark = CircuitSpark(40, 139, 'right')
+        self:add(spark)
         self.sparks[#self.sparks+1] = spark
-        -- table.insert(self.sceneObjects, CircuitSpark(100, 150, 'down', self.sceneObjects))
     end
 end
 
@@ -130,8 +115,8 @@ function HouseTwo:update()
         if (distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y) < 10) and (not spark:getSuccess()) then
             self.score += 1
             spark:setSuccess(true)
-        elseif (distance(spark.x, spark.y, 270, 114) < 61) and (not spark:getSuccess()) then
-            spark:remove()
+        elseif (distance(spark.x, spark.y, self.MovingPlatform.centerX, self.MovingPlatform.centerY) < 61) and (not spark:getSuccess()) then
+            self:remove(spark)
             table.remove(self.sparks, i)
         end
     end
@@ -139,7 +124,6 @@ function HouseTwo:update()
     if self.score >= self.winScore then
         self.complete = true
         self.spawnTimer:remove()
-        self.updateTimer:remove()
         self.NextPuzzleEntrance:toggleLock()
         local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOn1.png" )
         assert( backgroundImage )
@@ -157,17 +141,7 @@ function HouseTwo:unload()
     HouseTwo.super.unload(self)
 
     self.spawnTimer:remove()
-    self.updateTimer:remove()
     self.receiverSprite:remove()
-
-    for i=1, #self.sceneObjects,1
-    do
-        self.sceneObjects[i]:remove()
-    end
-
-    for i, spark in ipairs(self.sparks) do
-        spark:remove()
-    end
 
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
 	assert( backgroundImage )

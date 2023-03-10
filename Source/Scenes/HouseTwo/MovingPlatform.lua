@@ -15,13 +15,18 @@ function MovingPlatform:init(x, y)
     local platformSprite = gfx.image.new("Scenes/HouseTwo/connector.png" )
     self:setImage(platformSprite)
     self:moveTo(x, y)
-    self:add()
+    
+    self.centerX = x
+    self.centerY = y
+
+    self.radius = 62
 end
 
 function MovingPlatform:update() --this is extending the sprites update function
     MovingPlatform.super.update(self)
-    xPosition = 270 + cos(rad(pd.getCrankPosition()))*62
-    yPosition = 114 + sin(rad(pd.getCrankPosition()))*62
+    
+    xPosition = self.centerX + cos(rad(pd.getCrankPosition() - 90))*self.radius
+    yPosition = self.centerY + sin(rad(pd.getCrankPosition() - 90))*self.radius
     self:moveTo(xPosition, yPosition)
     
 end
