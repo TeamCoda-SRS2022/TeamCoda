@@ -4,6 +4,10 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/frameTimer"
 import "Scenes/HouseTwo/HouseTwo"
+import "Scenes/TestScenes/BattleTest"
+import "Scenes/TestScenes/ChargingTest"
+import "Scenes/Town"
+import "Scenes/HouseOne/HouseOne"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
