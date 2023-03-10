@@ -115,14 +115,14 @@ function HouseOne:init()
   playdate.inputHandlers.push(myInputHandlers)
 
   self.sceneObjects = {
-      --self.crank1,
-      --self.crank2,
-      --self.crank3,
-      --self.crank4,
+      -- self.crank1,
+      -- self.crank2,
+      -- self.crank3,
+      -- self.crank4,
 
-      --self.conveyorButton,
+      -- self.conveyorButton,
 
-      --self.conveyorBelt,
+      -- self.conveyorBelt,
       
       self.townEntrance,
       
@@ -140,7 +140,8 @@ end
 
 
 function HouseOne:load()
-    HouseOne.super.load(self)
+  HouseOne.super.load(self)
+
   local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
 	assert( backgroundImage )
 
@@ -152,5 +153,16 @@ function HouseOne:load()
 end
 
 function HouseOne:unload()
+  HouseOne.super.unload(self)
+
   playdate.inputHandlers.pop()
+
+  local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
+	assert( backgroundImage )
+
+	gfx.sprite.setBackgroundDrawingCallback(
+		function( x, y, width, height )
+			backgroundImage:draw( 0, -7 )
+		end
+	)
 end
