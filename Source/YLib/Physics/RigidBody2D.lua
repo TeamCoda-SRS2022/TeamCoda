@@ -32,7 +32,7 @@ end
 function RigidBody2D:move(x, y)
 	local actualX, actualY, collisions, length = self:moveWithCollisions(self.x + x, self.y + y)
 	for i, collision in ipairs(collisions) do
-		if collision.normal.y == -1 and not collision.other:isa(InteractableBody) then
+		if collision.normal.y == -1 and collision.other:getGroupMask() == 1 then
 			self.velocity.y = 0
 		end
 	end
