@@ -79,7 +79,7 @@ end
 
 
 function Player:collisionResponse(other)
-	if other:isa(InteractableBody) then
+	if other:getGroupMask() == 2 then -- interactable group
 		return "overlap"
 	end
 	return "freeze"
@@ -89,7 +89,7 @@ function Player:move(x, y)
 	self.showInteractableIcon = false
 	local actualX, actualY, collisions, length = Player.super.move(self, x, y)
 	for i, collision in ipairs(collisions) do
-		if collision.other:isa(InteractableBody) then
+		if collision.other:getGroupMask() == 2 then  -- interactable group
 			-- display icon
 			self.showInteractableIcon = true
 		elseif collision.normal.y == -1 then
