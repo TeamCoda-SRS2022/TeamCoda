@@ -35,7 +35,7 @@ function InteractableBody:init(x, y, sprite, player, threshold_distance)
 			self:handleInput()
 		end
 	}
-	pd.inputHandlers.push(myInputHandlers)
+	--pd.inputHandlers.push(myInputHandlers)
 end
 
 function InteractableBody:update()

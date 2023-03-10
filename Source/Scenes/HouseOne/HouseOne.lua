@@ -44,16 +44,16 @@ function HouseOne:init()
 
   self.player = Player(100, 100)
 
-  --self.crank1 = InteractableBody(225, 231, puzzleSprite, self.player, 0)
-  --self.crank2 = InteractableBody(275, 231, puzzleSprite, self.player, 0)
-  --self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
-  --self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
+  self.crank1 = InteractableBody(225, 231, puzzleSprite, self.player, 0)
+  self.crank2 = InteractableBody(275, 231, puzzleSprite, self.player, 0)
+  self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
+  self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
 
   self.townEntrance = SceneTransition(41, 200, doorSprite, self.player, Town(), false, 30)
 
-  --self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
+  self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
   
-  --self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
+  self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
   self.lowestMIDI = 63
   self.notes = {
     {["step"] = 1, ["note"] = self.lowestMIDI, ["length"] = 1, ["velocity"] = 1},
@@ -78,7 +78,7 @@ function HouseOne:init()
   self.sequence:setLoops(1, 8, 1)
 
 
---[[
+
   self.conveyorButton.callbacks:push(
     function() 
       self.sequence:play(
@@ -94,9 +94,15 @@ function HouseOne:init()
         end
       )
     end
-    )--]]
+    )
 
   local myInputHandlers = {
+    upButtonDown = function()
+      self.townEntrance:handleInput()
+      self.conveyorButton:handleInput()
+
+    end,
+
     cranked = function(change, acceleratedChange)
       for i, crank in ipairs(self.crankLocations) do
         if math.abs(self.player.x - crank.x) <= 25 then
@@ -115,14 +121,13 @@ function HouseOne:init()
   playdate.inputHandlers.push(myInputHandlers)
 
   self.sceneObjects = {
-      -- self.crank1,
-      -- self.crank2,
-      -- self.crank3,
-      -- self.crank4,
+      self.crank1,
+      self.crank2,
+      self.crank3,
+      self.crank4,
 
-      -- self.conveyorButton,
-
-      -- self.conveyorBelt,
+      self.conveyorButton,
+      self.conveyorBelt,
       
       self.townEntrance,
       
@@ -132,7 +137,6 @@ function HouseOne:init()
       Platform(224, 240, platformSprite),
       Platform(288, 240, platformSprite),
       Platform(352, 240, platformSprite),
-      
       
       self.player,
   }
