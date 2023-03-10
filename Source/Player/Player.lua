@@ -97,5 +97,11 @@ function Player:move(x, y)
 		end
 	end
 
+	function Player:remove()
+		
+		self.interactableSprite:remove()
+		Player.super.remove(self)
+	end
+
 	
 end

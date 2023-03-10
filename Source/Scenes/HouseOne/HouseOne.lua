@@ -154,15 +154,5 @@ end
 
 function HouseOne:unload()
   HouseOne.super.unload(self)
-
   playdate.inputHandlers.pop()
-
-  local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
-	assert( backgroundImage )
-
-	gfx.sprite.setBackgroundDrawingCallback(
-		function( x, y, width, height )
-			backgroundImage:draw( 0, -7 )
-		end
-	)
 end
