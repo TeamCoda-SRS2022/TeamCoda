@@ -12,7 +12,7 @@ import "SceneTransition/SceneTransition"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-class('HouseOne').extends(Scene)
+class('FloorOne').extends(Scene)
 
 function dump(o)
   if type(o) == 'table' then
@@ -30,8 +30,8 @@ end
 lowerBound_y = 173
 upperBound_y = 231
 
-function HouseOne:init()
-    HouseOne.super.init(self)
+function FloorOne:init()
+  FloorOne.super.init(self)
 
   local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
   local buttonSprite = gfx.image.new( "Assets/button.png" )
@@ -138,8 +138,8 @@ function HouseOne:init()
 end
 
 
-function HouseOne:load()
-  HouseOne.super.load(self)
+function FloorOne:load()
+  FloorOne.super.load(self)
 
   local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
 	assert( backgroundImage )
@@ -151,7 +151,7 @@ function HouseOne:load()
 	)
 end
 
-function HouseOne:unload()
-  HouseOne.super.unload(self)
+function FloorOne:unload()
+  FloorOne.super.unload(self)
   playdate.inputHandlers.pop()
 end
