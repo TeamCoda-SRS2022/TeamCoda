@@ -143,6 +143,9 @@ function HouseTwo:unload()
     self.spawnTimer:remove()
     self.receiverSprite:remove()
 
+    
+    self.audio:stop()
+
     local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
 	assert( backgroundImage )
 	gfx.sprite.setBackgroundDrawingCallback(

@@ -97,11 +97,6 @@ function HouseOne:init()
     )
 
   local myInputHandlers = {
-    upButtonDown = function()
-      self.townEntrance:handleInput()
-      self.conveyorButton:handleInput()
-
-    end,
 
     cranked = function(change, acceleratedChange)
       for i, crank in ipairs(self.crankLocations) do
