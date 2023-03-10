@@ -14,6 +14,8 @@ function InteractableBody:init(x, y, sprite, player, threshold_distance)
 
 	self:setImage(sprite)
 	self:moveTo(x, y)
+
+	self.nearby = false
 	
 	self:setCollideRect( 0, 0, sprite:getSize() )
 
@@ -39,7 +41,7 @@ function InteractableBody:init(x, y, sprite, player, threshold_distance)
 end
 
 function InteractableBody:update()
-	--InteractableBody.super.update(self)
+	self.nearby = pd.geometry.distanceToPoint(self.x, self.y, self.player.x, self.player.y) < self.threshold_distance
 end
 
 function InteractableBody:handleInput()

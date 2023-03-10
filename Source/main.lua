@@ -2,7 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/TestScenes/MichTest"
+import "Scenes/HouseOne/HouseOne"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -10,7 +10,7 @@ local gfx <const> = playdate.graphics
 -- Global Variables
 gravity = 0
 
-local curScene = MichTest()
+local curScene = HouseOne()
 
 local function init()
 	curScene:load()
