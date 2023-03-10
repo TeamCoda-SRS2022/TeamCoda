@@ -12,7 +12,7 @@ function CircuitSpark:init(x, y, direction)
     CircuitSpark.super.init(self)
     self.direction = direction
     self.success = false
-    local sparkSprite = gfx.image.new("Scenes/TestScenes/CrankOsuAssets/spark.png" )
+    local sparkSprite = gfx.image.new("Scenes/HouseTwo/spark.png" )
     self:setImage(sparkSprite)
     self:moveTo(x, y)
     self:add()

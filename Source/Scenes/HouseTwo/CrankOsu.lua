@@ -3,9 +3,8 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 
-import "Scenes/TestScenes/CrankOsuAssets/MovingPlatform"
-import "Scenes/TestScenes/CrankOsuAssets/MovingPlatform"
-import "Scenes/TestScenes/CrankOsuAssets/CircuitSpark"
+import "Scenes/HouseTwo/MovingPlatform"
+import "Scenes/HouseTwo/CircuitSpark"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -84,7 +83,7 @@ function CrankOsu:update()
     if self.score >= self.winScore then
         self.complete = true
         self.spawnTimer:remove()
-        local backgroundImage = gfx.image.new( "Scenes/TestScenes/CrankOsuAssets/PowerPlant-LightsOn1.png" )
+        local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOn1.png" )
         assert( backgroundImage )
         gfx.sprite.setBackgroundDrawingCallback(
             function( x, y, width, height )

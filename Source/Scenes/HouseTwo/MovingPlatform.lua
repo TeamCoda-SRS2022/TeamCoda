@@ -12,7 +12,7 @@ class('MovingPlatform').extends(gfx.sprite)  --not a RigidBody2D
 
 function MovingPlatform:init(x, y)
     MovingPlatform.super.init(self)
-    local platformSprite = gfx.image.new("Scenes/TestScenes/CrankOsuAssets/connector.png" )
+    local platformSprite = gfx.image.new("Scenes/HouseTwo/connector.png" )
     self:setImage(platformSprite)
     self:moveTo(x, y)
     self:add()

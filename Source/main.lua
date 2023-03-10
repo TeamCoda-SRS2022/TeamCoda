@@ -2,10 +2,8 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
-import "Scenes/TestScenes/HarryTest"
-import "Scenes/TestScenes/YunTest"
-import "Scenes/TestScenes/BattleTest"
-import "Scenes/TestScenes/ChargingTest"
+import "CoreLibs/frameTimer"
+import "Scenes/HouseTwo/HouseTwo"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -15,7 +13,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = HarryTest()
+local curScene = HouseTwo()
 
 local function init()
 	curScene:load()
