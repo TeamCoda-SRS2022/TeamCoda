@@ -20,10 +20,10 @@ function MichTest:init()
   
   self.sfreq = {164.81, 196.00, 261.63, 130.81}
   
-  self.freqs = {Frequency(30, 100, self.sfreq[1]), Frequency(100, 100, self.sfreq[2]), Frequency(170, 100, self.sfreq[3]), Frequency(240, 100, self.sfreq[4])}
+  self.freqs = {Frequency(255, 120, self.sfreq[1]), Frequency(275, 120, self.sfreq[2]), Frequency(295, 120, self.sfreq[3]), Frequency(315, 120, self.sfreq[4])}
   self.freqNum = 1
     
-  self.player = Player(10, 200)
+  self.player = Player(110, 200)
 
   self.sceneObjects = {
     self.freqs[1],
@@ -39,11 +39,11 @@ function MichTest:load()
 
   self.freqs[self.freqNum]:start()
 
-  local backgroundImage = gfx.image.new("Scenes/Backgrounds/black.png")
+  local backgroundImage = gfx.image.new("Scenes/Backgrounds/bg.png")
   assert( backgroundImage )
   gfx.sprite.setBackgroundDrawingCallback(
     function( x, y, width, height )
-      backgroundImage:draw( 0, 0 )
+      backgroundImage:drawCentered( 200, 125 )
     end
 	)
 end 

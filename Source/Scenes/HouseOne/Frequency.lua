@@ -35,8 +35,8 @@ function Frequency:update()
 end
 
 function Frequency:onCrank()
-  local change, acceleratedChange = playdate.getCrankChange()/4
-  self.freq += change
+  local change, acceleratedChange = playdate.getCrankChange()/8
+  self.freq = self.freq + change
   
   if self.freq < 130.8 and change then 
       self.freq = 130.8
@@ -46,12 +46,12 @@ function Frequency:onCrank()
   end
   
   local maxWidth = 10
-  local height = 90
+  local height = 45
 
 	local bar_image = gfx.image.new(maxWidth, height, gfx.kColorWhite)
   
 	gfx.pushContext(bar_image)
-	gfx.fillRect(0, 0, maxWidth, height - 90 * (self.freq - 130.8)/130.84)
+	gfx.fillRect(0, 0, maxWidth, height - 45 * (self.freq - 130.8)/130.84)
 	gfx.popContext()
 	self:setImage(bar_image)
   
