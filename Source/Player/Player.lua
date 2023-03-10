@@ -34,6 +34,7 @@ function Player:init(x, y)
 	self.interactableSprite = gfx.sprite.new(interactableIcon)
 	self.interactableSprite:moveTo(x, y)
 	self.interactableSprite:setVisible(false)
+	self.interactableSprite:setZIndex(100)
 	self.interactableSprite:add()
 
 	
@@ -94,6 +95,12 @@ function Player:move(x, y)
 		elseif collision.normal.y == -1 then
 			self.grounded = true
 		end
+	end
+
+	function Player:remove()
+		
+		self.interactableSprite:remove()
+		Player.super.remove(self)
 	end
 
 	

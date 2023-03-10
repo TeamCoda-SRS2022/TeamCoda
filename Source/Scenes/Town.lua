@@ -32,5 +32,14 @@ end
 
 function Town:load()
     Town.super.load(self)
+
+    local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )  -- replace with town backgroundImage
+	assert( backgroundImage )
+
+	gfx.sprite.setBackgroundDrawingCallback(
+		function( x, y, width, height )
+			backgroundImage:draw( 0, 0 )
+		end
+	)
     
 end

@@ -6,6 +6,8 @@ import "YLib/SceneManagement/Scene"
 import "YLib/Interactable/InteractableBody"
 import "Player/Player"
 import "Platforms/Platform"
+import "SceneTransition/SceneTransition"
+
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -35,6 +37,7 @@ function HouseOne:init()
   local buttonSprite = gfx.image.new( "Assets/button.png" )
   local puzzleSprite = gfx.image.new( "Assets/growingRobot.png" )
   local conveyorBeltSprite = gfx.image.new( "Assets/conveyorbelt.png")
+  local doorSprite = gfx.image.new( "SceneTransition/door.png" )
 
   self.conveyorBelt = gfx.sprite.new(conveyorBeltSprite)
   self.conveyorBelt:moveTo(320, 145)
@@ -46,7 +49,7 @@ function HouseOne:init()
   self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
   self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
 
-
+  self.townEntrance = SceneTransition(41, 200, doorSprite, self.player, Town(), false, 30)
 
   self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
   
@@ -94,6 +97,12 @@ function HouseOne:init()
     )
 
   local myInputHandlers = {
+    upButtonDown = function()
+      self.townEntrance:handleInput()
+      self.conveyorButton:handleInput()
+
+    end,
+
     cranked = function(change, acceleratedChange)
       for i, crank in ipairs(self.crankLocations) do
         if math.abs(self.player.x - crank.x) <= 25 then
@@ -118,8 +127,9 @@ function HouseOne:init()
       self.crank4,
 
       self.conveyorButton,
-
       self.conveyorBelt,
+      
+      self.townEntrance,
       
       Platform(32, 240, platformSprite),
       Platform(96, 240, platformSprite),
@@ -128,14 +138,14 @@ function HouseOne:init()
       Platform(288, 240, platformSprite),
       Platform(352, 240, platformSprite),
       
-      
       self.player,
   }
 end
 
 
 function HouseOne:load()
-    HouseOne.super.load(self)
+  HouseOne.super.load(self)
+
   local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
 	assert( backgroundImage )
 
@@ -147,5 +157,6 @@ function HouseOne:load()
 end
 
 function HouseOne:unload()
+  HouseOne.super.unload(self)
   playdate.inputHandlers.pop()
 end
