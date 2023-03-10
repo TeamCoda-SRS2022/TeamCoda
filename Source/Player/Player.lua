@@ -34,6 +34,7 @@ function Player:init(x, y)
 	self.interactableSprite = gfx.sprite.new(interactableIcon)
 	self.interactableSprite:moveTo(x, y)
 	self.interactableSprite:setVisible(false)
+	self.interactableSprite:setZIndex(100)
 	self.interactableSprite:add()
 
 	

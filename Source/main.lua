@@ -28,7 +28,7 @@ function playdate.update()
 	playdate.timer.updateTimers()
 	playdate.frameTimer.updateTimers()
 	Scene.update()
-    pd.drawFPS(200,200)
+  pd.drawFPS(200,200)
 end
 
 function loadScene(sceneObj)

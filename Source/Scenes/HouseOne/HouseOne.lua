@@ -6,6 +6,8 @@ import "YLib/SceneManagement/Scene"
 import "YLib/Interactable/InteractableBody"
 import "Player/Player"
 import "Platforms/Platform"
+import "SceneTransition/SceneTransition"
+
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -35,22 +37,23 @@ function HouseOne:init()
   local buttonSprite = gfx.image.new( "Assets/button.png" )
   local puzzleSprite = gfx.image.new( "Assets/growingRobot.png" )
   local conveyorBeltSprite = gfx.image.new( "Assets/conveyorbelt.png")
+  local doorSprite = gfx.image.new( "SceneTransition/door.png" )
 
   self.conveyorBelt = gfx.sprite.new(conveyorBeltSprite)
   self.conveyorBelt:moveTo(320, 145)
 
   self.player = Player(100, 100)
 
-  self.crank1 = InteractableBody(225, 231, puzzleSprite, self.player, 0)
-  self.crank2 = InteractableBody(275, 231, puzzleSprite, self.player, 0)
-  self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
-  self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
+  --self.crank1 = InteractableBody(225, 231, puzzleSprite, self.player, 0)
+  --self.crank2 = InteractableBody(275, 231, puzzleSprite, self.player, 0)
+  --self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
+  --self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
 
+  self.townEntrance = SceneTransition(41, 200, doorSprite, self.player, Town(), false, 30)
 
-
-  self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
+  --self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
   
-  self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
+  --self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
   self.lowestMIDI = 63
   self.notes = {
     {["step"] = 1, ["note"] = self.lowestMIDI, ["length"] = 1, ["velocity"] = 1},
@@ -75,7 +78,7 @@ function HouseOne:init()
   self.sequence:setLoops(1, 8, 1)
 
 
-
+--[[
   self.conveyorButton.callbacks:push(
     function() 
       self.sequence:play(
@@ -91,7 +94,7 @@ function HouseOne:init()
         end
       )
     end
-    )
+    )--]]
 
   local myInputHandlers = {
     cranked = function(change, acceleratedChange)
@@ -112,14 +115,16 @@ function HouseOne:init()
   playdate.inputHandlers.push(myInputHandlers)
 
   self.sceneObjects = {
-      self.crank1,
-      self.crank2,
-      self.crank3,
-      self.crank4,
+      --self.crank1,
+      --self.crank2,
+      --self.crank3,
+      --self.crank4,
 
-      self.conveyorButton,
+      --self.conveyorButton,
 
-      self.conveyorBelt,
+      --self.conveyorBelt,
+      
+      self.townEntrance,
       
       Platform(32, 240, platformSprite),
       Platform(96, 240, platformSprite),
