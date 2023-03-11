@@ -21,20 +21,23 @@ function Frequency:init(x, y, freq)
   self.active = false
   self.completed = false
 
-  self.synth = playdate.sound.synth.new(playdate.sound.kWaveSine)
-  self.synth1 = playdate.sound.synth.new(playdate.sound.kWaveSawtooth)
+  self.synth = playdate.sound.synth.new(playdate.sound.kWaveSine, 0.3)
+  self.synth1 = playdate.sound.synth.new(playdate.sound.kWaveSine, 0.3)
+
+  self.play1 = false
+  self.timer1 = pd.timer.performAfterDelay(300, function ()
+    self.play1 = not self.play1
+  end)
+  self.timer1.repeats = true
 end
 
 function Frequency:update()
     Frequency.super.update(self)
-    if (not self.completed) then
-      self:onCrank()
-    end
-    
-
 end
 
 function Frequency:onCrank()
+  if (self.completed) then return end
+
   local change, acceleratedChange = playdate.getCrankChange()/8
   self.freq = self.freq + change
   
@@ -56,7 +59,14 @@ function Frequency:onCrank()
 	self:setImage(bar_image)
   
   if self.active then
-    self.synth1:playNote(self.freq)
+    if self.play1 then
+      self.synth1:playNote(self.freq)
+      self.synth:noteOff()
+    else
+      self.synth:playNote(self.targetFreq)
+      self.synth1:noteOff()
+    end
+
     if math.abs(self.freq - self.targetFreq) < 2 then
       self:stop()
       self.completed = true
@@ -70,6 +80,9 @@ end
 
 function Frequency:start()
   self.active = true
+end
+
+function Frequency:play()
   self.synth:playNote(self.targetFreq)
 end
 

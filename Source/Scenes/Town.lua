@@ -6,6 +6,7 @@ import "YLib/SceneManagement/Scene"
 import "Scenes/FactoryElevator"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
+import "Player/Player"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -32,5 +33,14 @@ end
 
 function Town:load()
     Town.super.load(self)
+
+    local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )  -- replace with town backgroundImage
+	assert( backgroundImage )
+
+	gfx.sprite.setBackgroundDrawingCallback(
+		function( x, y, width, height )
+			backgroundImage:draw( 0, 0 )
+		end
+	)
     
 end
