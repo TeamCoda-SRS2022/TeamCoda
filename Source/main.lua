@@ -3,10 +3,9 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/frameTimer"
-import "Scenes/HouseTwo/HouseTwo"
-import "Scenes/TestScenes/BattleTest"
-import "Scenes/TestScenes/ChargingTest"
 import "Scenes/Town"
+import "Scenes/HouseOne/HouseOne"
+import "Scenes/HouseTwo/HouseTwo"
 import "Scenes/FloorOne/FloorOne"
 
 
@@ -18,10 +17,16 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = Town()
+local curScene = 1
+local scenes = {
+	Town(),
+	HouseOne(),
+	HouseTwo(),
+	FloorOne()
+}
 
 local function init()
-	curScene:load()
+	scenes[curScene]:load()
 end
 
 init()
@@ -30,12 +35,16 @@ function playdate.update()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
 	playdate.frameTimer.updateTimers()
-	curScene:update()
+	scenes[curScene]:update()
+
+	-- if scenes[2].completed and scenes[3].completed then
+	-- 	scenes[1].BigDoor.locked = false
+	-- end
     -- pd.drawFPS(200,200)
 end
 
-function loadScene(sceneObj)
-	curScene:unload()
-	curScene = sceneObj
-	curScene:load()
+function loadScene(sceneNum)
+	scenes[curScene]:unload()
+	curScene = sceneNum
+	scenes[curScene]:load()
 end

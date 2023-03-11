@@ -3,10 +3,10 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
-import "YLib/Interactable/InteractableBody"
 import "Player/Player"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
+import "YLib/Interactable/InteractableBody"
 
 
 local pd <const> = playdate
@@ -49,8 +49,6 @@ function FloorOne:init()
   self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
   self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
 
-  self.townEntrance = SceneTransition(41, 200, doorSprite, self.player, Town(), false, 30)
-
   self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
   
   self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
@@ -76,25 +74,6 @@ function FloorOne:init()
   self.sequence:setTempo(4)  -- steps per second
   self.sequence:addTrack(self.noteTrack)
   self.sequence:setLoops(1, 8, 1)
-
-
-
-  self.conveyorButton.callbacks:push(
-    function() 
-      self.sequence:play(
-        function()
-          valid = true
-          for i, _ in ipairs(self.notes) do
-            if self.notes[i]["note"] ~= self.solutionNotes[i] then
-              valid = false
-            end
-          end
-          print(valid)
-          self.solved = valid or self.solved
-        end
-      )
-    end
-    )
 
   local myInputHandlers = {
 
@@ -124,8 +103,6 @@ function FloorOne:init()
       self.conveyorButton,
       self.conveyorBelt,
       
-      self.townEntrance,
-      
       Platform(32, 240, platformSprite),
       Platform(96, 240, platformSprite),
       Platform(160, 240, platformSprite),
@@ -140,6 +117,23 @@ end
 
 function FloorOne:load()
   FloorOne.super.load(self)
+
+  -- self.conveyorButton.callbacks:push(
+  --   function() 
+  --     self.sequence:play(
+  --       function()
+  --         valid = true
+  --         for i, _ in ipairs(self.notes) do
+  --           if self.notes[i]["note"] ~= self.solutionNotes[i] then
+  --             valid = false
+  --           end
+  --         end
+  --         print(valid)
+  --         self.solved = valid or self.solved
+  --       end
+  --     )
+  --   end
+  --   )
 
   local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
 	assert( backgroundImage )

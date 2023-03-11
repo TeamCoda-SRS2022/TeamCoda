@@ -4,7 +4,6 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/animation"
 import "YLib/Physics/RigidBody2D"
-import "YLib/Interactable/InteractableBody"
 
 
 local pd <const> = playdate
@@ -13,7 +12,6 @@ local gfx <const> = pd.graphics
 
 
 class('Player').extends(RigidBody2D)
-class('InteractableBody').extends(gfx.sprite)
 
 local jumpHeight = 32
 
@@ -22,7 +20,7 @@ function Player:init(x, y)
 	self.curAnim = gfx.animation.loop.new(125, idle, true)
 	Player.super.init(self, x, y, self.curAnim:image())
 
-	
+	self:setZIndex(1)
 
 	self.speed = 2
 	self.jumpVelocity = math.sqrt(2 * gravity * jumpHeight)
@@ -37,9 +35,6 @@ function Player:init(x, y)
 	self.interactableSprite:moveTo(x, y)
 	self.interactableSprite:setVisible(false)
 	self.interactableSprite:setZIndex(100)
-	self.interactableSprite:add()
-
-	
 end
 
 function Player:update()
@@ -98,12 +93,4 @@ function Player:move(x, y)
 			self.grounded = true
 		end
 	end
-
-	function Player:remove()
-		
-		self.interactableSprite:remove()
-		Player.super.remove(self)
-	end
-
-	
 end

@@ -19,6 +19,8 @@ function HouseOne:init()
     HouseOne.super.init(self)
   
   self.sfreq = {164.81, 196.00, 261.63, 130.81}
+
+  self.completed = false
   
   self.freqs = {Frequency(255, 120, self.sfreq[1]), Frequency(275, 120, self.sfreq[2]), Frequency(295, 120, self.sfreq[3]), Frequency(315, 120, self.sfreq[4])}
   self.freqNum = 1
@@ -26,15 +28,19 @@ function HouseOne:init()
   self.player = Player(110, 200)
 
   self.recordPlayer = InteractableBody(225, 100, gfx.image.new("Assets/growingRobot.png"), self.player, 0)
+  
+  local doorSprite = gfx.image.new( "SceneTransition/door.png" )
+  local TownDoor = SceneTransition(110, 186, doorSprite, self.player, 1, false, 80)
 
   self.sceneObjects = {
+    TownDoor,
+    self.player.interactableSprite,
     self.freqs[1],
     self.freqs[2],
     self.freqs[3],
     self.freqs[4],
     self.player,
     Platform(200, 224, gfx.image.new("Scenes/HouseOne/background.png")),
-    InteractableBody(225, 100, gfx.image.new("Assets/growingRobot.png"), self.player, 0),
   } 
 end
 
@@ -64,7 +70,7 @@ function HouseOne:update()
         if self.freqs[self.freqNum].completed then 
             self.freqNum = self.freqNum + 1
             if(self.freqNum == 5) then
-                print("completed")
+                self.completed = true
                 return
             end
             self.freqs[self.freqNum]:start()

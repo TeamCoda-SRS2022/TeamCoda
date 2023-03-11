@@ -3,7 +3,6 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
-import "Scenes/FactoryElevator"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
 import "Player/Player"
@@ -15,18 +14,25 @@ class('Town').extends(Scene)
 
 function Town:init()
     Town.super.init(self)
+    self.offsetx = 0
 
     local platformSprite = gfx.image.new("Assets/floor.png")
 
     local FancyDoorSprite = gfx.image.new("SceneTransition/FancyDoor.png")
+    local doorSprite = gfx.image.new( "SceneTransition/door.png" )
 
     self.player = Player(100, 100)
 
-    -- local FactoryElevatorEntrance = SceneTransition(190, 140, FancyDoorSprite, self.player, FactoryElevator(), false, 80)
+    local HouseOneDoor = SceneTransition(263, 225, doorSprite, self.player, 2, false, 80)
+    local HouseTwoDoor = SceneTransition(540, 215, doorSprite, self.player, 3, false, 80)
+    self.BigDoor = SceneTransition(410, 260, doorSprite, self.player, 3, true, 80)
 
     self.sceneObjects = {
         self.player,
-        -- FactoryElevatorEntrance,
+        self.player.interactableSprite,
+        HouseOneDoor,
+        HouseTwoDoor,
+        self.BigDoor,
         Platform(337, 237, platformSprite)
     }
 end
@@ -34,10 +40,13 @@ end
 function Town:load()
     Town.super.load(self)
 
+
+    playdate.graphics.setDrawOffset(self.offsetx, 0)
+
     local bg = gfx.sprite.new(gfx.image.new("Assets/demo town.png"))
     bg:setCenter(0, 0)
     bg:moveTo(0, 0)
-    bg:add()
+    self:add(bg)
     bg:setZIndex(-1)
 
     -- local backgroundImage = gfx.image.new( "Assets/demo town.png" )  -- replace with town backgroundImage
@@ -51,10 +60,15 @@ function Town:load()
     
 end
 
+function Town:unload()
+    Town.super.unload(self)
+    playdate.graphics.setDrawOffset(0, 0)
+end
+
 function Town:update()
     Town.super.update(self)
-    local offsetx = - (self.player.x - 200)
-    if(offsetx > 0) then offsetx = 0 end
-    if(offsetx < -274) then offsetx = -274 end
-    playdate.graphics.setDrawOffset(offsetx, 0)
+    self.offsetx = - (self.player.x - 200)
+    if(self.offsetx > 0) then self.offsetx = 0 end
+    if(self.offsetx < -274) then self.offsetx = -274 end
+    playdate.graphics.setDrawOffset(self.offsetx, 0)
 end

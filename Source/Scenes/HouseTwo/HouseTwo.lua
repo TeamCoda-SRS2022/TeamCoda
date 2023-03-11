@@ -6,8 +6,6 @@ import "YLib/SceneManagement/Scene"
 import "Player/Player"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
-import "Scenes/Town"
-import "Scenes/FactoryElevator"
 import "Scenes/HouseTwo/MovingPlatform"
 import "Scenes/HouseTwo/CircuitSpark"
 
@@ -28,7 +26,7 @@ function HouseTwo:init()
 
     self.MovingPlatform = MovingPlatform(270, 114)
 
-    self.complete = false
+    self.completed = false
     self.winScore = 8
     self.score = 0
     self.sparks = {}
@@ -39,27 +37,12 @@ function HouseTwo:init()
     self.audio = pd.sound.fileplayer.new("Scenes/HouseTwo/HouseTwo")
 
     self.bpm = 80
-    self.spawnTimer = pd.timer.performAfterDelay(60 * 1000 / self.bpm, function() 
-        self.curSpark += 1
-        if self.curSpark > #self.sparkPattern then
-            self.audio:play()
-            self.score = 0
-            self.curSpark = 1
-        end
-        print(self.curSpark)
 
-        if self.sparkPattern[self.curSpark] > -1 then
-            self:spawnSpark(self.sparkPattern[self.curSpark])
-        end
-    end)
-    self.spawnTimer.repeats = true
-
-    self.TownEntrance = SceneTransition(81, 175, DoorSprite, self.player, Town(), false, 30)
+    self.TownEntrance = SceneTransition(81, 175, DoorSprite, self.player, 1, false, 30)
     self.TownEntrance:setZIndex(-10)
-    self.NextPuzzleEntrance = SceneTransition(340, 175, DoorSprite, self.player, FactoryElevator(), true, 30)
-    self.NextPuzzleEntrance:setZIndex(-10)
 
     self.sceneObjects = {
+        self.player.interactableSprite,
         self.player,
         Platform(100, 200, platformSprite),
         Platform(150, 200, platformSprite),
@@ -67,7 +50,6 @@ function HouseTwo:init()
         Platform(250, 200, platformSprite),
         Platform(300, 200, platformSprite),
         self.TownEntrance,
-        self.NextPuzzleEntrance,
         self.MovingPlatform
     }
 end
@@ -83,6 +65,21 @@ function HouseTwo:load()
     receiverSprite:moveTo( 270, 114 )
     receiverSprite:setZIndex(1)
     self:add(receiverSprite)
+
+    self.spawnTimer = pd.timer.performAfterDelay(60 * 1000 / self.bpm, function() 
+        self.curSpark += 1
+        if self.curSpark > #self.sparkPattern then
+            self.audio:play()
+            self.score = 0
+            self.curSpark = 1
+        end
+        print(self.curSpark)
+
+        if self.sparkPattern[self.curSpark] > -1 then
+            self:spawnSpark(self.sparkPattern[self.curSpark])
+        end
+    end)
+    self.spawnTimer.repeats = true
 
     local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOff.png" )
 	assert( backgroundImage )
@@ -122,9 +119,8 @@ function HouseTwo:update()
     end
 
     if self.score >= self.winScore then
-        self.complete = true
+        self.completed = true
         self.spawnTimer:remove()
-        self.NextPuzzleEntrance:toggleLock()
         local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOn1.png" )
         assert( backgroundImage )
         gfx.sprite.setBackgroundDrawingCallback(
@@ -145,14 +141,6 @@ function HouseTwo:unload()
 
     
     self.audio:stop()
-
-    local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
-	assert( backgroundImage )
-	gfx.sprite.setBackgroundDrawingCallback(
-		function( x, y, width, height )
-			backgroundImage:draw( 0, 0 )
-		end
-	)
 end
 
 
