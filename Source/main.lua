@@ -18,7 +18,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = HouseOne()
+local curScene = FloorOne()
 
 local function init()
 	curScene:load()
