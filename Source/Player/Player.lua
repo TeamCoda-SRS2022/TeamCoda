@@ -22,7 +22,7 @@ function Player:init(x, y)
 
 	
 
-	self.speed = 1
+	self.speed = 2
 	self.jumpVelocity = math.sqrt(2 * gravity * jumpHeight)
 	self.isFacingLeft = playdate.graphics.kImageUnflipped
 	self.grounded = false
