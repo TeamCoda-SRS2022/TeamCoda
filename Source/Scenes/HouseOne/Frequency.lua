@@ -25,6 +25,10 @@ function Frequency:init(x, y, freq)
   self.synth1 = playdate.sound.synth.new(playdate.sound.kWaveSine, 0.3)
 
   self.play1 = false
+  self.timer1 = pd.timer.performAfterDelay(300, function ()
+    self.play1 = not self.play1
+  end)
+  self.timer1.repeats = true
 end
 
 function Frequency:update()
@@ -76,10 +80,6 @@ end
 
 function Frequency:start()
   self.active = true
-  self.timer1 = pd.timer.performAfterDelay(1000, function ()
-    print(self.play1)
-  end)
-  self.timer1.repeats = true
 end
 
 function Frequency:play()

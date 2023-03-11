@@ -7,6 +7,8 @@ import "Player/Player"
 import "Scenes/HouseOne/Frequency"
 import "CoreLibs/Crank"
 import "Player/RhythmInput"
+import "YLib/Interactable/InteractableBody"
+import "SceneTransition/SceneTransition"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -23,15 +25,16 @@ function HouseOne:init()
     
   self.player = Player(110, 200)
 
-  self.recordPlayer = InteractableBody(225, 231, "", self.player, 0)
+  self.recordPlayer = InteractableBody(225, 100, gfx.image.new("Assets/growingRobot.png"), self.player, 0)
 
   self.sceneObjects = {
-    self.recordPlayer,
     self.freqs[1],
     self.freqs[2],
     self.freqs[3],
     self.freqs[4],
-    self.player
+    self.player,
+    Platform(200, 224, gfx.image.new("Scenes/HouseOne/background.png")),
+    InteractableBody(225, 100, gfx.image.new("Assets/growingRobot.png"), self.player, 0),
   } 
 end
 
@@ -44,7 +47,7 @@ function HouseOne:load()
   assert( backgroundImage )
   gfx.sprite.setBackgroundDrawingCallback(
     function( x, y, width, height )
-      backgroundImage:drawCentered( 200, 125 )
+      backgroundImage:drawCentered( 200, 120 )
     end
 	)
 end 

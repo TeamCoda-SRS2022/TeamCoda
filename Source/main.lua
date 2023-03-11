@@ -5,6 +5,7 @@ import "CoreLibs/timer"
 import "CoreLibs/frameTimer"
 import "Scenes/Town"
 import "Scenes/FloorOne/FloorOne"
+import "Scenes/HouseOne/HouseOne"
 import "Scenes/HouseTwo/HouseTwo"
 
 
@@ -16,7 +17,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = Town()
+local curScene = HouseTwo()
 
 local function init()
 	curScene:load()
