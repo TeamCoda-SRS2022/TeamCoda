@@ -45,9 +45,9 @@ function HouseOne:init()
 end
 
 function HouseOne:load()
-    HouseOne.super.load(self)
+  HouseOne.super.load(self)
 
-  self.freqs[self.freqNum]:start()
+  if not self.completed then self.freqs[self.freqNum]:start() end
 
   local backgroundImage = gfx.image.new("Scenes/Backgrounds/bg.png")
   assert( backgroundImage )
