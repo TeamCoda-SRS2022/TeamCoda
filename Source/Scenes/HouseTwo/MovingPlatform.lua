@@ -25,8 +25,8 @@ end
 function MovingPlatform:update() --this is extending the sprites update function
     MovingPlatform.super.update(self)
     
-    xPosition = self.centerX + cos(rad(pd.getCrankPosition() - 90))*self.radius
-    yPosition = self.centerY + sin(rad(pd.getCrankPosition() - 90))*self.radius
+    xPosition = self.centerX+ cos(rad(pd.getCrankPosition() - 90))*self.radius
+    yPosition = self.centerY+ sin(rad(pd.getCrankPosition() - 90))*self.radius
     self:moveTo(xPosition, yPosition)
     
 end

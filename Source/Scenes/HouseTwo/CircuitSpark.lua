@@ -15,7 +15,6 @@ function CircuitSpark:init(x, y, direction)
     local sparkSprite = gfx.image.new("Scenes/HouseTwo/spark.png" )
     self:setImage(sparkSprite)
     self:moveTo(x, y)
-
     self.speed = 4
 end
 
@@ -23,13 +22,14 @@ function CircuitSpark:update()
     CircuitSpark.super.update(self)
 
     if self.direction == 'right' then
-        if self.x < 270 then
+        if self.x < 200 then
             self:moveBy(self.speed, 0)
         else
             self:remove()
         end
     elseif self.direction == 'left' then
-        if self.x > 270 then
+        print(self.x)
+        if self.x > 200 then
             self:moveBy(-self.speed, 0)
         else
             self:remove()
