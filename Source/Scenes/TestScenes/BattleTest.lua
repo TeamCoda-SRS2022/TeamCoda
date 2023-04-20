@@ -28,7 +28,7 @@ function BattleTest:load()
     )
     puzzle:start()
     
-    local backgroundImage = gfx.image.new( "Scenes/Backgrounds/black.png" )
+    local backgroundImage = gfx.image.new( "Scenes/Backgrounds/bg.png" )
 	assert( backgroundImage )
 
 	gfx.sprite.setBackgroundDrawingCallback(
