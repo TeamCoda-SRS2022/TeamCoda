@@ -22,15 +22,16 @@ function HouseOne:init()
 
   self.completed = false
   
+  self.player = Player(110, 200)
+
   self.freqs = {Frequency(255, 120, self.sfreq[1]), Frequency(275, 120, self.sfreq[2]), Frequency(295, 120, self.sfreq[3]), Frequency(315, 120, self.sfreq[4])}
   self.freqNum = 1
     
-  self.player = Player(110, 200)
-
-  self.recordPlayer = InteractableBody(225, 100, gfx.image.new("Assets/growingRobot.png"), self.player, 0)
+  self.recordPlayer = InteractableBody(165, 186, gfx.image.new("SceneTransition/door.png"), self.player, 0)
+  self.recordPlayer:setVisible(false)
   
   local doorSprite = gfx.image.new( "SceneTransition/door.png" )
-  local TownDoor = SceneTransition(110, 186, doorSprite, self.player, 1, false, 80)
+  local TownDoor = SceneTransition(110, 186, doorSprite, self.player, 1, false, 60)
 
   self.sceneObjects = {
     TownDoor,
@@ -41,6 +42,7 @@ function HouseOne:init()
     self.freqs[4],
     self.player,
     Platform(200, 224, gfx.image.new("Scenes/HouseOne/background.png")),
+    self.recordPlayer
   } 
 end
 
