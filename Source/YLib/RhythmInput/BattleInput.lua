@@ -105,17 +105,29 @@ function BattleInput:init(soundFilePath, notes, tempo)
     end
 
 
-    local function newMeasure()
-      print("done")
+    local function songDone()
+      self:stop()
+
     end
 
     self.audio = pd.sound.fileplayer.new(soundFilePath)
-    self.audio:setFinishCallback(newMeasure)
+    self.audio:setFinishCallback(songDone)
 
     self.myInputHandlers = {
+      BButtonDown = function()
+        for i=#self.notesOnScreen,1,-1 do
+          if math.abs(self.cursor.y - self.notesOnScreen[i]["sprite"].y) < 10 and math.abs(self.cursor.x - self.notesOnScreen[i]["sprite"].x) < 10 then
+            print("hit")
+            self.notesOnScreen[i]["sprite"]:remove()
+            table.remove(self.notesOnScreen, i)
+          end
+        end
+        
+      end,
       cranked = function(change, acceleratedChange)
         self:handleCrankMove(change, acceleratedChange)
       end,
+    
     }
 
 
@@ -123,6 +135,9 @@ function BattleInput:init(soundFilePath, notes, tempo)
 
 
 function BattleInput:update()
+  if not self.active then
+    return
+  end
   gfx.drawLine(self.xThreshold, self.cursorMax, self.xThreshold, self.cursorMin)
   --print(self.audio:getOffset(), pd.sound.getCurrentTime() - self.startTime)
   local songPosInBeats = self.audio:getOffset() / self.secPerBeat
@@ -135,6 +150,7 @@ function BattleInput:update()
     if self.notesOnScreen[i]["sprite"].x < self.xThreshold then
       self.notesOnScreen[i]["sprite"]:remove()
       table.remove(self.notesOnScreen, i)
+      print("miss")
     end
   end
   

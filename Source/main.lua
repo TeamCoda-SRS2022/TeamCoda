@@ -8,7 +8,6 @@ import "Scenes/HouseOne/HouseOne"
 import "Scenes/HouseTwo/HouseTwo"
 import "Scenes/FloorOne/FloorOne"
 import "Scenes/TestScenes/BossBattle"
-import "Scenes/TestScenes/BattleTest"
 
 
 local pd <const> = playdate
@@ -21,12 +20,11 @@ offset = 0
 
 local curScene = 1
 local scenes = {
-	---Town(),
+	--Town(),
 	--HouseOne(),
 	--HouseTwo(),
 	--FloorOne(),
 	BossBattle(),
-	--BattleTest()
 }
 
 local function init()
