@@ -7,6 +7,7 @@ import "Scenes/Town"
 import "Scenes/HouseOne/HouseOne"
 import "Scenes/HouseTwo/HouseTwo"
 import "Scenes/FloorOne/FloorOne"
+import "Scenes/Cavern"
 
 
 local pd <const> = playdate
@@ -19,10 +20,8 @@ offset = 0
 
 local curScene = 1
 local scenes = {
-	Town(),
-	HouseOne(),
-	HouseTwo(),
-	FloorOne()
+
+	Cavern()
 }
 
 local function init()
