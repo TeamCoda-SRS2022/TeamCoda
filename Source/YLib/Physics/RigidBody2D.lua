@@ -22,6 +22,17 @@ function RigidBody2D:init(x, y, sprite)
 	self.static = false
 end
 
+function RigidBody2D:initNoSprite(x, y, width, height)  -- if just want physics
+	RigidBody2D.super.init(self)
+	self:setCollideRect( 0, 0, width, height )
+	self:setGroups(1) -- rigid body group 
+	self:setCollidesWithGroups(1) -- only collide with rigid bodies
+	self:moveTo( x, y )
+
+	self.velocity = geo.vector2D.new(0, 0)
+	self.static = false
+end
+
 function RigidBody2D:update()
 	if not self.static then
 		self.velocity.y += gravity
