@@ -104,8 +104,6 @@ end
 
 function Cavern:update()
     Town.super.update(self)
-
-    pd.drawFPS(10, 10)
     
     self.offsetx = - (self.player.x - 200)
     if(self.offsetx > 0) then self.offsetx = 0 end

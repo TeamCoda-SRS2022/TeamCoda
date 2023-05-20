@@ -110,10 +110,10 @@ end
 
 function HouseTwo:update()
     HouseTwo.super.update(self)
-
+    
     for i, spark in ipairs(self.sparks) do
-        print(self.score, self.MovingPlatform.x)
-        print((distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y)))
+        --print(self.score, self.MovingPlatform.x)
+        --print((distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y)))
         if (distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y) < 11) and (not spark:getSuccess()) then
             self.score += 1
             spark:setSuccess(true)
@@ -124,7 +124,7 @@ function HouseTwo:update()
         --print(spark.x, spark.y)
     end
 
-    if self.score >= self.winScore then
+    if not self.completed and self.score >= self.winScore then
         self.completed = true
         self.spawnTimer:remove()
         local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOn1.png" )
@@ -143,8 +143,6 @@ function HouseTwo:unload()
     HouseTwo.super.unload(self)
 
     self.spawnTimer:remove()
-
-
     
     self.audio:stop()
 end

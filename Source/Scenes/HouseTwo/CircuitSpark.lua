@@ -28,7 +28,6 @@ function CircuitSpark:update()
             self:remove()
         end
     elseif self.direction == 'left' then
-        print(self.x)
         if self.x > 200 then
             self:moveBy(-self.speed, 0)
         else

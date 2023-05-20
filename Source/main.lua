@@ -20,8 +20,10 @@ offset = 0
 
 local curScene = 1
 local scenes = {
-
-	Cavern()
+	Town(),
+	HouseOne(),
+	HouseTwo(),
+	Cavern(),
 }
 
 local function init()
@@ -36,10 +38,10 @@ function playdate.update()
 	playdate.frameTimer.updateTimers()
 	scenes[curScene]:update()
 
-	-- if scenes[2].completed and scenes[3].completed then
-	-- 	scenes[1].BigDoor.locked = false
-	-- end
-    -- pd.drawFPS(200,200)
+	if scenes[2].completed and scenes[3].completed then
+		scenes[1].BigDoor.locked = false
+	end
+	pd.drawFPS(200,200)
 end
 
 function loadScene(sceneNum)
