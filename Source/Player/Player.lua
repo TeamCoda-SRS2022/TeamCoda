@@ -5,8 +5,11 @@ import "CoreLibs/timer"
 import "CoreLibs/animation"
 import "YLib/Physics/RigidBody2D"
 
+
 local pd <const> = playdate
 local gfx <const> = pd.graphics
+
+
 
 class('Player').extends(RigidBody2D)
 
@@ -17,11 +20,21 @@ function Player:init(x, y)
 	self.curAnim = gfx.animation.loop.new(125, idle, true)
 	Player.super.init(self, x, y, self.curAnim:image())
 
-	self.speed = 1
+	self:setZIndex(1)
+
+	self.speed = 2
 	self.jumpVelocity = math.sqrt(2 * gravity * jumpHeight)
 	self.isFacingLeft = playdate.graphics.kImageUnflipped
 	self.grounded = false
-	
+
+	self:setCollidesWithGroups({1, 2}) -- only collide with rigid bodies and interactable bodies
+	self.showInteractableIcon = false
+
+	local interactableIcon = gfx.image.new("UI/Images/exclamation.png")
+	self.interactableSprite = gfx.sprite.new(interactableIcon)
+	self.interactableSprite:moveTo(x, y)
+	self.interactableSprite:setVisible(false)
+	self.interactableSprite:setZIndex(100)
 end
 
 function Player:update()
@@ -47,11 +60,37 @@ function Player:update()
 		self:move( -self.speed, 0 )
 		self.isFacingLeft = playdate.graphics.kImageFlippedX
 	end
+	
+	if self.showInteractableIcon then
+		if not self.interactableSprite:isVisible() then
+			self.interactableSprite:setVisible(true)
+		end
+		self.interactableSprite:moveTo(self.x, self.y - 25)
+	else
+		if self.interactableSprite:isVisible() then
+			self.interactableSprite:setVisible(false)
+		end
+	end
+
+end
+
+
+function Player:collisionResponse(other)
+	if other:getGroupMask() == 2 then -- interactable group
+		return "overlap"
+	end
+	return "freeze"
 end
 
 function Player:move(x, y)
+	self.showInteractableIcon = false
 	local actualX, actualY, collisions, length = Player.super.move(self, x, y)
-	if collisions[1] ~= nil and collisions[1].normal.y == -1 then
-		self.grounded = true
+	for i, collision in ipairs(collisions) do
+		if collision.other:getGroupMask() == 2 then  -- interactable group
+			-- display icon
+			self.showInteractableIcon = true
+		elseif collision.normal.y == -1 then
+			self.grounded = true
+		end
 	end
 end
