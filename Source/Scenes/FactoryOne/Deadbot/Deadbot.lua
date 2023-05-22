@@ -13,6 +13,7 @@ local INITIAL_Y_POS = 20;
 function Deadbot:init(x, image)
     Deadbot.super.init(self, x, INITIAL_Y_POS, image)
     self:setImage(image)
+    self:setZIndex(-1)
     self:moveTo( x, INITIAL_Y_POS )
     self.velocity = 0
 end
