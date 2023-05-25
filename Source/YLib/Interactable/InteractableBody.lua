@@ -20,6 +20,7 @@ function InteractableBody:init(x, y, sprite, player, threshold_distance)
 	self:setCollideRect( 0, 0, sprite:getSize() )
 
 	self:setGroups(2) -- interactable group
+	self:setCollidesWithGroups(3) -- only collide with player
 
 	self.player = player
 	self.threshold_distance = threshold_distance
@@ -45,7 +46,9 @@ function InteractableBody:update()
 end
 
 function InteractableBody:handleInput()
-	if (pd.geometry.distanceToPoint(self.x, self.y, self.player.x, self.player.y) < self.threshold_distance) then
+	local sprites = self:overlappingSprites()
+	if #sprites > 0 then  -- player collision
 		for _, i in ipairs(self.callbacks) do i() end
 	end
+
 end

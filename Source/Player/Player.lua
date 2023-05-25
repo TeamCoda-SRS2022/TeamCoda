@@ -27,6 +27,7 @@ function Player:init(x, y)
 	self.isFacingLeft = playdate.graphics.kImageUnflipped
 	self.grounded = false
 
+	self:setGroups(3) -- player group
 	self:setCollidesWithGroups({1, 2}) -- only collide with rigid bodies and interactable bodies
 	self.showInteractableIcon = false
 

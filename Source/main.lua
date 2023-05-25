@@ -8,6 +8,7 @@ import "Scenes/HouseOne/HouseOne"
 import "Scenes/HouseTwo/HouseTwo"
 import "Scenes/FloorOne/FloorOne"
 import "Scenes/FactoryOne/FactoryOne"
+import "Scenes/Cavern"
 
 
 local pd <const> = playdate
@@ -23,8 +24,9 @@ local scenes = {
 	Town(),
 	HouseOne(),
 	HouseTwo(),
+	Cavern(),
 	FloorOne(),
-	FactoryOne()
+	FactoryOne(),
 }
 
 local function init()
@@ -40,10 +42,10 @@ function playdate.update()
 	playdate.frameTimer.updateTimers()
 	scenes[curScene]:update()
 
-	-- if scenes[2].completed and scenes[3].completed then
-	-- 	scenes[1].BigDoor.locked = false
-	-- end
-    -- pd.drawFPS(200,200)
+	if scenes[2].completed and scenes[3].completed then
+		scenes[1].BigDoor.locked = false
+	end
+	pd.drawFPS(200,200)
 end
 
 function loadScene(sceneNum)
