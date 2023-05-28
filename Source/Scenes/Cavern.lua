@@ -22,7 +22,7 @@ function Cavern:init()
 
     self.platformSprite = gfx.image.new("Assets/floor.png")
 
-    self.player = Player(100, 100)
+    self.player = Player(50, 200)
     -- during zoom
     self.platform1 = PlatformNoSprite(0, 218, 350, 7)
     self.platform2 = PlatformNoSprite(350, 230, 50, 7)
@@ -104,7 +104,7 @@ end
 
 function Cavern:update()
     Town.super.update(self)
-    
+        
     self.offsetx = - (self.player.x - 200)
     if(self.offsetx > 0) then self.offsetx = 0 end
     if(self.offsetx < -800) then self.offsetx = -800 end

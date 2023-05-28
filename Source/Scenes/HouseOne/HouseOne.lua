@@ -8,6 +8,7 @@ import "Scenes/HouseOne/Frequency"
 import "CoreLibs/Crank"
 import "Player/RhythmInput"
 import "YLib/Interactable/InteractableBody"
+import "Platforms/PlatformNoSprite"
 import "SceneTransition/SceneTransition"
 
 local pd <const> = playdate
@@ -41,6 +42,8 @@ function HouseOne:init()
     self.freqs[4],
     self.player,
     Platform(200, 224, gfx.image.new("Scenes/HouseOne/background.png")),
+    PlatformNoSprite(0, 0, 35, 240),
+    PlatformNoSprite(365, 0, 35, 240),
   } 
 end
 

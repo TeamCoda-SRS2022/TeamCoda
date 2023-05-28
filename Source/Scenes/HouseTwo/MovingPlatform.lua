@@ -19,7 +19,7 @@ function MovingPlatform:init(x, y)
     self.centerX = x
     self.centerY = y
 
-    self.radius = 62
+    self.radius = 75
 end
 
 function MovingPlatform:update() --this is extending the sprites update function

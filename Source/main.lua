@@ -19,7 +19,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = 5
+local curScene = 1
 local scenes = {
 	Town(),
 	HouseOne(),
@@ -44,6 +44,7 @@ function playdate.update()
 
 	if scenes[2].completed and scenes[3].completed then
 		scenes[1].BigDoor.locked = false
+		scenes[1].doorOpen = true
 	end
 	pd.drawFPS(200,200)
 end

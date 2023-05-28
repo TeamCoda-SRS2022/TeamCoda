@@ -5,7 +5,7 @@ import "CoreLibs/animation"
 import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
 import "Player/Player"
-import "Platforms/Platform"
+import "Platforms/PlatformNoSprite"
 import "SceneTransition/SceneTransition"
 import "Scenes/HouseTwo/MovingPlatform"
 import "Scenes/HouseTwo/CircuitSpark"
@@ -19,13 +19,13 @@ class('HouseTwo').extends(Scene)
 function HouseTwo:init()
     HouseTwo.super.init(self)
 
-	local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
     local DoorSprite = gfx.image.new("SceneTransition/door.png")
+    DoorSprite = DoorSprite:scaledImage(1.25)
 
     self.player = Player(100, 100)
     self.player:setZIndex(2)
 
-    self.MovingPlatform = MovingPlatform(200, 114)
+    self.MovingPlatform = MovingPlatform(200, 102)
 
     self.completed = false
     self.winScore = 8
@@ -39,19 +39,24 @@ function HouseTwo:init()
 
     self.bpm = 80
 
-    
+    local bgimagetable = gfx.imagetable.new("Scenes/HouseTwo/PowerPlant/PowerPlant-LightsOn")
+    self.completeAnimation = gfx.animation.loop.new(250 , bgimagetable, true)  
+    self.bgDone = gfx.sprite.new()
+    self.bgDone:setCenter(0, 0)
+    self.bgDone:moveTo(0, 0)
+    self.bgDone:setZIndex(-32768)
+    self.bgDone:setIgnoresDrawOffset(true)
 
-    self.TownEntrance = SceneTransition(81, 175, DoorSprite, self.player, 1, false, 30)
+    self.TownEntrance = SceneTransition(51, 190, DoorSprite, self.player, 1, false, 30)
     self.TownEntrance:setZIndex(-10)
 
     self.sceneObjects = {
         self.player.interactableSprite,
         self.player,
-        Platform(100, 200, platformSprite),
-        Platform(150, 200, platformSprite),
-        Platform(200, 200, platformSprite),
-        Platform(250, 200, platformSprite),
-        Platform(300, 200, platformSprite),
+
+        PlatformNoSprite(0, 220, 400, 75),
+        PlatformNoSprite(-50, 0, 50, 240),
+        PlatformNoSprite(400, 0, 50, 240),
         self.TownEntrance,
         self.MovingPlatform
     }
@@ -76,12 +81,13 @@ function HouseTwo:load()
     end)
     self.spawnTimer.repeats = true
 
+    gfx.setBackgroundColor(playdate.graphics.kColorBlack)
+
     local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOff1.png" )
 	assert( backgroundImage )
-
 	gfx.sprite.setBackgroundDrawingCallback(
 		function( x, y, width, height )
-			backgroundImage:draw( 40, 32 )
+			backgroundImage:drawScaled( 0, 0, 1.25 )
 		end
 	)
 end
@@ -89,19 +95,19 @@ end
 
 function HouseTwo:spawnSpark(pos)
     if pos == 0 then
-        spark = CircuitSpark(360, 139, 'left')
+        spark = CircuitSpark(400, 134, 'left')
         self:add(spark)
         self.sparks[#self.sparks+1] = spark
     elseif pos == 1 then 
-        spark = CircuitSpark(360, 88, 'left')
+        spark = CircuitSpark(400, 70, 'left')
         self:add(spark)
         self.sparks[#self.sparks+1] = spark
     elseif pos == 2 then
-        spark = CircuitSpark(40, 88, 'right')
+        spark = CircuitSpark(0, 70, 'right')
         self:add(spark)
         self.sparks[#self.sparks+1] = spark
     else 
-        spark = CircuitSpark(40, 139, 'right')
+        spark = CircuitSpark(0, 134, 'right')
         self:add(spark)
         self.sparks[#self.sparks+1] = spark  
     end
@@ -117,23 +123,22 @@ function HouseTwo:update()
         if (distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y) < 11) and (not spark:getSuccess()) then
             self.score += 1
             spark:setSuccess(true)
-        elseif (distance(spark.x, spark.y, self.MovingPlatform.centerX, self.MovingPlatform.centerY) < 61) and (not spark:getSuccess()) then
+        elseif (distance(spark.x, spark.y, self.MovingPlatform.centerX, self.MovingPlatform.centerY) < 78) and (not spark:getSuccess()) then
             self:remove(spark)
             table.remove(self.sparks, i)
         end
         --print(spark.x, spark.y)
     end
 
-    if not self.completed and self.score >= self.winScore then
+    if not self.completed and self.score >= self.winScore then  -- called once after completion
         self.completed = true
         self.spawnTimer:remove()
-        local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOn1.png" )
-        assert( backgroundImage )
-        gfx.sprite.setBackgroundDrawingCallback(
-            function( x, y, width, height )
-                backgroundImage:draw( 40, 32 )
-            end
-        )
+
+    end
+
+    if self.completed then
+        self.bgDone:setImage(self.completeAnimation:image(), gfx.kImageUnflipped, 1.25)
+        self.bgDone:add()
     end
 
 end

@@ -5,6 +5,7 @@ import "CoreLibs/timer"
 import "YLib/SceneManagement/Scene"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
+import "Platforms/PlatformNoSprite"
 import "Player/Player"
 
 local pd <const> = playdate
@@ -21,11 +22,13 @@ function Town:init()
     local FancyDoorSprite = gfx.image.new("SceneTransition/FancyDoor.png")
     local doorSprite = gfx.image.new( "SceneTransition/door.png" )
 
-    self.player = Player(100, 100)
+    self.player = Player(100, 200)
 
     local HouseOneDoor = SceneTransition(263, 225, doorSprite, self.player, 2, false, 80)
     local HouseTwoDoor = SceneTransition(540, 215, doorSprite, self.player, 3, false, 80)
     self.BigDoor = SceneTransition(410, 260, doorSprite, self.player, 4, true, 80)
+
+    self.doorOpen = false
 
     self.sceneObjects = {
         self.player,
@@ -33,7 +36,9 @@ function Town:init()
         HouseOneDoor,
         HouseTwoDoor,
         self.BigDoor,
-        Platform(337, 237, platformSprite)
+        Platform(337, 237, platformSprite),
+        PlatformNoSprite(-50, 0, 50, 240),
+        PlatformNoSprite(675, 0, 50, 240),
     }
 end
 
@@ -43,7 +48,12 @@ function Town:load()
 
     playdate.graphics.setDrawOffset(self.offsetx, 0)
 
-    local bg = gfx.sprite.new(gfx.image.new("Assets/demo town.png"))
+    if self.doorOpen then
+        bg = gfx.sprite.new(gfx.image.new("Assets/openDoorTown.png"))
+    else 
+        bg = gfx.sprite.new(gfx.image.new("Assets/completeTown.png"))
+    end
+    
     bg:setCenter(0, 0)
     bg:moveTo(0, 0)
     self:add(bg)
@@ -67,6 +77,7 @@ end
 
 function Town:update()
     Town.super.update(self)
+
     self.offsetx = - (self.player.x - 200)
     if(self.offsetx > 0) then self.offsetx = 0 end
     if(self.offsetx < -274) then self.offsetx = -274 end
