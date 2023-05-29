@@ -25,7 +25,7 @@ function Town:init()
 
     local HouseOneDoor = SceneTransition(263, 225, doorSprite, self.player, 2, false, 80)
     local HouseTwoDoor = SceneTransition(540, 215, doorSprite, self.player, 3, false, 80)
-    self.BigDoor = SceneTransition(410, 260, doorSprite, self.player, 3, true, 80)
+    self.BigDoor = SceneTransition(410, 260, doorSprite, self.player, 5, true, 80)
 
     self.sceneObjects = {
         self.player,

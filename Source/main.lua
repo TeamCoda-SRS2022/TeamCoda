@@ -18,12 +18,12 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = 1
+local curScene = 5
 local scenes = {
-	--Town(),
-	--HouseOne(),
-	--HouseTwo(),
-	--FloorOne(),
+	Town(),
+	HouseOne(),
+	HouseTwo(),
+	FloorOne(),
 	BossBattle(),
 }
 
@@ -39,10 +39,10 @@ function playdate.update()
 	playdate.frameTimer.updateTimers()
 	scenes[curScene]:update()
 
-	-- if scenes[2].completed and scenes[3].completed then
-	-- 	scenes[1].BigDoor.locked = false
-	-- end
-    -- pd.drawFPS(200,200)
+	if scenes[2].completed and scenes[3].completed then
+	 	scenes[1].BigDoor.locked = false
+	 end
+    --pd.drawFPS(200,200)
 end
 
 function loadScene(sceneNum)

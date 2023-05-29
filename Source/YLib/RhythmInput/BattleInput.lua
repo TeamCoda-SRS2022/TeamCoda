@@ -10,25 +10,6 @@ local gfx <const> = pd.graphics
 class('BattleInput').extends(Object)
 
 
---[[
-  beat check pseudocode:
-
-  for every frame:
-    calculate songPos
-
-    if time, spawn note  
-    interpolate spawed notes
-    if notes in sceneobj? out of range:
-      deallocate
-      if not pressed, do note miss func
-
-
-  button press pseudocode:
-    check closest note in track to current time:
-      if within offset:
-        mark true ??
-
---]]
 
 function BattleInput:userPassed()
     local passed = true
@@ -67,18 +48,17 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.songPosition = 0.0 -- current position of song 
     self.tempo = tempo
     self.secPerBeat = 60.0 / tempo
-    self.beatsInAdvance = 4  -- number of beats in advance to spawn notes
+    self.beatsInAdvance = 5  -- number of beats in advance to spawn notes (time signature + 1)
 
     self.cursorMin = 150.0  -- cursor y positions
     self.cursorMax = 200.0
     self.xThreshold = 50.0  -- cursor x position
     self.xSpawn = 200.0
-    self.extraX = 25.0  -- extra x track before deallocation
-
+    self.decisionX = ((self.xSpawn - self.xThreshold)/self.beatsInAdvance) + self.xThreshold 
 
     local cursorSprite = gfx.image.new( "Scenes/HouseTwo/connector.png" )
     self.cursor = gfx.sprite.new(cursorSprite)
-    self.cursor:moveTo(self.xThreshold, self.cursorMax)
+    self.cursor:moveTo(self.decisionX, self.cursorMax)
 
     self.noteSprite = gfx.image.new( "Scenes/HouseTwo/spark.png" )
 
@@ -138,7 +118,7 @@ function BattleInput:update()
   if not self.active then
     return
   end
-  gfx.drawLine(self.xThreshold, self.cursorMax, self.xThreshold, self.cursorMin)
+  gfx.drawLine(self.decisionX, self.cursorMax, self.decisionX, self.cursorMin)
   --print(self.audio:getOffset(), pd.sound.getCurrentTime() - self.startTime)
   local songPosInBeats = self.audio:getOffset() / self.secPerBeat
 
