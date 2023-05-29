@@ -36,6 +36,8 @@ function Player:init(x, y)
 	self.interactableSprite:moveTo(x, y)
 	self.interactableSprite:setVisible(false)
 	self.interactableSprite:setZIndex(100)
+
+	self.walkingSFX = pd.sound.sampleplayer.new("Assets/SFX/basicwalking")
 end
 
 function Player:update()
@@ -60,6 +62,12 @@ function Player:update()
 	if pd.buttonIsPressed( pd.kButtonLeft ) then
 		self:move( -self.speed, 0 )
 		self.isFacingLeft = playdate.graphics.kImageFlippedX
+	end
+	if (pd.buttonIsPressed(pd.kButtonRight) or pd.buttonIsPressed(pd.kButtonLeft)) and not self.walkingSFX:isPlaying() and self.grounded then
+		self.walkingSFX:play()
+	end
+	if (pd.buttonJustReleased(pd.kButtonRight) or pd.buttonJustReleased(pd.kButtonLeft) or not self.grounded) and self.walkingSFX:isPlaying() then
+		self.walkingSFX:stop()
 	end
 	
 	if self.showInteractableIcon then

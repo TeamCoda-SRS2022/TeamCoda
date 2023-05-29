@@ -51,9 +51,8 @@ function Cavern:init()
     self.platform24 = PlatformNoSprite(1141, 0, 7, 75)
 
 
-
-
     self.bg = gfx.sprite.new(gfx.image.new("Assets/caveBg.png"))
+    self.ambience = pd.sound.fileplayer.new("Assets/SFX/cave_ambience")
     
     self.sceneObjects = {
         self.player,
@@ -94,12 +93,14 @@ function Cavern:load()
     self.bg:moveTo(0, -45)
     self:add(self.bg)
     self.bg:setZIndex(-1)
-    local plat = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOff1.png" )
+
+    self.ambience:play(0)
 end
 
 function Cavern:unload()
     Town.super.unload(self)
     playdate.graphics.setDrawOffset(0, 0)
+    self.ambience:stop()
 end
 
 function Cavern:update()

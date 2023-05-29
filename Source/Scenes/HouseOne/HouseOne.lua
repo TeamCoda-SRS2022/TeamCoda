@@ -52,6 +52,8 @@ function HouseOne:load()
 
   if not self.completed then self.freqs[self.freqNum]:start() end
 
+  self.completedSFX = pd.sound.sampleplayer.new("Assets/SFX/sparkle")
+
   local backgroundImage = gfx.image.new("Scenes/Backgrounds/bg.png")
   assert( backgroundImage )
   gfx.sprite.setBackgroundDrawingCallback(
@@ -73,6 +75,7 @@ function HouseOne:update()
         if self.freqs[self.freqNum].completed then 
             self.freqNum = self.freqNum + 1
             if(self.freqNum == 5) then
+                self.completedSFX:play()
                 self.completed = true
                 return
             end

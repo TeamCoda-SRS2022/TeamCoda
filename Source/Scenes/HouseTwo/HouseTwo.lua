@@ -81,6 +81,9 @@ function HouseTwo:load()
     end)
     self.spawnTimer.repeats = true
 
+    self.completedSFX = pd.sound.sampleplayer.new("Assets/SFX/sparkle")
+    self.notehitSFX = pd.sound.sampleplayer.new("Assets/SFX/notehit")
+
     gfx.setBackgroundColor(playdate.graphics.kColorBlack)
 
     local backgroundImage = gfx.image.new( "Scenes/HouseTwo/PowerPlant-LightsOff1.png" )
@@ -121,6 +124,7 @@ function HouseTwo:update()
         --print(self.score, self.MovingPlatform.x)
         --print((distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y)))
         if (distance(spark.x, spark.y, self.MovingPlatform.x, self.MovingPlatform.y) < 11) and (not spark:getSuccess()) then
+            self.notehitSFX:play()
             self.score += 1
             spark:setSuccess(true)
         elseif (distance(spark.x, spark.y, self.MovingPlatform.centerX, self.MovingPlatform.centerY) < 78) and (not spark:getSuccess()) then
@@ -132,6 +136,7 @@ function HouseTwo:update()
 
     if not self.completed and self.score >= self.winScore then  -- called once after completion
         self.completed = true
+        self.completedSFX:play()
         self.spawnTimer:remove()
 
     end
