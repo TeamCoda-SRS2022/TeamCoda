@@ -9,6 +9,7 @@ import "Scenes/HouseTwo/HouseTwo"
 import "Scenes/FloorOne/FloorOne"
 import "Scenes/FactoryOne/FactoryOne"
 import "Scenes/Cavern"
+import "Scenes/TestScenes/BossBattle"
 
 
 local pd <const> = playdate
@@ -19,7 +20,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = 1
+local curScene = 5
 local scenes = {
 	Town(),
 	HouseOne(),
@@ -27,6 +28,7 @@ local scenes = {
 	Cavern(),
 	FloorOne(),
 	FactoryOne(),
+	BossBattle(),
 }
 
 local function init()
