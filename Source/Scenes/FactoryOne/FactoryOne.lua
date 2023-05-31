@@ -20,8 +20,9 @@ function FactoryOne:init()
 
     local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
     local floorSprite = gfx.image.new( "Assets/floor.png")
-    local chuteSprite = gfx.image.new( "Chute/Chute.png" )
-    self.deadbotSprite = gfx.image.new( "Deadbot/Deadbot.png" )
+    local chuteSprite = gfx.image.new( "Scenes/FactoryOne/Chute/Chute.png" )
+    local coverSprite1 = gfx.image.new( "Scenes/FactoryOne/cover1.png")
+    self.deadbotSprite = gfx.image.new( "Scenes/FactoryOne/Deadbot/Deadbot.png" )
 
     self.player = Player(100, 100)
 
@@ -35,11 +36,9 @@ function FactoryOne:init()
     end
 
     self.sceneObjects = {
-        -- Chute(260, 120, chuteSprite),
-        -- Chute(300, 120, chuteSprite),
-        -- Chute(340, 120, chuteSprite),
-        -- Chute(480, 120, chuteSprite),
         Platform(305, 210, floorSprite),
+        Platform(470, 23, coverSprite1),
+        Platform(470, 234, coverSprite1)
     }
 
     for i=1, 4 do
