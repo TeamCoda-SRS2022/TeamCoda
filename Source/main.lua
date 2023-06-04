@@ -34,7 +34,9 @@ local scenes = {
 	BossBattle(),
 	Tutorial(),
 	FactoryElevator(5), -- Elevator to FloorOne
-	Miniboss()
+	Miniboss(),
+	FactoryElevator(1), -- Elevator to Town
+	FactoryElevator(6) -- Elevator to FactoryOne
 }
 
 local function init()

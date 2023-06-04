@@ -30,11 +30,12 @@ function FactoryElevator:init(destinationScene)
     }
 
     self.timer = playdate.timer.new(TIMER_DURATION)
+    self.timer:pause()
 end
 
 function FactoryElevator:load()
     FactoryElevator.super.load(self)
-    
+    self.timer:start() 
     local bgImage = gfx.image.new("Scenes/FactoryElevator/elevator.png")
     gfx.sprite.setBackgroundDrawingCallback(
         function( x, y, width, height )
