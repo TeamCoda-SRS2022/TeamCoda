@@ -54,6 +54,8 @@ function Cavern:init()
     self.bg = gfx.sprite.new(gfx.image.new("Assets/caveBg.png"))
     self.ambience = pd.sound.fileplayer.new("Assets/SFX/cave_ambience")
     
+    local elevatorSprite = gfx.image.new("Assets/TutorialroomElevator.PNG")
+
     self.sceneObjects = {
         self.player,
         self.platform1,
@@ -81,6 +83,7 @@ function Cavern:init()
         self.platform22,
         self.platform23,
         self.platform24,
+        SceneTransition(1096, 41, elevatorSprite, self.player, 9, false, 80)
     }
 end
 

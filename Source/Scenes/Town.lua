@@ -26,9 +26,11 @@ function Town:init()
 
     self.player = Player(100, 200)
 
+    local MINIBOSS_ROOM_INDEX <const> = 10
+
     local HouseOneDoor = SceneTransition(263, 225, doorSprite, self.player, 2, false, 80)
     local HouseTwoDoor = SceneTransition(540, 215, doorSprite, self.player, 3, false, 80)
-    self.BigDoor = SceneTransition(410, 260, doorSprite, self.player, 4, true, 80)
+    self.BigDoor = SceneTransition(410, 260, doorSprite, self.player, MINIBOSS_ROOM_INDEX, true, 80)
 
     self.doorOpen = false
 
