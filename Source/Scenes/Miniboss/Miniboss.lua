@@ -19,9 +19,9 @@ function Miniboss:init()
     self.player = Player(100, 100)
     
     local platformSprite = gfx.image.new("Assets/floor.png")
-    local doorSprite = gfx.image.new("SceneTransition/door.png")
+    local doorSprite = gfx.image.new("Scenes/Miniboss/miniboss_door.png")
 
-    self.exit_door = SceneTransition(440, 200, doorSprite, self.player, 4, true, 80)
+    self.exit_door = SceneTransition(436, 189, doorSprite, self.player, 4, true, 80)
     self.sceneObjects = {
         self.player,
         Platform(337, 237, platformSprite),
