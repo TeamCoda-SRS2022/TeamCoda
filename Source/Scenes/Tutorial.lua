@@ -19,7 +19,7 @@ function Tutorial:init()
 
     self.offsetx = 0
 
-    self.player = Player(600, 50)
+    self.player = Player(41,147)
 
     self.platform0 = PlatformNoSprite(-7, 0, 7, 149)
     self.platform1 = PlatformNoSprite(0, 149, 164, 7)
@@ -35,9 +35,11 @@ function Tutorial:init()
 
     local doorCover = gfx.sprite.new(gfx.image.new("Assets/TutorialroomDoorCover.PNG"))
     doorCover:moveTo(850, 55)
+    doorCover:setZIndex(3)
 
     local door = gfx.image.new("Assets/TutorialroomDoor.png")
     self.door = RigidBody2D(850, 55, door)
+    self.door.static = true
 
     self.doorLever = gfx.sprite.new()
     self.doorLever:setCollideRect(0, 0, 33, 33)
@@ -45,9 +47,27 @@ function Tutorial:init()
     self.doorLever:setCollidesWithGroups(3)
     self.doorLever:moveTo(783, 75)
 
+    local elevatorSprite = gfx.image.new("Assets/TutorialroomElevator.PNG")
+
+    self.scale = 0
+
 
     self.bg = gfx.sprite.new(gfx.image.new("Assets/TutorialroomOPEN.PNG"))
 
+    local myInputHandlers = {
+        cranked = function(change, acceleratedChange)
+            local sprites = self.doorLever:overlappingSprites()
+            if #sprites > 0 then  -- player collision
+                self.scale += change * (0.01)
+                if self.scale >= 10 or self.scale <= 0 then
+                    self.scale = math.max(math.min(self.scale, 10), 0)
+                end
+        
+                self.door:moveTo(self.door.x, 55 - (110*self.scale)/10)
+            end
+        end,
+    }
+    pd.inputHandlers.push(myInputHandlers)
     
     --self.ambience = pd.sound.fileplayer.new("Assets/SFX/cave_ambience")
     
@@ -67,7 +87,8 @@ function Tutorial:init()
         self.platform10,
         self.door,
         doorCover,
-        self.doorLever
+        self.doorLever,
+        SceneTransition(959, 71, elevatorSprite, self.player, 1, false, 80)
     }
 end
 
@@ -88,6 +109,7 @@ end
 function Tutorial:unload()
     Tutorial.super.unload(self)
     playdate.graphics.setDrawOffset(0, 0)
+    pd.inputHandlers.pop()
     --self.ambience:stop()
 end
 
