@@ -56,7 +56,7 @@ function FactoryOne:load()
     print("Loading the scene")
     FactoryOne.super.load(self)
 
-    local bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOn.png" ))
+    local bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOff.png" ))
     assert( bg )
     bg:setCenter(0, 0)
     bg:moveTo(0, 32)
