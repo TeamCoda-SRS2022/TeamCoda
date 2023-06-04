@@ -88,7 +88,7 @@ function Tutorial:init()
         self.door,
         doorCover,
         self.doorLever,
-        SceneTransition(959, 71, elevatorSprite, self.player, 1, false, 80)
+        SceneTransition(959, 71, elevatorSprite, self.player, 9, false, 80)
     }
 end
 
