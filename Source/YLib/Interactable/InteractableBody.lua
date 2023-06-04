@@ -12,7 +12,10 @@ class('InteractableBody').extends(gfx.sprite)
 function InteractableBody:init(x, y, sprite, player, threshold_distance)
 	InteractableBody.super.init(self)
 
-	self:setImage(sprite)
+	if sprite ~= nil then
+		self:setImage(sprite)
+	end
+	
 	self:moveTo(x, y)
 
 	self.nearby = false

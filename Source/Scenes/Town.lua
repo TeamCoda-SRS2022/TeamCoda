@@ -22,6 +22,8 @@ function Town:init()
     local FancyDoorSprite = gfx.image.new("SceneTransition/FancyDoor.png")
     local doorSprite = gfx.image.new( "SceneTransition/door.png" )
 
+    self.ambience = pd.sound.fileplayer.new("Assets/SFX/town_music")
+
     self.player = Player(100, 200)
 
     local HouseOneDoor = SceneTransition(263, 225, doorSprite, self.player, 2, false, 80)
@@ -59,20 +61,14 @@ function Town:load()
     self:add(bg)
     bg:setZIndex(-1)
 
-    -- local backgroundImage = gfx.image.new( "Assets/demo town.png" )  -- replace with town backgroundImage
-	-- assert( backgroundImage )
-
-	-- gfx.sprite.setBackgroundDrawingCallback(
-	-- 	function( x, y, width, height )
-	-- 		backgroundImage:draw( 0, 0 )
-	-- 	end
-	-- )
+    self.ambience:play(0)
     
 end
 
 function Town:unload()
     Town.super.unload(self)
     playdate.graphics.setDrawOffset(0, 0)
+    self.ambience:stop()
 end
 
 function Town:update()

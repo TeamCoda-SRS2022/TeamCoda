@@ -10,6 +10,7 @@ import "Scenes/FloorOne/FloorOne"
 import "Scenes/FactoryOne/FactoryOne"
 import "Scenes/Cavern"
 import "Scenes/TestScenes/BossBattle"
+import "Scenes/Tutorial"
 
 
 local pd <const> = playdate
@@ -29,6 +30,9 @@ local scenes = {
 	FloorOne(),
 	FactoryOne(),
 	BossBattle(),
+	Tutorial(),
+
+
 }
 
 local function init()
