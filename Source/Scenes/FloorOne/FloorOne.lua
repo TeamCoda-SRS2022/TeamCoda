@@ -63,29 +63,8 @@ function FloorOne:init()
   self.sequence:addTrack(self.noteTrack)
   self.sequence:setLoops(1, 8, 1)
 
-  local myInputHandlers = {
-    AButtonDown = function()
-      print("a")
-    end,
-    
-    cranked = function(change, acceleratedChange)
-      print("b")
-      for i, crank in ipairs(self.crankLocations) do
-        local sprites = crank:overlappingSprites()
-        if #sprites > 0 then  -- player collision
-          self.scales[i] += change * (0.01)
-          if self.scales[i] >= 10 or self.scales[i] <= 0 then
-            self.scales[i] = math.max(math.min(self.scales[i], 10), 0)
-          end
-
-          self.notes[i]["note"] = self.lowestMIDI + math.floor(self.scales[i])
-          self.noteTrack:setNotes(self.notes)
-          crank:moveTo(crank.x, upperBound_y - (upperBound_y-lowerBound_y)*(self.scales[i])/(10))
-        end
-      end
-    end,
-  }
-  playdate.inputHandlers.push(myInputHandlers)
+  local doorSprite = gfx.image.new( "SceneTransition/door.png" )  
+  self.door = SceneTransition(41, 200, doorSprite, self.player, 12, true, 80)
 
   self.sceneObjects = {
       self.player,
@@ -98,6 +77,8 @@ function FloorOne:init()
     
       self.conveyorButton,
       self.conveyorBelt,
+
+      self.door,
       
       Platform(32, 240, platformSprite),
       Platform(96, 240, platformSprite),
@@ -125,10 +106,32 @@ function FloorOne:load()
           end
           print(valid)
           self.solved = valid or self.solved
+          if self.solved then
+            self.door.locked = false
+          end
         end
       )
     end
     )
+
+    local myInputHandlers = {
+      cranked = function(change, acceleratedChange)
+        for i, crank in ipairs(self.crankLocations) do
+          local sprites = crank:overlappingSprites()
+          if #sprites > 0 then  -- player collision
+            self.scales[i] += change * (0.01)
+            if self.scales[i] >= 10 or self.scales[i] <= 0 then
+              self.scales[i] = math.max(math.min(self.scales[i], 10), 0)
+            end
+  
+            self.notes[i]["note"] = self.lowestMIDI + math.floor(self.scales[i])
+            self.noteTrack:setNotes(self.notes)
+            crank:moveTo(crank.x, upperBound_y - (upperBound_y-lowerBound_y)*(self.scales[i])/(10))
+          end
+        end
+      end,
+    }
+    playdate.inputHandlers.push(myInputHandlers)
 
   local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
 	assert( backgroundImage )

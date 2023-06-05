@@ -54,20 +54,6 @@ function Tutorial:init()
 
     self.bg = gfx.sprite.new(gfx.image.new("Assets/TutorialroomOPEN.PNG"))
 
-    local myInputHandlers = {
-        cranked = function(change, acceleratedChange)
-            local sprites = self.doorLever:overlappingSprites()
-            if #sprites > 0 then  -- player collision
-                self.scale += change * (0.01)
-                if self.scale >= 10 or self.scale <= 0 then
-                    self.scale = math.max(math.min(self.scale, 10), 0)
-                end
-        
-                self.door:moveTo(self.door.x, 55 - (110*self.scale)/10)
-            end
-        end,
-    }
-    pd.inputHandlers.push(myInputHandlers)
     
     
     self.sceneObjects = {
@@ -94,6 +80,21 @@ end
 function Tutorial:load()
     Tutorial.super.load(self)
     gfx.setDrawOffset(self.offsetx, 0)
+
+    local myInputHandlers = {
+        cranked = function(change, acceleratedChange)
+            local sprites = self.doorLever:overlappingSprites()
+            if #sprites > 0 then  -- player collision
+                self.scale += change * (0.01)
+                if self.scale >= 10 or self.scale <= 0 then
+                    self.scale = math.max(math.min(self.scale, 10), 0)
+                end
+        
+                self.door:moveTo(self.door.x, 55 - (110*self.scale)/10)
+            end
+        end,
+    }
+    pd.inputHandlers.push(myInputHandlers)
 
     
     self.bg:setCenter(0, 0)
