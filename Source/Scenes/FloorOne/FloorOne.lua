@@ -34,7 +34,7 @@ function FloorOne:init()
   self.conveyorBelt = gfx.sprite.new(conveyorBeltSprite)
   self.conveyorBelt:moveTo(320, 133)
 
-  self.player = Player(160, 100)
+  self.player = Player(100, 160)
 
   self.crank1 = InteractableBody(225, 220, puzzleSprite, self.player, 0)
   self.crank2 = InteractableBody(300, 220, puzzleSprite, self.player, 0)
@@ -44,7 +44,7 @@ function FloorOne:init()
   self.conveyorButton = InteractableBody(575, 200, buttonSprite, self.player, 50)
   
   self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
-  self.lowestMIDI = 63
+  self.lowestMIDI = 71
   self.notes = {
     {["step"] = 1, ["note"] = self.lowestMIDI, ["length"] = 1, ["velocity"] = 1},
     {["step"] = 3, ["note"] = self.lowestMIDI, ["length"] = 1, ["velocity"] = 1},
@@ -59,7 +59,7 @@ function FloorOne:init()
 
   self.noteTrack:setNotes(self.notes)
 
-  self.solutionNotes = {67, 67, 67, 63}
+  self.solutionNotes = {71, 71, 76, 74}
   self.solved = false
 	
   self.sequence = playdate.sound.sequence.new()
@@ -69,6 +69,8 @@ function FloorOne:init()
 
   local doorSprite = gfx.image.new( "SceneTransition/door.png" )  
   self.door = SceneTransition(41, 200, doorSprite, self.player, 12, true, 80)
+
+  self.ambience = pd.sound.fileplayer.new("Assets/SFX/floorOne")
 
   self.sceneObjects = {
       self.player,
@@ -100,6 +102,7 @@ function FloorOne:load()
         function()
           valid = true
           for i, _ in ipairs(self.notes) do
+            print(self.notes[i]["note"])
             if self.notes[i]["note"] ~= self.solutionNotes[i] then
               valid = false
             end
@@ -108,6 +111,7 @@ function FloorOne:load()
           self.solved = valid or self.solved
           if self.solved then
             self.door.locked = false
+            self.ambience:stop()
             self.bg:setImage(gfx.image.new("Scenes/Backgrounds/factoryRoom1Lit.PNG"))
           end
         end
@@ -142,11 +146,14 @@ function FloorOne:load()
 
   gfx.setBackgroundColor(playdate.graphics.kColorBlack)
   gfx.fillRect(0, 220, 640, 20)
+
+  self.ambience:play(0)
 end
 
 function FloorOne:unload()
   FloorOne.super.unload(self)
   playdate.inputHandlers.pop()
+  
 end
 
 function FloorOne:update()
