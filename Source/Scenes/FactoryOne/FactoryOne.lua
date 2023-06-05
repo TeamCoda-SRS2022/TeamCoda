@@ -18,9 +18,8 @@ function FactoryOne:init()
     FactoryOne.super.init(self)
     self.offsetx = 0
 
-    local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
     local floorSprite = gfx.image.new( "Assets/floor.png")
-    local chuteSprite = gfx.image.new( "Scenes/FactoryOne/Chute/Chute.png" )
+    local wallSprite = gfx.image.new( "Scenes/FactoryOne/wall.png")
     local coverSprite1 = gfx.image.new( "Scenes/FactoryOne/cover1.png")
     self.deadbotSprite = gfx.image.new( "Scenes/FactoryOne/Deadbot/Deadbot.png" )
 
@@ -28,17 +27,29 @@ function FactoryOne:init()
 
     self.beats = {false, false, false, false}
     for i=1, 4 do
-        -- 50% chance to have a dead robot on a certain chute.
-        -- if (math.random() < 0.5) then
-        --     self.beats[i] = true
-        -- end
-        self.beats[i] = true
+        --50% chance to have a dead robot on a certain chute.
+        if (math.random() < 0.5) then
+            self.beats[i] = true
+        end
+    end
+
+    local sum = 0
+    for i=1, 4 do
+        if not self.beats[i] then
+            sum += 1
+        end
+    end
+    if sum == 4 then
+        for i=1, 4 do
+            self.beats[i] = true
+        end
     end
 
     self.sceneObjects = {
         Platform(305, 210, floorSprite),
         Platform(470, 23, coverSprite1),
-        Platform(470, 234, coverSprite1)
+        Platform(470, 234, coverSprite1),
+        Platform(665, 170, wallSprite)
     }
 
     for i=1, 4 do
@@ -62,7 +73,6 @@ function FactoryOne:load()
     self:add(bg)
     bg:setZIndex(-2)
 
-
     local rhythmSolnString = ""
     for i=1, 4 do
         if self.beats[i] then
@@ -70,8 +80,11 @@ function FactoryOne:load()
         end
     end
 
-    local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, rhythmSolnString, 120)
-    puzzle.complete:push(function() print("Puzzle Solved") end)
+    self.puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, rhythmSolnString, 120)
+    self.puzzle.complete:push(function() 
+        print("Puzzle Solved")
+         self.completed = true
+    end)
 
 
     function resetDeadbots()
@@ -82,8 +95,8 @@ function FactoryOne:load()
         end
     end
 
-    puzzle.measureEndCallbacks:push(resetDeadbots)
-    puzzle:start()
+    self.puzzle.measureEndCallbacks:push(resetDeadbots)
+    self.puzzle:start()
 
     -- gfx.sprite.setBackgroundDrawingCallback(
     --     function( x, y, width, height )
@@ -98,6 +111,15 @@ function FactoryOne:update()
     if(self.offsetx > 0) then self.offsetx = 0 end
     if(self.offsetx < -274) then self.offsetx = -274 end
     playdate.graphics.setDrawOffset(self.offsetx, 0)
+
+    if self.completed == true then
+        local bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOn.png" ))
+        assert( bg )
+        bg:setCenter(0, 0)
+        bg:moveTo(0, 32)
+        self:add(bg)
+        bg:setZIndex(-2)
+    end
 end
 
 -- function FactoryOne:resetDeadbots()

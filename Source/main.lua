@@ -15,7 +15,7 @@ local gfx <const> = playdate.graphics
 
 -- Global Variables
 gravity = 0.5
-timeWindowLength = 0.5
+timeWindowLength = 100
 offset = 0
 
 local curScene = 5
