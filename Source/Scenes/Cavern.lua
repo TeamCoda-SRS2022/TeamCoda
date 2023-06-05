@@ -58,6 +58,7 @@ function Cavern:init()
 
     self.sceneObjects = {
         self.player,
+        self.player.interactableSprite,
         self.platform1,
         self.platform2,
         self.platform3,

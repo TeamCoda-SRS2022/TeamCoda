@@ -14,18 +14,6 @@ local gfx <const> = pd.graphics
 
 class('FloorOne').extends(Scene)
 
-function dump(o)
-  if type(o) == 'table' then
-     local s = '{ '
-     for k,v in pairs(o) do
-        if type(k) ~= 'number' then k = '"'..k..'"' end
-        s = s .. '['..k..'] = ' .. dump(v) .. ','
-     end
-     return s .. '} '
-  else
-     return tostring(o)
-  end
-end
 
 lowerBound_y = 173
 upperBound_y = 231
@@ -76,10 +64,15 @@ function FloorOne:init()
   self.sequence:setLoops(1, 8, 1)
 
   local myInputHandlers = {
-
+    AButtonDown = function()
+      print("a")
+    end,
+    
     cranked = function(change, acceleratedChange)
+      print("b")
       for i, crank in ipairs(self.crankLocations) do
-        if math.abs(self.player.x - crank.x) <= 25 then
+        local sprites = crank:overlappingSprites()
+        if #sprites > 0 then  -- player collision
           self.scales[i] += change * (0.01)
           if self.scales[i] >= 10 or self.scales[i] <= 0 then
             self.scales[i] = math.max(math.min(self.scales[i], 10), 0)
@@ -95,11 +88,14 @@ function FloorOne:init()
   playdate.inputHandlers.push(myInputHandlers)
 
   self.sceneObjects = {
+      self.player,
+      self.player.interactableSprite,
       self.crank1,
       self.crank2,
       self.crank3,
       self.crank4,
 
+    
       self.conveyorButton,
       self.conveyorBelt,
       
@@ -110,7 +106,6 @@ function FloorOne:init()
       Platform(288, 240, platformSprite),
       Platform(352, 240, platformSprite),
       
-      self.player,
   }
 end
 
@@ -118,22 +113,22 @@ end
 function FloorOne:load()
   FloorOne.super.load(self)
 
-  -- self.conveyorButton.callbacks:push(
-  --   function() 
-  --     self.sequence:play(
-  --       function()
-  --         valid = true
-  --         for i, _ in ipairs(self.notes) do
-  --           if self.notes[i]["note"] ~= self.solutionNotes[i] then
-  --             valid = false
-  --           end
-  --         end
-  --         print(valid)
-  --         self.solved = valid or self.solved
-  --       end
-  --     )
-  --   end
-  --   )
+  self.conveyorButton.callbacks:push(
+    function() 
+      self.sequence:play(
+        function()
+          valid = true
+          for i, _ in ipairs(self.notes) do
+            if self.notes[i]["note"] ~= self.solutionNotes[i] then
+              valid = false
+            end
+          end
+          print(valid)
+          self.solved = valid or self.solved
+        end
+      )
+    end
+    )
 
   local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
 	assert( backgroundImage )

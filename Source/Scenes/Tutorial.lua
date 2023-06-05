@@ -69,7 +69,6 @@ function Tutorial:init()
     }
     pd.inputHandlers.push(myInputHandlers)
     
-    --self.ambience = pd.sound.fileplayer.new("Assets/SFX/cave_ambience")
     
     self.sceneObjects = {
         self.player,

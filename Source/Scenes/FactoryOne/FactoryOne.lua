@@ -70,6 +70,7 @@ function FactoryOne:load()
             rhythmSolnString = rhythmSolnString..(tostring(i).."=U, ")
         end
     end
+    print(rhythmSolnString)
 
     local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, rhythmSolnString, 120)
     puzzle.complete:push(function() print("Puzzle Solved") end)
