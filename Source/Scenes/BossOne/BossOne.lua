@@ -42,6 +42,10 @@ function BossOne:init()
         Platform(197, 551, smallPlatSprite),
         Platform(233, 521, smallPlatSprite),
 
+        Platform(320, 458, smallPlatSprite),
+        Platform(320, 487, smallPlatSprite),
+
+
         Platform(615, 714, smallPlatSprite),
         Platform(550, 679, smallPlatSprite),
         Platform(615, 646, smallPlatSprite),
@@ -55,14 +59,13 @@ function BossOne:init()
         Platform(550, 402, smallPlatSprite),
         Platform(615, 368, smallPlatSprite),
 
-        -- Platform(550, 401, smallPlatSprite),
-        -- Platform(615, 368, smallPlatSprite),
         Platform(550, 333, smallPlatSprite),
         Platform(615, 300, smallPlatSprite),
         Platform(550, 267, smallPlatSprite),
         Platform(615, 234, smallPlatSprite),
         Platform(550, 201, smallPlatSprite),
         Platform(615, 168, smallPlatSprite),
+
         PlatformNoSprite(69, 503, 109, 9),
         PlatformNoSprite(255, 504, 132, 9),
         PlatformNoSprite(86, 753, 177, 10)

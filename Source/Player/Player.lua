@@ -13,7 +13,7 @@ local gfx <const> = pd.graphics
 
 class('Player').extends(RigidBody2D)
 
-local jumpHeight = 55
+local jumpHeight = 54
 
 function Player:init(x, y)
 	local idle = gfx.imagetable.new("Player/Animations/Idle/PlayerIdle")
