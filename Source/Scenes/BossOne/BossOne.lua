@@ -10,11 +10,12 @@ import "Platforms/PlatformNoSprite"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-class('SmallPlat').extends(PlatformNoSprite)
+class('SmallPlat').extends(Platform)
 
-function SmallPlat:init(x, y)
-    SmallPlat.super.init(self, x, y, 27, 11)
-end
+-- function SmallPlat:init(x, y)
+--     local 
+--     SmallPlat.super.init(self, x, y, )
+-- end
 
 
 class('BossOne').extends(Scene)
@@ -28,17 +29,43 @@ function BossOne:init()
 
     self.bg = gfx.sprite.new(gfx.image.new("Scenes/BossOne/boss_one_bg.png"))
 
+    local smallPlatSprite = gfx.image.new("Scenes/BossOne/small_plat.png")
+    assert(smallPlatSprite)
     self.sceneObjects = {
         self.player,
-        PlatformNoSprite(90, 710, 1000, 10),
-        SmallPlat(42, 727),
-        SmallPlat(14, 680),
-        SmallPlat(43, 635),
-        SmallPlat(80, 596),
-        SmallPlat(130, 567),
-        SmallPlat(184, 546),
-        SmallPlat(220, 516),
-        PlatformNoSprite(69, 503, 109, 9)
+        PlatformNoSprite(103, 730, 1000, 10),
+        Platform(55, 732, smallPlatSprite),
+        Platform(27, 685, smallPlatSprite),
+        Platform(56, 640, smallPlatSprite),
+        Platform(93, 601, smallPlatSprite),
+        Platform(143, 572, smallPlatSprite),
+        Platform(197, 551, smallPlatSprite),
+        Platform(233, 521, smallPlatSprite),
+
+        Platform(615, 714, smallPlatSprite),
+        Platform(550, 679, smallPlatSprite),
+        Platform(615, 646, smallPlatSprite),
+        Platform(550, 611, smallPlatSprite),
+        Platform(615, 577, smallPlatSprite),
+
+        Platform(550, 542, smallPlatSprite),
+        Platform(615, 504, smallPlatSprite),
+        Platform(550, 469, smallPlatSprite),
+        Platform(615, 437, smallPlatSprite),
+        Platform(550, 402, smallPlatSprite),
+        Platform(615, 368, smallPlatSprite),
+
+        -- Platform(550, 401, smallPlatSprite),
+        -- Platform(615, 368, smallPlatSprite),
+        Platform(550, 333, smallPlatSprite),
+        Platform(615, 300, smallPlatSprite),
+        Platform(550, 267, smallPlatSprite),
+        Platform(615, 234, smallPlatSprite),
+        Platform(550, 201, smallPlatSprite),
+        Platform(615, 168, smallPlatSprite),
+        PlatformNoSprite(69, 503, 109, 9),
+        PlatformNoSprite(255, 504, 132, 9),
+        PlatformNoSprite(86, 753, 177, 10)
 
     }
 end
