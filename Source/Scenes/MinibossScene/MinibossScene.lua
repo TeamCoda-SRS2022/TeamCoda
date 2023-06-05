@@ -44,7 +44,7 @@ function MinibossScene:init()
     print(chartString)
 
     self.exit_door = SceneTransition(436, 189, doorSprite, self.player, 4, true, 80)
-    self.battle = BattleInput("Test/BossBattleTest", chartString, 120)
+    self.battle = BattleInput("", chartString, 120)
     self.battle.complete:push(
         function() 
             self.exit_door.locked = false 

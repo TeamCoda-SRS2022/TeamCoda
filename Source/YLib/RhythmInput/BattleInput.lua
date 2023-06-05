@@ -55,7 +55,7 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.xSpawn = 350.0
     self.decisionX = ((self.xSpawn - self.xThreshold)/self.beatsInAdvance) + self.xThreshold 
 
-    local cursorSprite = gfx.image.new( "Scenes/HouseTwo/connector.png" )
+    local cursorSprite = gfx.image.new( "Assets/cursor.png" )
     self.cursor = gfx.sprite.new(cursorSprite)
     self.cursor:moveTo(self.decisionX, self.cursorMax)
 

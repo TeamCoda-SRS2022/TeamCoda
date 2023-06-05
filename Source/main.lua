@@ -14,7 +14,7 @@ import "Scenes/Tutorial"
 import "Scenes/FactoryElevator/FactoryElevator"
 import "Scenes/TitleScreen/TitleScreen"
 import "Scenes/MinibossScene/MinibossScene"
-
+import "Scenes/Phase2/Phase2"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -24,7 +24,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = 13
+local curScene = 10
 local scenes = {
 	Town(),
 	HouseOne(),
@@ -40,6 +40,7 @@ local scenes = {
 	FactoryElevator(6), -- Elevator to FactoryOne
 	TitleScreen(),
 	FactoryElevator(10), -- Elevator to MinibossScene
+	Phase2(),
 }
 
 local function init()
