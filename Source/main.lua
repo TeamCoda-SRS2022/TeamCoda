@@ -23,7 +23,7 @@ gravity = 0.5
 timeWindowLength = 0.5
 offset = 0
 
-local curScene = 6
+local curScene = 10
 local scenes = {
 	Town(),
 	HouseOne(),

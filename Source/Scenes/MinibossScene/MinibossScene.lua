@@ -56,7 +56,7 @@ end
 
 function MinibossScene:load()
     MinibossScene.super.load(self)
-    bg = gfx.sprite.new(gfx.image.new("Scenes/Miniboss/miniboss_bg.png"))
+    bg = gfx.sprite.new(gfx.image.new("Scenes/MinibossScene/miniboss_bg.png"))
     playdate.graphics.setDrawOffset(self.offsetx, 0)
 
     bg:setCenter(0, 0)
@@ -73,6 +73,7 @@ function MinibossScene:update()
     end
         
     if self.bossStarted and not self.bossDefeated then
+        self.battle:update()
         if self.minibossState == "idle" then
             if math.random(4) == 1 then
                 self.minibossState = "attack"

@@ -3,6 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/frameTimer"
 import "YLib/RhythmInput/MeasureTracker"
+import "CoreLibs/timer"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -41,24 +42,26 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.nextNote = 1
     self.notesOnScreen = {}
 
-    self.offset = 0.2 -- offset of mp3
-    self.startTime = -1.0 -- start time of song 
-    self.songPosition = 0.0 -- current position of song 
+    --self.offset = 0.2 -- offset of mp3
+    --self.startTime = -1.0 -- start time of song 
+    --self.songPosition = 0.0 -- current position of song 
     self.tempo = tempo
     self.secPerBeat = 60.0 / tempo
     self.beatsInAdvance = 5  -- number of beats in advance to spawn notes (time signature + 1)
 
-    self.cursorMin = 150.0  -- cursor y positions
-    self.cursorMax = 200.0
-    self.xThreshold = 50.0  -- cursor x position
-    self.xSpawn = 200.0
+    self.cursorMin = 50.0  -- cursor y positions
+    self.cursorMax = 150.0
+    self.xThreshold = 200.0  -- cursor x position
+    self.xSpawn = 350.0
     self.decisionX = ((self.xSpawn - self.xThreshold)/self.beatsInAdvance) + self.xThreshold 
 
     local cursorSprite = gfx.image.new( "Scenes/HouseTwo/connector.png" )
     self.cursor = gfx.sprite.new(cursorSprite)
     self.cursor:moveTo(self.decisionX, self.cursorMax)
 
-    self.noteSprite = gfx.image.new( "Scenes/HouseTwo/spark.png" )
+    self.noteSprite = gfx.image.new( "Assets/BattleNote.png" )
+    self.bar = gfx.sprite.new(gfx.image.new( "Assets/BattleInputBar.png" ))
+    self.bar:moveTo(self.decisionX, (self.cursorMax+self.cursorMin)/2)
 
     -- Callbacks
     --[[
@@ -88,9 +91,13 @@ function BattleInput:init(soundFilePath, notes, tempo)
 
     end
 
-    self.audio = pd.sound.fileplayer.new(soundFilePath)
-    print(self.audio)
-    self.audio:setFinishCallback(songDone)
+    --self.audio = pd.sound.fileplayer.new(soundFilePath)
+    --self.audio:setFinishCallback(songDone)
+    self.timer = pd.timer.new(1000000)
+    self.timer:pause()
+
+    self.noteSounds = {pd.sound.sampleplayer.new("Assets/SFX/note1"),pd.sound.sampleplayer.new("Assets/SFX/note2"),
+    pd.sound.sampleplayer.new("Assets/SFX/note3"),pd.sound.sampleplayer.new("Assets/SFX/note4")}
 
     self.myInputHandlers = {
       BButtonDown = function()
@@ -117,12 +124,23 @@ function BattleInput:update()
   if not self.active then
     return
   end
-  gfx.drawLine(self.decisionX, self.cursorMax, self.decisionX, self.cursorMin)
+  if self.nextNote >= #self.notes and #self.notesOnScreen == 0 then
+    self:stop()
+    return    
+  end
   --print(self.audio:getOffset(), pd.sound.getCurrentTime() - self.startTime)
-  local songPosInBeats = self.audio:getOffset() / self.secPerBeat
+  local songPosInBeats = (self.timer.currentTime / 1000) / self.secPerBeat
+
+
+  if math.abs(songPosInBeats - math.floor(songPosInBeats)) < 0.05 then
+    print(self.nextNote - #self.notesOnScreen)
+    --self.noteSounds[self.nextNote - #self.notesOnScreen]:play()
+  end
 
   -- move notes (interpolate!!)
   for i=#self.notesOnScreen,1,-1 do
+
+
     local newX = self.xSpawn - (self.xSpawn - self.xThreshold) * ((self.beatsInAdvance - (self.notesOnScreen[i]["beat"] - songPosInBeats)) / self.beatsInAdvance)
     self.notesOnScreen[i]["sprite"]:moveTo(newX, self.notesOnScreen[i]["sprite"].y)
     -- if notes pass threshold, remove (set nil)
@@ -140,7 +158,7 @@ function BattleInput:update()
       beat = self.notes[self.nextNote]["BeatNum"],
       sprite = gfx.sprite.new(self.noteSprite)
     }
-    newNote["sprite"]:moveTo(self.xSpawn, self.notes[self.nextNote]["BeatLoc"]*10 + self.cursorMin)
+    newNote["sprite"]:moveTo(self.xSpawn, self.notes[self.nextNote]["BeatLoc"]*24 + self.cursorMin + 12)
     newNote["sprite"]:add()
     table.insert(self.notesOnScreen, newNote)
     self.nextNote += 1
@@ -152,14 +170,13 @@ end
 
 function BattleInput:start()
     self.active = true
-    self.startTime = pd.sound.getCurrentTime()
-    self.audio:play()
+    --self.startTime = pd.sound.getCurrentTime()
+    --self.audio:play()
+    self.timer:start()
     pd.inputHandlers.push(self.myInputHandlers);
     self.cursor:add()
-    gfx.setColor(gfx.kColorXOR)
-    gfx.setLineWidth(1)
+    self.bar:add()
 
-    --print(self.audio:getOffset())
     
 end
 
@@ -167,4 +184,6 @@ function BattleInput:stop()
     self.active = false
     pd.inputHandlers.pop();
     self.cursor:remove()
+    self.bar:remove()
+    --self.audio:stop()
 end
