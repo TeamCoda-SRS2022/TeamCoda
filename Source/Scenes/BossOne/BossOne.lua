@@ -34,7 +34,12 @@ function BossOne:init()
         SmallPlat(42, 727),
         SmallPlat(14, 680),
         SmallPlat(43, 635),
-        SmallPlat(80, 596)
+        SmallPlat(80, 596),
+        SmallPlat(130, 567),
+        SmallPlat(184, 546),
+        SmallPlat(220, 516),
+        PlatformNoSprite(69, 503, 109, 9)
+
     }
 end
 
@@ -57,7 +62,7 @@ function BossOne:update()
     if(self.x_offset > 0) then self.x_offset = 0 end
     if(self.x_offset < -680) then self.x_offset = -680 end
 
-    self.y_offset = - (self.player.y - 200)
+    self.y_offset = - (self.player.y - 150)
     if(self.y_offset > 0) then self.y_offset = 0 end
     if(self.y_offset < -680) then self.y_offset = -680 end
 
