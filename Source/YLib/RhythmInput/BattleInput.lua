@@ -64,18 +64,12 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.bar:moveTo(self.decisionX, (self.cursorMax+self.cursorMin)/2)
 
     -- Callbacks
-    --[[
+    
     self.complete = {}
     function self.complete:push(callbackF)
         table.insert(self, callbackF)
     end
-    function self.complete:pop()
-        table.remove(self)
-    end
-    self.noteEnd = {}  -- calls these after each note window
-    function self.noteEnd.push(callbackF)
-      table.insert(self, callbackF)
-    end]]
+
 
     -- Parse Notes
     for k, v in string.gmatch(notes, "(%w+)=(%w+)") do
@@ -96,25 +90,15 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.timer = pd.timer.new(1000000)
     self.timer:pause()
 
-    self.noteSounds = {pd.sound.sampleplayer.new("Assets/SFX/note1"),pd.sound.sampleplayer.new("Assets/SFX/note2"),
-    pd.sound.sampleplayer.new("Assets/SFX/note3"),pd.sound.sampleplayer.new("Assets/SFX/note4")}
+    local note1 = pd.sound.sampleplayer.new("Assets/SFX/note1")
+    local note2 = pd.sound.sampleplayer.new("Assets/SFX/note2")
+    local note3 = pd.sound.sampleplayer.new("Assets/SFX/note3")
+    local note4 = pd.sound.sampleplayer.new("Assets/SFX/note4")
 
-    self.myInputHandlers = {
-      BButtonDown = function()
-        for i=#self.notesOnScreen,1,-1 do
-          if math.abs(self.cursor.y - self.notesOnScreen[i]["sprite"].y) < 10 and math.abs(self.cursor.x - self.notesOnScreen[i]["sprite"].x) < 10 then
-            print("hit")
-            self.notesOnScreen[i]["sprite"]:remove()
-            table.remove(self.notesOnScreen, i)
-          end
-        end
-        
-      end,
-      cranked = function(change, acceleratedChange)
-        self:handleCrankMove(change, acceleratedChange)
-      end,
+    self.noteSounds = {note4, note1, note3 ,note2}
+    self.currNote = 1
+
     
-    }
 
 
   end
@@ -126,15 +110,16 @@ function BattleInput:update()
   end
   if self.nextNote >= #self.notes and #self.notesOnScreen == 0 then
     self:stop()
+    for _, i in ipairs(self.complete) do i() end
     return    
   end
   --print(self.audio:getOffset(), pd.sound.getCurrentTime() - self.startTime)
   local songPosInBeats = (self.timer.currentTime / 1000) / self.secPerBeat
 
-
-  if math.abs(songPosInBeats - math.floor(songPosInBeats)) < 0.05 then
-    print(self.nextNote - #self.notesOnScreen)
-    --self.noteSounds[self.nextNote - #self.notesOnScreen]:play()
+  --print(self.notes[self.currNote]["BeatNum"] - 3, songPosInBeats - 2)
+  if self.currNote <= #self.notes and self.notes[self.currNote]["BeatNum"] - 3 < songPosInBeats - 2 then
+    self.noteSounds[self.notes[self.currNote]["BeatLoc"] + 1]:play()
+    self.currNote += 1
   end
 
   -- move notes (interpolate!!)
@@ -169,6 +154,22 @@ end
 
 
 function BattleInput:start()
+  self.myInputHandlers = {
+    BButtonDown = function()
+      for i=#self.notesOnScreen,1,-1 do
+        if math.abs(self.cursor.y - self.notesOnScreen[i]["sprite"].y) < 10 and math.abs(self.cursor.x - self.notesOnScreen[i]["sprite"].x) < 10 then
+          print("hit")
+          self.notesOnScreen[i]["sprite"]:remove()
+          table.remove(self.notesOnScreen, i)
+        end
+      end
+      
+    end,
+    cranked = function(change, acceleratedChange)
+      self:handleCrankMove(change, acceleratedChange)
+    end,
+  
+  }
     self.active = true
     --self.startTime = pd.sound.getCurrentTime()
     --self.audio:play()
@@ -181,9 +182,12 @@ function BattleInput:start()
 end
 
 function BattleInput:stop()
+
     self.active = false
     pd.inputHandlers.pop();
     self.cursor:remove()
     self.bar:remove()
+    self.timer:remove()
+    print("done")
     --self.audio:stop()
 end

@@ -42,6 +42,10 @@ function Miniboss:idle()
   self.curAnim:setImageTable(gfx.imagetable.new("Miniboss/Animations/Standing/MinibossStanding"))
 end
 
+function Miniboss:recover()
+	self.curAnim:setImageTable(gfx.imagetable.new("Miniboss/Animations/Recovery/MinibossRecovery"))
+end
+
 function Miniboss:update()
 	Miniboss.super.update(self)
 
