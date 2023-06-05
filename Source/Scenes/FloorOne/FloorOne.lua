@@ -7,6 +7,8 @@ import "Player/Player"
 import "Platforms/Platform"
 import "SceneTransition/SceneTransition"
 import "YLib/Interactable/InteractableBody"
+import "Platforms/PlatformNoSprite"
+
 
 
 local pd <const> = playdate
@@ -15,8 +17,8 @@ local gfx <const> = pd.graphics
 class('FloorOne').extends(Scene)
 
 
-lowerBound_y = 173
-upperBound_y = 231
+lowerBound_y = 162
+upperBound_y = 220
 
 function FloorOne:init()
   FloorOne.super.init(self)
@@ -25,19 +27,21 @@ function FloorOne:init()
   local buttonSprite = gfx.image.new( "Assets/button.png" )
   local puzzleSprite = gfx.image.new( "Assets/growingRobot.png" )
   local conveyorBeltSprite = gfx.image.new( "Assets/conveyorbelt.png")
-  local doorSprite = gfx.image.new( "SceneTransition/door.png" )
+
+  self.offsetx = 0
+  self.bg = gfx.sprite.new(gfx.image.new("Scenes/Backgrounds/factoryRoom1.PNG"))
 
   self.conveyorBelt = gfx.sprite.new(conveyorBeltSprite)
-  self.conveyorBelt:moveTo(320, 145)
+  self.conveyorBelt:moveTo(320, 133)
 
-  self.player = Player(100, 100)
+  self.player = Player(160, 100)
 
-  self.crank1 = InteractableBody(225, 231, puzzleSprite, self.player, 0)
-  self.crank2 = InteractableBody(275, 231, puzzleSprite, self.player, 0)
-  self.crank3 = InteractableBody(325, 231, puzzleSprite, self.player, 0)
-  self.crank4 = InteractableBody(375, 231, puzzleSprite, self.player, 0)
+  self.crank1 = InteractableBody(225, 220, puzzleSprite, self.player, 0)
+  self.crank2 = InteractableBody(300, 220, puzzleSprite, self.player, 0)
+  self.crank3 = InteractableBody(375, 220, puzzleSprite, self.player, 0)
+  self.crank4 = InteractableBody(450, 220, puzzleSprite, self.player, 0)
 
-  self.conveyorButton = InteractableBody(150, 200, buttonSprite, self.player, 50)
+  self.conveyorButton = InteractableBody(575, 200, buttonSprite, self.player, 50)
   
   self.crankLocations = {self.crank1, self.crank2, self.crank3, self.crank4}
   self.lowestMIDI = 63
@@ -74,18 +78,14 @@ function FloorOne:init()
       self.crank3,
       self.crank4,
 
-    
+      PlatformNoSprite(0, 220, 640, 7),
+      PlatformNoSprite(-7, 0, 7, 240),
+      PlatformNoSprite(640, 0, 7, 240),
       self.conveyorButton,
       self.conveyorBelt,
 
       self.door,
       
-      Platform(32, 240, platformSprite),
-      Platform(96, 240, platformSprite),
-      Platform(160, 240, platformSprite),
-      Platform(224, 240, platformSprite),
-      Platform(288, 240, platformSprite),
-      Platform(352, 240, platformSprite),
       
   }
 end
@@ -108,6 +108,7 @@ function FloorOne:load()
           self.solved = valid or self.solved
           if self.solved then
             self.door.locked = false
+            self.bg:setImage(gfx.image.new("Scenes/Backgrounds/factoryRoom1Lit.PNG"))
           end
         end
       )
@@ -133,17 +134,28 @@ function FloorOne:load()
     }
     playdate.inputHandlers.push(myInputHandlers)
 
-  local backgroundImage = gfx.image.new( "Scenes/Backgrounds/factoryTemplate2.png" )
-	assert( backgroundImage )
 
-	gfx.sprite.setBackgroundDrawingCallback(
-		function( x, y, width, height )
-			backgroundImage:draw( 0, -7 )
-		end
-	)
+	self.bg:setCenter(0, 0)
+  self.bg:moveTo(0, 45)
+  self:add(self.bg)
+  self.bg:setZIndex(-1)
+
+  gfx.setBackgroundColor(playdate.graphics.kColorBlack)
+  gfx.fillRect(0, 220, 640, 20)
 end
 
 function FloorOne:unload()
   FloorOne.super.unload(self)
   playdate.inputHandlers.pop()
+end
+
+function FloorOne:update()
+  FloorOne.super.update(self)
+  gfx.fillRect(0, 221, 640, 20)
+  gfx.fillRect(0, 0, 640, 45)
+  self.offsetx = - (self.player.x - 200)
+  if(self.offsetx > 0) then self.offsetx = 0 end
+  if(self.offsetx < -240) then self.offsetx = -240 end
+  gfx.setDrawOffset(self.offsetx, 0)
+
 end

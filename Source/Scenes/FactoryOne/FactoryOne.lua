@@ -39,7 +39,7 @@ function FactoryOne:init()
     end
 
     local doorSprite = gfx.image.new( "SceneTransition/door.png" )  
-    self.door = SceneTransition(41, 185, doorSprite, self.player, 1, true, 80)
+    self.door = SceneTransition(41, 185, doorSprite, self.player, 13, true, 80)
 
     self.sceneObjects = {
         Platform(305, 210, floorSprite),
@@ -56,6 +56,7 @@ function FactoryOne:init()
 
 
     table.insert(self.sceneObjects, self.player)
+    table.insert(self.sceneObjects, self.player.interactableSprite)
 end
 
 function FactoryOne:load()

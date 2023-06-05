@@ -88,6 +88,12 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     
     self.timer = playdate.timer.keyRepeatTimerWithDelay(self.measureLengthMS - 0.5 * self.beatLength, self.measureLengthMS, newMeasure)
 
+    
+
+    self.timer:pause()
+end
+
+function RhythmInput:start()
     local myInputHandlers = {
         AButtonDown = function () 
             self:processButtonPress("A")
@@ -106,11 +112,6 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
         end
     }
     playdate.inputHandlers.push(myInputHandlers)
-
-    self.timer:pause()
-end
-
-function RhythmInput:start()
     self.active = true
     self.timer:reset()
     self.timer:start()
@@ -122,4 +123,5 @@ function RhythmInput:stop()
     self.active = false
     self.timer:pause()
     self.audio:stop()
+    playdate.inputHandlers.pop()
 end

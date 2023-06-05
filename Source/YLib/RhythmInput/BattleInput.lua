@@ -35,8 +35,6 @@ end
 function BattleInput:init(soundFilePath, notes, tempo)
     BattleInput.super.init(self)
 
-    
-
     self.active = false
 
     self.notes = {}
@@ -91,6 +89,7 @@ function BattleInput:init(soundFilePath, notes, tempo)
     end
 
     self.audio = pd.sound.fileplayer.new(soundFilePath)
+    print(self.audio)
     self.audio:setFinishCallback(songDone)
 
     self.myInputHandlers = {
