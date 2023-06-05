@@ -22,8 +22,8 @@ function RhythmInput:processButtonPress(button)
     if not self.active or self.curNote > #self.notes then
         return
     end
-
-    if math.abs(self.notes[self.curNote].MSTime - self.timer._currentTime) <= timeWindowLength and button == self.notes[self.curNote].Button then
+    print(self.notes[self.curNote].MSTime, self.timer._currentTime)
+    if math.abs(self.notes[self.curNote].MSTime - self.timer._currentTime) <= self.timeWindowLength and button == self.notes[self.curNote].Button then
         print(self.curNote)
         self.curNote = self.curNote + 1
     else
@@ -43,6 +43,8 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     self.beatLength = 60.0 * 1000.0 / tempo 
     self.measureLength = measureLength
     self.measureLengthMS = measureLength * self.beatLength
+
+    self.timeWindowLength = 250
 
     self.notes = {}
 
@@ -73,6 +75,7 @@ function RhythmInput:init(soundPath, measureLength, notes, tempo)
     end
 
     local function newMeasure()
+        print("new measure")
         for _, i in ipairs(self.measureEndCallbacks) do i() end
 
         if self.success == true and self.curNote > #self.notes then
