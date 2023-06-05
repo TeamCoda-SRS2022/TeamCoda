@@ -31,9 +31,10 @@ function BossOne:init()
     self.sceneObjects = {
         self.player,
         PlatformNoSprite(90, 710, 1000, 10),
-        SmallPlat(42, 682),
-        SmallPlat(14, 635),
-        SmallPlat(43, 590)
+        SmallPlat(42, 727),
+        SmallPlat(14, 680),
+        SmallPlat(43, 635),
+        SmallPlat(80, 596)
     }
 end
 
@@ -44,7 +45,7 @@ function BossOne:load()
     -- playdate.graphics.setDrawOffset(self.x_offset, 0)
 
     self.bg:setCenter(0, 0)
-    self.bg:moveTo(0, -45)
+    self.bg:moveTo(0, 0)
     self:add(self.bg)
     self.bg:setZIndex(-1)
 end
