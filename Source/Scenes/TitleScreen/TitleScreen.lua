@@ -19,7 +19,7 @@ end
 
 function TitleScreen:load()
     TitleScreen.super.load(self)
-    local bg = gfx.image.new("Scenes/Backgrounds/title.png")
+    local bg = gfx.image.new("Scenes/Backgrounds/title_screen.png")
     assert(bg)
     gfx.sprite.setBackgroundDrawingCallback(
         function(x, y, width, height)
