@@ -23,33 +23,29 @@ function FactoryOne:init()
     local coverSprite1 = gfx.image.new( "Scenes/FactoryOne/cover1.png")
     self.deadbotSprite = gfx.image.new( "Scenes/FactoryOne/Deadbot/Deadbot.png" )
 
-    self.player = Player(100, 100)
+    self.player = Player(100, 200)
 
     self.beats = {false, false, false, false}
+    math.randomseed(playdate.getSecondsSinceEpoch())
     for i=1, 4 do
         --50% chance to have a dead robot on a certain chute.
         if (math.random() < 0.5) then
             self.beats[i] = true
+        else 
+            self.beats[i] = false
         end
+        
     end
 
-    local sum = 0
-    for i=1, 4 do
-        if not self.beats[i] then
-            sum += 1
-        end
-    end
-    if sum == 4 then
-        for i=1, 4 do
-            self.beats[i] = true
-        end
-    end
+    local doorSprite = gfx.image.new( "SceneTransition/door.png" )  
+    self.door = SceneTransition(41, 185, doorSprite, self.player, 1, true, 80)
 
     self.sceneObjects = {
         Platform(305, 210, floorSprite),
         Platform(470, 23, coverSprite1),
         Platform(470, 234, coverSprite1),
-        Platform(665, 170, wallSprite)
+        Platform(665, 170, wallSprite),
+        self.door,
     }
 
     for i=1, 4 do
@@ -82,7 +78,7 @@ function FactoryOne:load()
 
     self.puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, rhythmSolnString, 120)
     self.puzzle.complete:push(function() 
-        print("Puzzle Solved")
+        self.door.locked = false
          self.completed = true
     end)
 
@@ -122,11 +118,11 @@ function FactoryOne:update()
     end
 end
 
--- function FactoryOne:resetDeadbots()
---     print("Resetting dead bots")
---     print(self.sceneObjects)
+function FactoryOne:resetDeadbots()
+    print("Resetting dead bots")
+    print(self.sceneObjects)
 
---     -- for i =1, self.sceneObjects.getn() do
---     --     print(i)
---     -- end
--- end
+    -- for i =1, self.sceneObjects.getn() do
+    --     print(i)
+    -- end
+end
