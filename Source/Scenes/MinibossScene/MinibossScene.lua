@@ -32,7 +32,7 @@ function MinibossScene:init()
     math.randomseed(playdate.getSecondsSinceEpoch())
 
     local chartString = ""
-    local chartLength = 20
+    local chartLength = 50
     --local chartPattern = {0, 1, 2, 3, 2, 1, 0, 2, 3, -1, -1, 1, 2, 0, -1, 1, 0, 2, -1, 0, 0, 0}
     for i=1,chartLength do
         v = math.random(-1, 3)
@@ -44,7 +44,7 @@ function MinibossScene:init()
     print(chartString)
 
     self.exit_door = SceneTransition(436, 189, doorSprite, self.player, 4, true, 80)
-    self.battle = BattleInput("", chartString, 120)
+    self.battle = BattleInput("", chartString, 120, 50.0, 200.0)
     self.battle.complete:push(
         function() 
             self.exit_door.locked = false 
