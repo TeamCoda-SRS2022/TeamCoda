@@ -145,7 +145,6 @@ function FloorOne:load()
   self.bg:setZIndex(-1)
 
   gfx.setBackgroundColor(playdate.graphics.kColorBlack)
-  gfx.fillRect(0, 220, 640, 20)
 
   self.ambience:play(0)
 end

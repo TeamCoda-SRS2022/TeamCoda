@@ -42,9 +42,9 @@ function FactoryOne:init()
     self.door = SceneTransition(41, 185, doorSprite, self.player, 13, true, 80)
 
     self.sceneObjects = {
-        Platform(305, 210, floorSprite),
-        Platform(470, 23, coverSprite1),
-        Platform(470, 234, coverSprite1),
+        PlatformNoSprite(0, 207, 640, 7),
+        PlatformNoSprite(-7, 0, 7, 240),
+        PlatformNoSprite(640, 0, 7, 240),
         self.door,
     }
 
@@ -63,12 +63,14 @@ function FactoryOne:load()
     print("Loading the scene")
     FactoryOne.super.load(self)
 
-    local bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOff.png" ))
-    assert( bg )
-    bg:setCenter(0, 0)
-    bg:moveTo(0, 32)
-    self:add(bg)
-    bg:setZIndex(-2)
+    self.bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOff.png" ))
+    assert( self.bg )
+    self.bg:setCenter(0, 0)
+    self.bg:moveTo(0, 32)
+    self:add(self.bg)
+    self.bg:setZIndex(-2)
+
+    gfx.setBackgroundColor(playdate.graphics.kColorBlack)
 
 
     local rhythmSolnString = ""
@@ -80,7 +82,12 @@ function FactoryOne:load()
     print(rhythmSolnString)
 
     local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, rhythmSolnString, 120)
-    puzzle.complete:push(function() self.door.locked = false end)
+    puzzle.complete:push(
+        function() 
+            self.door.locked = false 
+            self.bg:setImage(gfx.image.new("Scenes/FactoryOne/LightsOn.png"))
+        end
+    )
 
 
     function resetDeadbots()
@@ -103,6 +110,8 @@ end
 
 function FactoryOne:update()
     FactoryOne.super.update(self)
+    gfx.fillRect(0, 210, 640, 33)
+    gfx.fillRect(0, 0, 640, 32)
     self.offsetx = - (self.player.x - 200)
     if(self.offsetx > 0) then self.offsetx = 0 end
     if(self.offsetx < -274) then self.offsetx = -274 end
