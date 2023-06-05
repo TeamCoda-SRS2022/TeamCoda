@@ -21,6 +21,33 @@ function FactoryElevator:init(destinationScene)
     self.leftwall = PlatformNoSprite(145, 65, 5, 105)
     self.rightwall = PlatformNoSprite(250, 65, 5, 105)
 
+    self.ambience = pd.sound.fileplayer.new("Assets/SFX/elevatorloop")
+    self.ambience:setLoopRange(0, 1.4)
+
+    self.doorOpen = pd.sound.sampleplayer.new("Assets/SFX/elevatoropen")
+    self.doorOpen:setFinishCallback(
+        function ()
+            loadScene(self.destination)
+        end
+    )
+
+    self.timer = playdate.timer.new(TIMER_DURATION, 
+        function ()
+            self.ambience:stop()
+            self.doorOpen:play(1)
+        end
+    )
+    self.timer:pause()
+
+    self.doorClose = pd.sound.sampleplayer.new("Assets/SFX/elevatorclose")
+    self.doorClose:setFinishCallback(
+        function ()
+            self.timer:start() 
+            self.ambience:play(0)
+        end
+    )
+
+    
     self.sceneObjects = {
         self.player,
         self.floor,
@@ -29,13 +56,13 @@ function FactoryElevator:init(destinationScene)
         self.door
     }
 
-    self.timer = playdate.timer.new(TIMER_DURATION)
-    self.timer:pause()
+    
 end
 
 function FactoryElevator:load()
     FactoryElevator.super.load(self)
-    self.timer:start() 
+    self.doorClose:play(1)
+    
     local bgImage = gfx.image.new("Scenes/FactoryElevator/elevator.png")
     gfx.sprite.setBackgroundDrawingCallback(
         function( x, y, width, height )
@@ -44,8 +71,8 @@ function FactoryElevator:load()
     )
 end
 
-function FactoryElevator:update()
-    if self.timer.timeLeft == 0 then
-        loadScene(self.destination)
-    end
+
+function FactoryElevator:unload()
+    FactoryElevator.super.unload(self)
+    self.ambience:stop()
 end

@@ -20,26 +20,32 @@ function FactoryOne:init()
 
     local platformSprite = gfx.image.new( "Platforms/PlatedPlatform.png" )
     local floorSprite = gfx.image.new( "Assets/floor.png")
-    local chuteSprite = gfx.image.new( "Chute/Chute.png" )
-    self.deadbotSprite = gfx.image.new( "Deadbot/Deadbot.png" )
+    local chuteSprite = gfx.image.new( "Scenes/FactoryOne/Chute/Chute.png" )
+    local coverSprite1 = gfx.image.new( "Scenes/FactoryOne/cover1.png")
+    self.deadbotSprite = gfx.image.new( "Scenes/FactoryOne/Deadbot/Deadbot.png" )
 
-    self.player = Player(100, 100)
+    self.player = Player(100, 200)
 
     self.beats = {false, false, false, false}
+    math.randomseed(playdate.getSecondsSinceEpoch())
     for i=1, 4 do
-        -- 50% chance to have a dead robot on a certain chute.
-        -- if (math.random() < 0.5) then
-        --     self.beats[i] = true
-        -- end
-        self.beats[i] = true
+        --50% chance to have a dead robot on a certain chute.
+        if (math.random() < 0.5) then
+            self.beats[i] = true
+        else 
+            self.beats[i] = false
+        end
+        
     end
 
+    local doorSprite = gfx.image.new( "SceneTransition/door.png" )  
+    self.door = SceneTransition(41, 185, doorSprite, self.player, 13, true, 80)
+
     self.sceneObjects = {
-        -- Chute(260, 120, chuteSprite),
-        -- Chute(300, 120, chuteSprite),
-        -- Chute(340, 120, chuteSprite),
-        -- Chute(480, 120, chuteSprite),
-        Platform(305, 210, floorSprite),
+        PlatformNoSprite(0, 207, 640, 7),
+        PlatformNoSprite(-7, 0, 7, 240),
+        PlatformNoSprite(640, 0, 7, 240),
+        self.door,
     }
 
     for i=1, 4 do
@@ -50,18 +56,21 @@ function FactoryOne:init()
 
 
     table.insert(self.sceneObjects, self.player)
+    table.insert(self.sceneObjects, self.player.interactableSprite)
 end
 
 function FactoryOne:load()
     print("Loading the scene")
     FactoryOne.super.load(self)
 
-    local bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOff.png" ))
-    assert( bg )
-    bg:setCenter(0, 0)
-    bg:moveTo(0, 32)
-    self:add(bg)
-    bg:setZIndex(-2)
+    self.bg = gfx.sprite.new(gfx.image.new( "Scenes/FactoryOne/LightsOff.png" ))
+    assert( self.bg )
+    self.bg:setCenter(0, 0)
+    self.bg:moveTo(0, 32)
+    self:add(self.bg)
+    self.bg:setZIndex(-2)
+
+    gfx.setBackgroundColor(playdate.graphics.kColorBlack)
 
 
     local rhythmSolnString = ""
@@ -70,9 +79,15 @@ function FactoryOne:load()
             rhythmSolnString = rhythmSolnString..(tostring(i).."=U, ")
         end
     end
+    print(rhythmSolnString)
 
     local puzzle = RhythmInput("Test/TunePocket-Metronome-120-Bpm-Loop-Preview", 4, rhythmSolnString, 120)
-    puzzle.complete:push(function() print("Puzzle Solved") end)
+    puzzle.complete:push(
+        function() 
+            self.door.locked = false 
+            self.bg:setImage(gfx.image.new("Scenes/FactoryOne/LightsOn.png"))
+        end
+    )
 
 
     function resetDeadbots()
@@ -95,17 +110,19 @@ end
 
 function FactoryOne:update()
     FactoryOne.super.update(self)
+    gfx.fillRect(0, 210, 640, 33)
+    gfx.fillRect(0, 0, 640, 32)
     self.offsetx = - (self.player.x - 200)
     if(self.offsetx > 0) then self.offsetx = 0 end
     if(self.offsetx < -274) then self.offsetx = -274 end
     playdate.graphics.setDrawOffset(self.offsetx, 0)
 end
 
--- function FactoryOne:resetDeadbots()
---     print("Resetting dead bots")
---     print(self.sceneObjects)
+function FactoryOne:resetDeadbots()
+    print("Resetting dead bots")
+    print(self.sceneObjects)
 
---     -- for i =1, self.sceneObjects.getn() do
---     --     print(i)
---     -- end
--- end
+    -- for i =1, self.sceneObjects.getn() do
+    --     print(i)
+    -- end
+end
