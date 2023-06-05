@@ -36,7 +36,7 @@ function Player:init(x, y)
 	self.interactableSprite:moveTo(x, y)
 	self.interactableSprite:setVisible(false)
 	self.interactableSprite:setZIndex(100)
-
+	
 	self.walkingSFX = pd.sound.sampleplayer.new("Assets/SFX/basicwalking")
 end
 
