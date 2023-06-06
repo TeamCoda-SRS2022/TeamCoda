@@ -6,17 +6,16 @@ import "YLib/SceneManagement/Scene"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-local TUTORIAL_INDEX <const> = 8
-class('TitleScreen').extends(Scene)
+class('Credits').extends(Scene)
 
-function TitleScreen:init()
+function Credits:init()
     TitleScreen.super.init(self)
     self.sceneObjects = {
 
     }
 end
 
-function TitleScreen:load()
+function Credits:load()
     TitleScreen.super.load(self)
     local bg = gfx.image.new("Scenes/Backgrounds/title_screen.png")
     assert(bg)
@@ -27,15 +26,6 @@ function TitleScreen:load()
     )
 end
 
-function TitleScreen:update()
-    if
-        pd.buttonIsPressed("right") or
-        pd.buttonIsPressed("left") or
-        pd.buttonIsPressed("a") or
-        pd.buttonIsPressed("b") or
-        pd.buttonIsPressed("up") or 
-        pd.buttonIsPressed("down") 
-    then
-        loadScene(TUTORIAL_INDEX)
-    end
+function Credits:update()
+  
 end

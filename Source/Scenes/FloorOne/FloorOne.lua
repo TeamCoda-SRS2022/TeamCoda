@@ -59,7 +59,7 @@ function FloorOne:init()
 
   self.noteTrack:setNotes(self.notes)
 
-  self.solutionNotes = {71, 71, 76, 74}
+  self.solutionNotes = {71, 71, 76, 72}
   self.solved = false
 	
   self.sequence = playdate.sound.sequence.new()
