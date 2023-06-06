@@ -83,3 +83,11 @@ function HouseOne:update()
         end
     end
 end
+
+function HouseOne:unload()
+  HouseOne.super.unload(self)
+
+  for _, freq in ipairs(self.freqs) do
+    freq:stop()
+  end    
+end

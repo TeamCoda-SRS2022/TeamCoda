@@ -103,3 +103,11 @@ function Player:move(x, y)
 		end
 	end
 end
+
+function Player:remove() 
+	if self.walkingSFX:isPlaying() then
+		self.walkingSFX:stop()
+	end
+	
+	Player.super.remove(self)
+end
