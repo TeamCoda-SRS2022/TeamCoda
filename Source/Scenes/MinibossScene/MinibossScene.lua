@@ -23,6 +23,11 @@ function MinibossScene:init()
     local platformSprite = gfx.image.new("Assets/floor.png")
     local doorSprite = gfx.image.new("Scenes/MinibossScene/miniboss_door.png")
 
+    local ScrapBot1 = gfx.imagetable.new("Scenes/MinibossScene/Animations/ScrapBot1/Robot1")
+    self.ScrapBot1 = gfx.animation.loop.new(125, ScrapBot1, true)
+    local ScrapBot2 = gfx.imagetable.new("Scenes/MinibossScene/Animations/ScrapBot2/Robot2")
+    self.ScrapBot2 = gfx.animation.loop.new(125, ScrapBot2, true)
+
     self.miniboss = Miniboss(350, 200)
 
     self.minibossState = "idle"
@@ -116,4 +121,7 @@ function MinibossScene:update()
     if(self.offsetx > 0) then self.offsetx = 0 end
     if(self.offsetx < -110) then self.offsetx = -110 end
     playdate.graphics.setDrawOffset(self.offsetx, 0)
+
+    self.ScrapBot1:draw(20, 195, gfx.kImageFlippedX)
+    self.ScrapBot2:draw(440, 204)
 end
