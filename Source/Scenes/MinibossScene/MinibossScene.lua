@@ -32,7 +32,7 @@ function MinibossScene:init()
     math.randomseed(playdate.getSecondsSinceEpoch())
 
     local chartString = ""
-    local chartLength = 50
+    local chartLength = 30
     --local chartPattern = {0, 1, 2, 3, 2, 1, 0, 2, 3, -1, -1, 1, 2, 0, -1, 1, 0, 2, -1, 0, 0, 0}
     for i=1,chartLength do
         v = math.random(-1, 3)

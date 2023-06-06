@@ -24,7 +24,7 @@ function Phase2:init()
     math.randomseed(playdate.getSecondsSinceEpoch())
 
     local chartString = ""
-    local chartLength = 20
+    local chartLength = 50
     --local chartPattern = {0, 1, 2, 3, 2, 1, 0, 2, 3, -1, -1, 1, 2, 0, -1, 1, 0, 2, -1, 0, 0, 0}
     for i=1,chartLength do
         v = math.random(-1, 3)

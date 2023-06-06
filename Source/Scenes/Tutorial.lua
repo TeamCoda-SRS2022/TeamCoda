@@ -1,6 +1,7 @@
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
+import "CoreLibs/UI"
 import "YLib/SceneManagement/Scene"
 import "Platforms/PlatformNoSprite"
 import "Platforms/Platform"
@@ -54,7 +55,7 @@ function Tutorial:init()
 
     self.bg = gfx.sprite.new(gfx.image.new("Assets/TutorialroomOPEN.PNG"))
 
-    
+    playdate.ui.crankIndicator:start()
     
     self.sceneObjects = {
         self.player,
@@ -115,6 +116,10 @@ end
 
 function Tutorial:update()
     Tutorial.super.update(self)
+
+    if pd.isCrankDocked() and #self.doorLever:overlappingSprites() > 0 then
+        pd.ui.crankIndicator:update()
+    end
         
     self.offsetx = - (self.player.x - 200)
     if(self.offsetx > 0) then self.offsetx = 0 end

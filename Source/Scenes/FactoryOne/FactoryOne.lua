@@ -39,7 +39,7 @@ function FactoryOne:init()
     end
 
     local doorSprite = gfx.image.new( "SceneTransition/door.png" )  
-    self.door = SceneTransition(41, 185, doorSprite, self.player, 14, true, 80)
+    self.door = SceneTransition(41, 185, doorSprite, self.player, 15, true, 80)
 
     self.sceneObjects = {
         PlatformNoSprite(0, 207, 640, 7),
