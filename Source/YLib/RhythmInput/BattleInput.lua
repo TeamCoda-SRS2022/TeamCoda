@@ -33,7 +33,7 @@ end
 -- measureLength: length of measure in quarter notes
 -- noteTimes: array of note times for the measure, in quarter ntoes
 -- tempo: BPM
-function BattleInput:init(soundFilePath, notes, tempo)
+function BattleInput:init(soundFilePath, notes, tempo, cursorMin, xThreshold)
     BattleInput.super.init(self)
 
     self.active = false
@@ -49,13 +49,13 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.secPerBeat = 60.0 / tempo
     self.beatsInAdvance = 5  -- number of beats in advance to spawn notes (time signature + 1)
 
-    self.cursorMin = 50.0  -- cursor y positions
-    self.cursorMax = 150.0
-    self.xThreshold = 200.0  -- cursor x position
-    self.xSpawn = 350.0
+    self.cursorMin = cursorMin  -- cursor y positions
+    self.cursorMax = cursorMin + 100.0
+    self.xThreshold = xThreshold -- cursor x position
+    self.xSpawn = xThreshold + 150.0
     self.decisionX = ((self.xSpawn - self.xThreshold)/self.beatsInAdvance) + self.xThreshold 
 
-    local cursorSprite = gfx.image.new( "Scenes/HouseTwo/connector.png" )
+    local cursorSprite = gfx.image.new( "Assets/cursor.png" )
     self.cursor = gfx.sprite.new(cursorSprite)
     self.cursor:moveTo(self.decisionX, self.cursorMax)
 
@@ -98,7 +98,7 @@ function BattleInput:init(soundFilePath, notes, tempo)
     self.noteSounds = {note4, note1, note3 ,note2}
     self.currNote = 1
 
-    
+    self.notehitSFX = pd.sound.sampleplayer.new("Assets/SFX/notehit")
 
 
   end
@@ -159,6 +159,7 @@ function BattleInput:start()
       for i=#self.notesOnScreen,1,-1 do
         if math.abs(self.cursor.y - self.notesOnScreen[i]["sprite"].y) < 10 and math.abs(self.cursor.x - self.notesOnScreen[i]["sprite"].x) < 10 then
           print("hit")
+          self.notehitSFX:play()
           self.notesOnScreen[i]["sprite"]:remove()
           table.remove(self.notesOnScreen, i)
         end
