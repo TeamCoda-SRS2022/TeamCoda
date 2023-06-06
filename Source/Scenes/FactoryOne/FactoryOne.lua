@@ -72,6 +72,7 @@ function FactoryOne:load()
 
     gfx.setBackgroundColor(playdate.graphics.kColorBlack)
 
+    self.completedSFX = pd.sound.sampleplayer.new("Assets/SFX/sparkle")
 
     local rhythmSolnString = ""
     for i=1, 4 do
@@ -85,6 +86,7 @@ function FactoryOne:load()
     puzzle.complete:push(
         function() 
             self.door.locked = false 
+            self.completedSFX:play()
             self.bg:setImage(gfx.image.new("Scenes/FactoryOne/LightsOn.png"))
         end
     )

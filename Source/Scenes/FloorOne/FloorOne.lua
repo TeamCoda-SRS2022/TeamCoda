@@ -96,6 +96,8 @@ end
 function FloorOne:load()
   FloorOne.super.load(self)
 
+  self.completedSFX = pd.sound.sampleplayer.new("Assets/SFX/sparkle")
+
   self.conveyorButton.callbacks:push(
     function() 
       self.sequence:play(
@@ -110,6 +112,7 @@ function FloorOne:load()
           print(valid)
           self.solved = valid or self.solved
           if self.solved then
+            self.completedSFX:play()
             self.door.locked = false
             self.ambience:stop()
             self.bg:setImage(gfx.image.new("Scenes/Backgrounds/factoryRoom1Lit.PNG"))

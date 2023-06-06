@@ -38,7 +38,7 @@ function Phase2:init()
     self.battle = BattleInput("", chartString, 120, 75.0, 285.0)
     self.battle.complete:push(
         function() 
-            
+          loadScene(17)
         end
     )
     self.battleStarted = false

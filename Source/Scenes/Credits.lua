@@ -9,23 +9,25 @@ local gfx <const> = pd.graphics
 class('Credits').extends(Scene)
 
 function Credits:init()
-    TitleScreen.super.init(self)
+    Credits.super.init(self)
+
     self.sceneObjects = {
 
     }
 end
 
 function Credits:load()
-    TitleScreen.super.load(self)
-    local bg = gfx.image.new("Scenes/Backgrounds/title_screen.png")
-    assert(bg)
-    gfx.sprite.setBackgroundDrawingCallback(
-        function(x, y, width, height)
-        bg:drawCentered(200, 120)
-        end
-    )
+    Credits.super.load(self)
+    self.bg = gfx.sprite.new(gfx.image.new("Scenes/Backgrounds/Credits.png"))
+
+    self.animator = gfx.animator.new(6000, 0, 240, pd.easingFunctions.outSine, 1000)
+
+    self.bg:setCenter(0, 0)
+    self.bg:moveTo(0, 0)
+    self:add(self.bg)
+    self.bg:setZIndex(-1)
 end
 
 function Credits:update()
-  
+  gfx.setDrawOffset(0, -self.animator:currentValue())
 end
