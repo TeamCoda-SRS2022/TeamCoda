@@ -30,11 +30,11 @@ function FactoryOne:init()
     math.randomseed(playdate.getSecondsSinceEpoch())
     for i=1, 4 do
         --50% chance to have a dead robot on a certain chute.
-        if (math.random() < 0.5) then
-            self.beats[i] = true
-        else 
-            self.beats[i] = false
-        end
+        -- if (math.random() < 0.5) then
+             self.beats[i] = true
+        -- else 
+        --     self.beats[i] = false
+        -- end
         
     end
 
