@@ -128,11 +128,11 @@ function FloorOne:load()
           local sprites = crank:overlappingSprites()
           if #sprites > 0 then  -- player collision
             self.scales[i] += change * (0.01)
-            if self.scales[i] >= 10 or self.scales[i] <= 0 then
+            if self.scales[i] > 10 or self.scales[i] <= 0 then
               self.scales[i] = math.max(math.min(self.scales[i], 10), 0)
             end
   
-            self.notes[i]["note"] = self.lowestMIDI + math.floor(self.scales[i])
+            self.notes[i]["note"] = self.lowestMIDI + math.floor(self.scales[i]/2.0)
             self.noteTrack:setNotes(self.notes)
             crank:moveTo(crank.x, upperBound_y - (upperBound_y-lowerBound_y)*(self.scales[i])/(10))
           end
